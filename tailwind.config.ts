@@ -76,6 +76,23 @@ export default {
           light: "hsl(var(--gold-light))",
         },
         sand: "hsl(var(--sand))",
+        // Gamification colors
+        xp: {
+          DEFAULT: "hsl(var(--xp-blue))",
+          light: "hsl(var(--xp-blue-light))",
+        },
+        streak: {
+          DEFAULT: "hsl(var(--streak-orange))",
+          light: "hsl(var(--streak-orange-light))",
+        },
+        badge: {
+          DEFAULT: "hsl(var(--badge-purple))",
+          light: "hsl(var(--badge-purple-light))",
+        },
+        level: {
+          DEFAULT: "hsl(var(--level-gold))",
+          light: "hsl(var(--level-gold-light))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

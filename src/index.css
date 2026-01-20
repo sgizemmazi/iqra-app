@@ -63,6 +63,16 @@
     
     --sand: 35 25% 88%;
 
+    /* Gamification Colors */
+    --xp-blue: 210 80% 55%;
+    --xp-blue-light: 210 70% 90%;
+    --streak-orange: 30 85% 55%;
+    --streak-orange-light: 30 75% 90%;
+    --badge-purple: 270 60% 55%;
+    --badge-purple-light: 270 50% 90%;
+    --level-gold: 45 90% 50%;
+    --level-gold-light: 45 80% 90%;
+
     /* Gradients */
     --gradient-prayer: linear-gradient(135deg, hsl(220 35% 25%) 0%, hsl(200 40% 30%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(40 25% 99%) 0%, hsl(40 20% 96%) 100%);
@@ -127,6 +137,16 @@
     
     --gold: 38 55% 60%;
     --gold-light: 38 40% 25%;
+
+    /* Gamification Colors - Dark Mode */
+    --xp-blue: 210 70% 60%;
+    --xp-blue-light: 210 60% 25%;
+    --streak-orange: 30 75% 60%;
+    --streak-orange-light: 30 65% 25%;
+    --badge-purple: 270 50% 60%;
+    --badge-purple-light: 270 40% 25%;
+    --level-gold: 45 80% 55%;
+    --level-gold-light: 45 70% 25%;
 
     --sidebar-background: 220 35% 12%;
     --sidebar-foreground: 40 20% 92%;
