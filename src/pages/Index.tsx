@@ -1,13 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import MobileLayout from '@/components/layout/MobileLayout';
+import GreetingHeader from '@/components/home/GreetingHeader';
+import CurrentPrayerCard from '@/components/home/CurrentPrayerCard';
+import QuickActions from '@/components/home/QuickActions';
+import GentleReminder from '@/components/home/GentleReminder';
+import ProgressOverview from '@/components/home/ProgressOverview';
 
-const Index = () => {
+const Index: React.FC = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <MobileLayout>
+      <div className="animate-fade-in">
+        <GreetingHeader />
+        <CurrentPrayerCard />
+        <QuickActions />
+        <GentleReminder />
+        <ProgressOverview />
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 
