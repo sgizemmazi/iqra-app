@@ -1,32 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Compass, Heart, Headphones } from 'lucide-react';
+import { BookOpen, Compass, Heart, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const actions = [
   { 
     icon: BookOpen, 
-    label: 'Continue\nLearning', 
+    label: 'Öğrenmeye\nDevam Et', 
     path: '/learn',
     color: 'bg-sage-light text-sage' 
   },
   { 
-    icon: Compass, 
-    label: 'Qibla\nDirection', 
-    path: '/qibla',
-    color: 'bg-gold-light text-gold' 
+    icon: HelpCircle, 
+    label: 'Quiz\nOyna', 
+    path: '/quiz',
+    color: 'bg-badge-light text-badge' 
   },
   { 
     icon: Heart, 
-    label: 'Daily\nDua', 
-    path: '/duas',
-    color: 'bg-muted text-navy' 
+    label: 'Günlük\nDua', 
+    path: '/learn',
+    color: 'bg-gold-light text-gold' 
   },
   { 
-    icon: Headphones, 
-    label: 'Listen\nQuran', 
-    path: '/listen',
-    color: 'bg-sage-light text-accent' 
+    icon: Compass, 
+    label: 'Kıble\nYönü', 
+    path: '/qibla',
+    color: 'bg-muted text-navy' 
   },
 ];
 
@@ -34,9 +34,9 @@ const QuickActions: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 py-6">
+    <div className="px-6 py-4">
       <h3 className="text-lg font-semibold text-foreground mb-4">
-        Quick Actions
+        Hızlı Erişim
       </h3>
       <div className="grid grid-cols-4 gap-3">
         {actions.map((action) => {

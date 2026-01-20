@@ -8,6 +8,7 @@ import PrayerPage from "./pages/PrayerPage";
 import LearnPage from "./pages/LearnPage";
 import SurahDetailPage from "./pages/SurahDetailPage";
 import ProfilePage from "./pages/ProfilePage";
+import QuizPage from "./pages/QuizPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/prayer" element={<PrayerPage />} />
           <Route path="/learn" element={<LearnPage />} />
           <Route path="/learn/surah/:id" element={<SurahDetailPage />} />
+          <Route path="/quiz" element={<QuizPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
