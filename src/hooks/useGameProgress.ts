@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { UserProgress, Badge, DailyGoal } from '@/types/gamification';
 
 const initialProgress: UserProgress = {
@@ -134,6 +134,15 @@ export function useGameProgress() {
   const [progress, setProgress] = useState<UserProgress>(initialProgress);
   const [badges, setBadges] = useState<Badge[]>(initialBadges);
   const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>(initialDailyGoals);
+  const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
+    show: false,
+    newLevel: 0,
+  });
+  const previousLevelRef = useRef(initialProgress.level);
+
+  const closeLevelUpCelebration = useCallback(() => {
+    setLevelUpData({ show: false, newLevel: 0 });
+  }, []);
 
   const addXP = useCallback((amount: number) => {
     setProgress((prev) => {
@@ -145,6 +154,14 @@ export function useGameProgress() {
         newXP -= xpNeeded;
         newLevel += 1;
         xpNeeded = Math.floor(xpNeeded * 1.3);
+      }
+
+      // Trigger level up celebration
+      if (newLevel > previousLevelRef.current) {
+        previousLevelRef.current = newLevel;
+        setTimeout(() => {
+          setLevelUpData({ show: true, newLevel });
+        }, 300);
       }
 
       return {
@@ -191,5 +208,7 @@ export function useGameProgress() {
     addXP,
     completeGoal,
     earnBadge,
+    levelUpData,
+    closeLevelUpCelebration,
   };
 }

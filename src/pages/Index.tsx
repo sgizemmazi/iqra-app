@@ -6,10 +6,11 @@ import QuickActions from '@/components/home/QuickActions';
 import LevelProgress from '@/components/gamification/LevelProgress';
 import DailyGoals from '@/components/gamification/DailyGoals';
 import BadgeCollection from '@/components/gamification/BadgeCollection';
+import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { useGameProgress } from '@/hooks/useGameProgress';
 
 const Index: React.FC = () => {
-  const { progress, dailyGoals, badges, completeGoal } = useGameProgress();
+  const { progress, dailyGoals, badges, completeGoal, levelUpData, closeLevelUpCelebration } = useGameProgress();
 
   return (
     <MobileLayout>
@@ -34,6 +35,13 @@ const Index: React.FC = () => {
           <BadgeCollection badges={badges} />
         </div>
       </div>
+
+      {/* Level Up Celebration */}
+      <LevelUpCelebration
+        newLevel={levelUpData.newLevel}
+        isVisible={levelUpData.show}
+        onClose={closeLevelUpCelebration}
+      />
     </MobileLayout>
   );
 };
