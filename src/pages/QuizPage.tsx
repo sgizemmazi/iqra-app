@@ -1,74 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Check, X, Sparkles, ChevronRight, RotateCcw } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Check, X, Sparkles, ChevronRight, RotateCcw, BookOpen, Lock, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { QuizQuestion } from '@/types/gamification';
-import { useGameProgress } from '@/hooks/useGameProgress';
+import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
-
-const quizQuestions: QuizQuestion[] = [
-  {
-    id: '1',
-    type: 'multiple_choice',
-    question: 'Fatiha Suresi kaç ayettir?',
-    options: ['5 ayet', '6 ayet', '7 ayet', '8 ayet'],
-    correctAnswer: 2,
-    explanation: 'Fatiha Suresi 7 ayetten oluşur ve Kuran\'ın ilk suresidir.',
-    xpReward: 10,
-    category: 'surah',
-  },
-  {
-    id: '2',
-    type: 'true_false',
-    question: '"Bismillahirrahmanirrahim" yemek yemeden önce okunur.',
-    options: ['Doğru', 'Yanlış'],
-    correctAnswer: 0,
-    explanation: 'Evet, yemeğe başlamadan önce Besmele çekilir.',
-    xpReward: 10,
-    category: 'dua',
-  },
-  {
-    id: '3',
-    type: 'multiple_choice',
-    question: '"الحمد لله رب العالمين" ayetinin anlamı nedir?',
-    questionArabic: 'الحمد لله رب العالمين',
-    options: [
-      'Rahman ve Rahim olan Allah\'ın adıyla',
-      'Hamd, alemlerin Rabbi Allah\'a mahsustur',
-      'Din gününün sahibi',
-      'Yalnız sana kulluk ederiz'
-    ],
-    correctAnswer: 1,
-    explanation: 'Bu ayet "Hamd, alemlerin Rabbi Allah\'a mahsustur" anlamına gelir.',
-    xpReward: 15,
-    category: 'surah',
-  },
-  {
-    id: '4',
-    type: 'multiple_choice',
-    question: 'İhlas Suresi kaç ayettir?',
-    options: ['3 ayet', '4 ayet', '5 ayet', '6 ayet'],
-    correctAnswer: 1,
-    explanation: 'İhlas Suresi 4 ayetten oluşur.',
-    xpReward: 10,
-    category: 'surah',
-  },
-  {
-    id: '5',
-    type: 'true_false',
-    question: 'Sabah namazı 4 rekattır.',
-    options: ['Doğru', 'Yanlış'],
-    correctAnswer: 1,
-    explanation: 'Sabah namazı 2 rekat sünneti ve 2 rekat farzı olmak üzere toplam 4 rekattır, ancak farz kısmı 2 rekattır.',
-    xpReward: 10,
-    category: 'islamic_knowledge',
-  },
-];
+import { quizSets, getQuizSetById, getNextQuizSet } from '@/data/quizSets';
 
 const QuizPage: React.FC = () => {
   const navigate = useNavigate();
-  const { addXP, recordQuizResult, levelUpData, closeLevelUpCelebration } = useGameProgress();
+  const [searchParams] = useSearchParams();
+  const quizSetId = searchParams.get('set');
+  
+  const { 
+    addXP, 
+    recordQuizResult, 
+    markQuizSetCompleted, 
+    isQuizSetCompleted,
+    completedQuizSets,
+    levelUpData, 
+    closeLevelUpCelebration,
+    completeGoal
+  } = usePersistedGameProgress();
+
+  const [selectedQuizSet, setSelectedQuizSet] = useState<string | null>(quizSetId);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -78,11 +33,30 @@ const QuizPage: React.FC = () => {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
 
-  const question = quizQuestions[currentQuestion];
-  const isCorrect = selectedAnswer === question.correctAnswer;
+  const activeQuizSet = useMemo(() => {
+    if (selectedQuizSet) {
+      return getQuizSetById(selectedQuizSet);
+    }
+    return null;
+  }, [selectedQuizSet]);
+
+  const question = activeQuizSet?.questions[currentQuestion];
+  const isCorrect = question && selectedAnswer === question.correctAnswer;
+
+  const handleSelectQuizSet = (setId: string) => {
+    setSelectedQuizSet(setId);
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setScore(0);
+    setTotalXP(0);
+    setQuizComplete(false);
+    setCurrentStreak(0);
+    setBestStreak(0);
+  };
 
   const handleAnswer = (answerIndex: number) => {
-    if (isAnswered) return;
+    if (isAnswered || !question) return;
     setSelectedAnswer(answerIndex);
     setIsAnswered(true);
     
@@ -101,14 +75,36 @@ const QuizPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestion < quizQuestions.length - 1) {
+    if (!activeQuizSet) return;
+    
+    if (currentQuestion < activeQuizSet.questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
     } else {
-      // Record quiz stats when completing
-      recordQuizResult(score, quizQuestions.length, bestStreak);
+      // Quiz complete
+      recordQuizResult(score, activeQuizSet.questions.length, bestStreak);
+      markQuizSetCompleted(activeQuizSet.id);
+      
+      // Add bonus XP for completing the quiz set
+      addXP(activeQuizSet.xpBonus);
+      setTotalXP(prev => prev + activeQuizSet.xpBonus);
+      
+      // Complete daily goal if exists
+      completeGoal('quiz_complete');
+      
       setQuizComplete(true);
+    }
+  };
+
+  const handleNextQuizSet = () => {
+    const nextSet = getNextQuizSet(completedQuizSets);
+    if (nextSet) {
+      handleSelectQuizSet(nextSet.id);
+    } else {
+      // All quizzes completed, go back to selection
+      setSelectedQuizSet(null);
+      setQuizComplete(false);
     }
   };
 
@@ -123,13 +119,95 @@ const QuizPage: React.FC = () => {
     setBestStreak(0);
   };
 
-  if (quizComplete) {
-    const percentage = (score / quizQuestions.length) * 100;
+  // Quiz Selection Screen
+  if (!selectedQuizSet) {
     return (
       <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
         <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
           <button 
             onClick={() => navigate('/learn')}
+            className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+          <h1 className="font-semibold">Quiz Seç</h1>
+          <div className="w-10" />
+        </header>
+
+        <div className="flex-1 p-4 space-y-3 overflow-y-auto">
+          <p className="text-muted-foreground text-sm mb-4">
+            Bir quiz seçerek öğrenmeye başla. Tamamladığın quizler işaretlenecek.
+          </p>
+          
+          {quizSets.map((set, index) => {
+            const isCompleted = isQuizSetCompleted(set.id);
+            const previousCompleted = index === 0 || isQuizSetCompleted(quizSets[index - 1].id);
+            const isLocked = !previousCompleted && !isCompleted;
+            
+            return (
+              <button
+                key={set.id}
+                onClick={() => !isLocked && handleSelectQuizSet(set.id)}
+                disabled={isLocked}
+                className={cn(
+                  "w-full p-4 rounded-2xl border-2 transition-all text-left flex items-center gap-4",
+                  isLocked && "opacity-50 cursor-not-allowed border-border bg-muted",
+                  isCompleted && "border-sage bg-sage-light/30",
+                  !isLocked && !isCompleted && "border-border bg-card hover:border-sage hover:bg-sage-light/20"
+                )}
+              >
+                <div className={cn(
+                  "w-14 h-14 rounded-2xl flex items-center justify-center text-2xl",
+                  isCompleted ? "bg-sage/20" : isLocked ? "bg-muted" : "bg-gold-light"
+                )}>
+                  {isLocked ? <Lock className="w-6 h-6 text-muted-foreground" /> : set.icon}
+                </div>
+                
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-foreground">{set.title}</h3>
+                    {isCompleted && <CheckCircle2 className="w-5 h-5 text-sage" />}
+                  </div>
+                  <p className="text-sm text-muted-foreground">{set.description}</p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className={cn(
+                      "text-xs px-2 py-0.5 rounded-full",
+                      set.difficulty === 'easy' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+                      set.difficulty === 'medium' && "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+                      set.difficulty === 'hard' && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                    )}>
+                      {set.difficulty === 'easy' ? 'Kolay' : set.difficulty === 'medium' ? 'Orta' : 'Zor'}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{set.questions.length} soru</span>
+                    <span className="text-xs text-gold font-medium">+{set.xpBonus} bonus XP</span>
+                  </div>
+                </div>
+                
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+              </button>
+            );
+          })}
+        </div>
+
+        <LevelUpCelebration
+          newLevel={levelUpData.newLevel}
+          isVisible={levelUpData.show}
+          onClose={closeLevelUpCelebration}
+        />
+      </div>
+    );
+  }
+
+  // Quiz Complete Screen
+  if (quizComplete && activeQuizSet) {
+    const percentage = (score / activeQuizSet.questions.length) * 100;
+    const nextSet = getNextQuizSet(completedQuizSets);
+    
+    return (
+      <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
+        <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
+          <button 
+            onClick={() => setSelectedQuizSet(null)}
             className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
@@ -156,7 +234,7 @@ const QuizPage: React.FC = () => {
 
             {/* Score */}
             <h2 className="text-3xl font-bold text-foreground mb-2">
-              {score}/{quizQuestions.length} Doğru
+              {score}/{activeQuizSet.questions.length} Doğru
             </h2>
             <p className="text-muted-foreground mb-6">
               {percentage >= 80 
@@ -167,40 +245,58 @@ const QuizPage: React.FC = () => {
             </p>
 
             {/* XP Earned */}
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gold-light rounded-2xl mb-8">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gold-light rounded-2xl mb-2">
               <Sparkles className="w-6 h-6 text-gold" />
               <span className="text-2xl font-bold text-gold">+{totalXP} XP</span>
             </div>
+            <p className="text-xs text-muted-foreground mb-8">
+              ({activeQuizSet.xpBonus} bonus XP dahil)
+            </p>
 
             {/* Actions */}
             <div className="space-y-3">
-              <Button onClick={handleRestart} variant="sage" size="lg" className="w-full">
+              {nextSet && (
+                <Button onClick={handleNextQuizSet} variant="sage" size="lg" className="w-full">
+                  <BookOpen className="w-5 h-5" />
+                  Sonraki Quiz: {nextSet.title}
+                  <ChevronRight className="w-5 h-5" />
+                </Button>
+              )}
+              <Button onClick={handleRestart} variant="outline" size="lg" className="w-full">
                 <RotateCcw className="w-5 h-5" />
                 Tekrar Dene
               </Button>
-              <Button onClick={() => navigate('/learn')} variant="outline" size="lg" className="w-full">
-                Öğrenmeye Dön
+              <Button onClick={() => setSelectedQuizSet(null)} variant="ghost" size="lg" className="w-full">
+                Tüm Quizlere Dön
               </Button>
             </div>
           </div>
         </div>
+
+        <LevelUpCelebration
+          newLevel={levelUpData.newLevel}
+          isVisible={levelUpData.show}
+          onClose={closeLevelUpCelebration}
+        />
       </div>
     );
   }
+
+  if (!question || !activeQuizSet) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
         <button 
-          onClick={() => navigate('/learn')}
+          onClick={() => setSelectedQuizSet(null)}
           className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="text-center">
-          <h1 className="font-semibold">Quiz</h1>
-          <p className="text-xs text-muted-foreground">Soru {currentQuestion + 1}/{quizQuestions.length}</p>
+          <h1 className="font-semibold text-sm">{activeQuizSet.title}</h1>
+          <p className="text-xs text-muted-foreground">Soru {currentQuestion + 1}/{activeQuizSet.questions.length}</p>
         </div>
         <div className="flex items-center gap-1 px-3 py-1.5 bg-gold-light rounded-xl">
           <Sparkles className="w-4 h-4 text-gold" />
@@ -213,7 +309,7 @@ const QuizPage: React.FC = () => {
         <div className="h-2 bg-muted rounded-full overflow-hidden">
           <div 
             className="h-full bg-sage rounded-full transition-all duration-500"
-            style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+            style={{ width: `${((currentQuestion + 1) / activeQuizSet.questions.length) * 100}%` }}
           />
         </div>
       </div>
@@ -320,7 +416,7 @@ const QuizPage: React.FC = () => {
       {isAnswered && (
         <div className="px-6 py-4 pb-8 animate-fade-in">
           <Button onClick={handleNext} variant="sage" size="lg" className="w-full">
-            {currentQuestion < quizQuestions.length - 1 ? (
+            {currentQuestion < activeQuizSet.questions.length - 1 ? (
               <>
                 Sonraki Soru
                 <ChevronRight className="w-5 h-5" />
@@ -331,7 +427,7 @@ const QuizPage: React.FC = () => {
           </Button>
         </div>
       )}
-      {/* Level Up Celebration */}
+
       <LevelUpCelebration
         newLevel={levelUpData.newLevel}
         isVisible={levelUpData.show}
