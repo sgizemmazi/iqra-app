@@ -8,10 +8,10 @@ import LevelProgress from '@/components/gamification/LevelProgress';
 import DailyGoals from '@/components/gamification/DailyGoals';
 import BadgeCollection from '@/components/gamification/BadgeCollection';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
-import { useGameProgress } from '@/hooks/useGameProgress';
+import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 
 const Index: React.FC = () => {
-  const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = useGameProgress();
+  const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = usePersistedGameProgress();
 
   return (
     <MobileLayout>
