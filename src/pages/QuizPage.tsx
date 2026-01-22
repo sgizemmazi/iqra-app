@@ -68,13 +68,15 @@ const quizQuestions: QuizQuestion[] = [
 
 const QuizPage: React.FC = () => {
   const navigate = useNavigate();
-  const { addXP, levelUpData, closeLevelUpCelebration } = useGameProgress();
+  const { addXP, recordQuizResult, levelUpData, closeLevelUpCelebration } = useGameProgress();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [totalXP, setTotalXP] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
 
   const question = quizQuestions[currentQuestion];
   const isCorrect = selectedAnswer === question.correctAnswer;
@@ -87,7 +89,14 @@ const QuizPage: React.FC = () => {
     if (answerIndex === question.correctAnswer) {
       setScore(prev => prev + 1);
       setTotalXP(prev => prev + question.xpReward);
-      addXP(question.xpReward); // Add XP to trigger level up
+      setCurrentStreak(prev => {
+        const newStreak = prev + 1;
+        setBestStreak(current => Math.max(current, newStreak));
+        return newStreak;
+      });
+      addXP(question.xpReward);
+    } else {
+      setCurrentStreak(0);
     }
   };
 
@@ -97,6 +106,8 @@ const QuizPage: React.FC = () => {
       setSelectedAnswer(null);
       setIsAnswered(false);
     } else {
+      // Record quiz stats when completing
+      recordQuizResult(score, quizQuestions.length, bestStreak);
       setQuizComplete(true);
     }
   };
@@ -108,6 +119,8 @@ const QuizPage: React.FC = () => {
     setScore(0);
     setTotalXP(0);
     setQuizComplete(false);
+    setCurrentStreak(0);
+    setBestStreak(0);
   };
 
   if (quizComplete) {

@@ -3,6 +3,7 @@ import MobileLayout from '@/components/layout/MobileLayout';
 import GreetingHeader from '@/components/home/GreetingHeader';
 import CurrentPrayerCard from '@/components/home/CurrentPrayerCard';
 import QuickActions from '@/components/home/QuickActions';
+import ProgressOverview from '@/components/home/ProgressOverview';
 import LevelProgress from '@/components/gamification/LevelProgress';
 import DailyGoals from '@/components/gamification/DailyGoals';
 import BadgeCollection from '@/components/gamification/BadgeCollection';
@@ -10,7 +11,7 @@ import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration
 import { useGameProgress } from '@/hooks/useGameProgress';
 
 const Index: React.FC = () => {
-  const { progress, dailyGoals, badges, completeGoal, levelUpData, closeLevelUpCelebration } = useGameProgress();
+  const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = useGameProgress();
 
   return (
     <MobileLayout>
@@ -24,6 +25,11 @@ const Index: React.FC = () => {
 
         <CurrentPrayerCard />
         <QuickActions />
+        
+        {/* Progress Overview - Quiz Stats */}
+        <div className="px-6">
+          <ProgressOverview quizStats={quizStats} />
+        </div>
         
         {/* Daily Goals */}
         <div className="px-6">
