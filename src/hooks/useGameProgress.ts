@@ -1,6 +1,13 @@
 import { useState, useCallback, useRef } from 'react';
 import { UserProgress, Badge, DailyGoal } from '@/types/gamification';
 
+export interface QuizStats {
+  totalQuizzes: number;
+  correctAnswers: number;
+  totalQuestions: number;
+  bestStreak: number;
+}
+
 const initialProgress: UserProgress = {
   level: 3,
   currentXP: 245,
@@ -9,6 +16,13 @@ const initialProgress: UserProgress = {
   streak: 7,
   dailyGoalsCompleted: 2,
   dailyGoalsTotal: 4,
+};
+
+const initialQuizStats: QuizStats = {
+  totalQuizzes: 0,
+  correctAnswers: 0,
+  totalQuestions: 0,
+  bestStreak: 0,
 };
 
 const initialBadges: Badge[] = [
@@ -134,6 +148,7 @@ export function useGameProgress() {
   const [progress, setProgress] = useState<UserProgress>(initialProgress);
   const [badges, setBadges] = useState<Badge[]>(initialBadges);
   const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>(initialDailyGoals);
+  const [quizStats, setQuizStats] = useState<QuizStats>(initialQuizStats);
   const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
     show: false,
     newLevel: 0,
@@ -201,13 +216,24 @@ export function useGameProgress() {
     addXP(100); // Bonus XP for badges
   }, [addXP]);
 
+  const recordQuizResult = useCallback((correctAnswers: number, totalQuestions: number, streak: number) => {
+    setQuizStats((prev) => ({
+      totalQuizzes: prev.totalQuizzes + 1,
+      correctAnswers: prev.correctAnswers + correctAnswers,
+      totalQuestions: prev.totalQuestions + totalQuestions,
+      bestStreak: Math.max(prev.bestStreak, streak),
+    }));
+  }, []);
+
   return {
     progress,
     badges,
     dailyGoals,
+    quizStats,
     addXP,
     completeGoal,
     earnBadge,
+    recordQuizResult,
     levelUpData,
     closeLevelUpCelebration,
   };
