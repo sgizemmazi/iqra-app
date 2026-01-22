@@ -4,6 +4,8 @@ import { ArrowLeft, Check, X, Sparkles, ChevronRight, RotateCcw } from 'lucide-r
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { QuizQuestion } from '@/types/gamification';
+import { useGameProgress } from '@/hooks/useGameProgress';
+import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 
 const quizQuestions: QuizQuestion[] = [
   {
@@ -66,6 +68,7 @@ const quizQuestions: QuizQuestion[] = [
 
 const QuizPage: React.FC = () => {
   const navigate = useNavigate();
+  const { addXP, levelUpData, closeLevelUpCelebration } = useGameProgress();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -84,6 +87,7 @@ const QuizPage: React.FC = () => {
     if (answerIndex === question.correctAnswer) {
       setScore(prev => prev + 1);
       setTotalXP(prev => prev + question.xpReward);
+      addXP(question.xpReward); // Add XP to trigger level up
     }
   };
 
@@ -314,6 +318,12 @@ const QuizPage: React.FC = () => {
           </Button>
         </div>
       )}
+      {/* Level Up Celebration */}
+      <LevelUpCelebration
+        newLevel={levelUpData.newLevel}
+        isVisible={levelUpData.show}
+        onClose={closeLevelUpCelebration}
+      />
     </div>
   );
 };
