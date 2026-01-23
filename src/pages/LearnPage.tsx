@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { BookOpen, Heart, ChevronRight, CheckCircle2 } from 'lucide-react';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LearnItem {
   id: string;
   type: 'surah' | 'dua';
-  name: string;
+  nameKey: string;
   nameArabic: string;
   versesCount?: number;
   progress: number;
@@ -15,21 +16,22 @@ interface LearnItem {
 }
 
 const surahs: LearnItem[] = [
-  { id: '1', type: 'surah', name: 'Al-Fatiha', nameArabic: 'الفاتحة', versesCount: 7, progress: 100, isCompleted: true },
-  { id: '112', type: 'surah', name: 'Al-Ikhlas', nameArabic: 'الإخلاص', versesCount: 4, progress: 75, isCompleted: false },
-  { id: '113', type: 'surah', name: 'Al-Falaq', nameArabic: 'الفلق', versesCount: 5, progress: 50, isCompleted: false },
-  { id: '114', type: 'surah', name: 'An-Nas', nameArabic: 'الناس', versesCount: 6, progress: 25, isCompleted: false },
-  { id: '110', type: 'surah', name: 'An-Nasr', nameArabic: 'النصر', versesCount: 3, progress: 0, isCompleted: false },
+  { id: '1', type: 'surah', nameKey: 'surah.fatiha', nameArabic: 'الفاتحة', versesCount: 7, progress: 100, isCompleted: true },
+  { id: '112', type: 'surah', nameKey: 'surah.ikhlas', nameArabic: 'الإخلاص', versesCount: 4, progress: 75, isCompleted: false },
+  { id: '113', type: 'surah', nameKey: 'surah.falaq', nameArabic: 'الفلق', versesCount: 5, progress: 50, isCompleted: false },
+  { id: '114', type: 'surah', nameKey: 'surah.nas', nameArabic: 'الناس', versesCount: 6, progress: 25, isCompleted: false },
+  { id: '110', type: 'surah', nameKey: 'surah.nasr', nameArabic: 'النصر', versesCount: 3, progress: 0, isCompleted: false },
 ];
 
 const duas: LearnItem[] = [
-  { id: 'd1', type: 'dua', name: 'Before Eating', nameArabic: 'دعاء قبل الطعام', progress: 100, isCompleted: true },
-  { id: 'd2', type: 'dua', name: 'After Eating', nameArabic: 'دعاء بعد الطعام', progress: 60, isCompleted: false },
-  { id: 'd3', type: 'dua', name: 'Before Sleeping', nameArabic: 'دعاء قبل النوم', progress: 0, isCompleted: false },
+  { id: 'd1', type: 'dua', nameKey: 'dua.beforeEating', nameArabic: 'دعاء قبل الطعام', progress: 100, isCompleted: true },
+  { id: 'd2', type: 'dua', nameKey: 'dua.afterEating', nameArabic: 'دعاء بعد الطعام', progress: 60, isCompleted: false },
+  { id: 'd3', type: 'dua', nameKey: 'dua.beforeSleeping', nameArabic: 'دعاء قبل النوم', progress: 0, isCompleted: false },
 ];
 
 const LearnPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = React.useState<'surahs' | 'duas'>('surahs');
 
   const items = activeTab === 'surahs' ? surahs : duas;
@@ -39,8 +41,8 @@ const LearnPage: React.FC = () => {
       <div className="animate-fade-in">
         {/* Header */}
         <div className="px-6 pt-8 pb-4">
-          <h1 className="text-2xl font-bold text-foreground mb-1">Learn & Memorize</h1>
-          <p className="text-muted-foreground">Take it one step at a time</p>
+          <h1 className="text-2xl font-bold text-foreground mb-1">{t('learn.title')}</h1>
+          <p className="text-muted-foreground">{t('learn.subtitle')}</p>
         </div>
 
         {/* Tab Selector */}
@@ -56,7 +58,7 @@ const LearnPage: React.FC = () => {
               )}
             >
               <BookOpen className="w-5 h-5" />
-              Surahs
+              {t('learn.surahs')}
             </button>
             <button
               onClick={() => setActiveTab('duas')}
@@ -68,7 +70,7 @@ const LearnPage: React.FC = () => {
               )}
             >
               <Heart className="w-5 h-5" />
-              Duas
+              {t('learn.duas')}
             </button>
           </div>
         </div>
@@ -77,11 +79,11 @@ const LearnPage: React.FC = () => {
         {items.find(i => i.progress > 0 && !i.isCompleted) && (
           <div className="px-6 mb-6">
             <div className="bg-sage-light rounded-3xl p-5 border border-sage/20">
-              <p className="text-sm text-sage font-medium mb-2">Continue where you left off</p>
+              <p className="text-sm text-sage font-medium mb-2">{t('learn.continueWhere')}</p>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-semibold text-foreground">
-                    {items.find(i => i.progress > 0 && !i.isCompleted)?.name}
+                    {t(items.find(i => i.progress > 0 && !i.isCompleted)?.nameKey || '')}
                   </p>
                   <p className="font-arabic text-muted-foreground">
                     {items.find(i => i.progress > 0 && !i.isCompleted)?.nameArabic}
@@ -91,7 +93,7 @@ const LearnPage: React.FC = () => {
                   onClick={() => navigate(`/learn/${activeTab.slice(0, -1)}/${items.find(i => i.progress > 0 && !i.isCompleted)?.id}`)}
                   className="bg-sage text-cream px-5 py-2.5 rounded-xl font-medium hover:bg-sage-dark transition-colors"
                 >
-                  Continue
+                  {t('learn.continue')}
                 </button>
               </div>
             </div>
@@ -143,16 +145,16 @@ const LearnPage: React.FC = () => {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="font-semibold text-foreground">{item.name}</p>
+                  <p className="font-semibold text-foreground">{t(item.nameKey)}</p>
                   {item.versesCount && (
                     <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                      {item.versesCount} verses
+                      {item.versesCount} {t('learn.verses')}
                     </span>
                   )}
                 </div>
                 <p className="font-arabic text-muted-foreground">{item.nameArabic}</p>
                 {!item.isCompleted && item.progress > 0 && (
-                  <p className="text-sm text-sage mt-1">{item.progress}% learned</p>
+                  <p className="text-sm text-sage mt-1">%{item.progress} {t('learn.learned')}</p>
                 )}
               </div>
 

@@ -2,17 +2,19 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, Clock, BookOpen, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const navItems = [
-  { icon: Home, label: 'Home', path: '/' },
-  { icon: Clock, label: 'Prayer', path: '/prayer' },
-  { icon: BookOpen, label: 'Learn', path: '/learn' },
-  { icon: User, label: 'Profile', path: '/profile' },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const BottomNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const navItems = [
+    { icon: Home, labelKey: 'nav.home', path: '/' },
+    { icon: Clock, labelKey: 'nav.prayer', path: '/prayer' },
+    { icon: BookOpen, labelKey: 'nav.learn', path: '/learn' },
+    { icon: User, labelKey: 'nav.profile', path: '/profile' },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-card/95 backdrop-blur-xl border-t border-border/50 safe-bottom z-50">
@@ -43,7 +45,7 @@ const BottomNav: React.FC = () => {
                 "text-xs mt-1 font-medium",
                 isActive && "font-semibold"
               )}>
-                {item.label}
+                {t(item.labelKey)}
               </span>
             </button>
           );

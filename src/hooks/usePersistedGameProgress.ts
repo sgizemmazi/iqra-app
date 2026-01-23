@@ -8,12 +8,28 @@ export interface QuizStats {
   bestStreak: number;
 }
 
+export interface ActivityItem {
+  id: string;
+  type: 'quiz_completed' | 'goal_completed' | 'level_up' | 'badge_earned';
+  title: string;
+  description: string;
+  xpEarned?: number;
+  timestamp: string;
+  metadata?: {
+    quizId?: string;
+    goalId?: string;
+    level?: number;
+    badgeId?: string;
+  };
+}
+
 const STORAGE_KEYS = {
   PROGRESS: 'game_progress',
   BADGES: 'game_badges',
   DAILY_GOALS: 'game_daily_goals',
   QUIZ_STATS: 'game_quiz_stats',
   COMPLETED_QUIZ_SETS: 'completed_quiz_sets',
+  ACTIVITY_HISTORY: 'activity_history',
 };
 
 const defaultProgress: UserProgress = {
@@ -187,6 +203,9 @@ export function usePersistedGameProgress() {
   const [completedQuizSets, setCompletedQuizSets] = useState<string[]>(() => 
     loadFromStorage(STORAGE_KEYS.COMPLETED_QUIZ_SETS, [])
   );
+  const [activityHistory, setActivityHistory] = useState<ActivityItem[]>(() => 
+    loadFromStorage(STORAGE_KEYS.ACTIVITY_HISTORY, [])
+  );
   const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
     show: false,
     newLevel: 0,
@@ -214,6 +233,30 @@ export function usePersistedGameProgress() {
     saveToStorage(STORAGE_KEYS.COMPLETED_QUIZ_SETS, completedQuizSets);
   }, [completedQuizSets]);
 
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.ACTIVITY_HISTORY, activityHistory);
+  }, [activityHistory]);
+
+  const addActivity = useCallback((
+    type: ActivityItem['type'],
+    title: string,
+    description: string,
+    xpEarned?: number,
+    metadata?: ActivityItem['metadata']
+  ) => {
+    const newItem: ActivityItem = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type,
+      title,
+      description,
+      xpEarned,
+      timestamp: new Date().toISOString(),
+      metadata,
+    };
+
+    setActivityHistory(prev => [newItem, ...prev].slice(0, 100));
+  }, []);
+
   const closeLevelUpCelebration = useCallback(() => {
     setLevelUpData({ show: false, newLevel: 0 });
   }, []);
@@ -233,6 +276,7 @@ export function usePersistedGameProgress() {
       // Trigger level up celebration
       if (newLevel > previousLevelRef.current) {
         previousLevelRef.current = newLevel;
+        addActivity('level_up', `Seviye ${newLevel}`, 'Yeni seviyeye ulaştın!', undefined, { level: newLevel });
         setTimeout(() => {
           setLevelUpData({ show: true, newLevel });
         }, 300);
@@ -246,13 +290,14 @@ export function usePersistedGameProgress() {
         totalXP: prev.totalXP + amount,
       };
     });
-  }, []);
+  }, [addActivity]);
 
   const completeGoal = useCallback((goalId: string) => {
     setDailyGoals((prev) =>
       prev.map((goal) => {
         if (goal.id === goalId && !goal.isCompleted) {
           addXP(goal.xpReward);
+          addActivity('goal_completed', goal.title, 'Günlük görev tamamlandı', goal.xpReward, { goalId });
           return { ...goal, isCompleted: true, progress: goal.maxProgress };
         }
         return goal;
@@ -262,20 +307,22 @@ export function usePersistedGameProgress() {
       ...prev,
       dailyGoalsCompleted: prev.dailyGoalsCompleted + 1,
     }));
-  }, [addXP]);
+  }, [addXP, addActivity]);
 
   const earnBadge = useCallback((badgeId: string) => {
     setBadges((prev) =>
-      prev.map((badge) =>
-        badge.id === badgeId
-          ? { ...badge, isEarned: true, earnedDate: new Date().toISOString().split('T')[0] }
-          : badge
-      )
+      prev.map((badge) => {
+        if (badge.id === badgeId && !badge.isEarned) {
+          addActivity('badge_earned', badge.name, 'Rozet kazanıldı!', 100, { badgeId });
+          return { ...badge, isEarned: true, earnedDate: new Date().toISOString().split('T')[0] };
+        }
+        return badge;
+      })
     );
     addXP(100); // Bonus XP for badges
-  }, [addXP]);
+  }, [addXP, addActivity]);
 
-  const recordQuizResult = useCallback((correctAnswers: number, totalQuestions: number, streak: number) => {
+  const recordQuizResult = useCallback((correctAnswers: number, totalQuestions: number, streak: number, quizTitle?: string) => {
     setQuizStats((prev) => {
       const newStats = {
         totalQuizzes: prev.totalQuizzes + 1,
@@ -298,6 +345,14 @@ export function usePersistedGameProgress() {
       return newStats;
     });
 
+    // Add activity
+    addActivity(
+      'quiz_completed', 
+      quizTitle || 'Quiz tamamlandı', 
+      `${correctAnswers}/${totalQuestions} doğru cevap`,
+      undefined
+    );
+
     // Update badge progress
     setBadges((prev) =>
       prev.map((badge) =>
@@ -306,7 +361,7 @@ export function usePersistedGameProgress() {
           : badge
       )
     );
-  }, []);
+  }, [addActivity]);
 
   const markQuizSetCompleted = useCallback((quizSetId: string) => {
     setCompletedQuizSets((prev) => {
@@ -327,6 +382,7 @@ export function usePersistedGameProgress() {
     setDailyGoals(getDefaultDailyGoals());
     setQuizStats(defaultQuizStats);
     setCompletedQuizSets([]);
+    setActivityHistory([]);
     previousLevelRef.current = defaultProgress.level;
     Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
   }, []);
@@ -337,6 +393,7 @@ export function usePersistedGameProgress() {
     dailyGoals,
     quizStats,
     completedQuizSets,
+    activityHistory,
     addXP,
     completeGoal,
     earnBadge,
@@ -346,5 +403,6 @@ export function usePersistedGameProgress() {
     resetProgress,
     levelUpData,
     closeLevelUpCelebration,
+    addActivity,
   };
 }
