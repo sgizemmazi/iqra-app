@@ -30,6 +30,11 @@ const translations: Translations = {
   'learn.continueWhere': { tr: 'Kaldığın yerden devam et', en: 'Continue where you left off' },
   'learn.verses': { tr: 'ayet', en: 'verses' },
   'learn.learned': { tr: 'öğrenildi', en: 'learned' },
+  'learn.ayah': { tr: 'Ayet', en: 'Ayah' },
+  'learn.of': { tr: '/', en: 'of' },
+  'learn.complete': { tr: 'tamamlandı', en: 'complete' },
+  'learn.repeatAyah': { tr: 'Bu ayeti tekrarla', en: 'Repeat this ayah' },
+  'learn.markLearned': { tr: 'Öğrenildi Olarak İşaretle', en: 'Mark as Learned' },
   
   // Surah Names
   'surah.fatiha': { tr: 'Fatiha', en: 'Al-Fatiha' },
@@ -37,11 +42,34 @@ const translations: Translations = {
   'surah.falaq': { tr: 'Felak', en: 'Al-Falaq' },
   'surah.nas': { tr: 'Nas', en: 'An-Nas' },
   'surah.nasr': { tr: 'Nasr', en: 'An-Nasr' },
+  'surah.kawthar': { tr: 'Kevser', en: 'Al-Kawthar' },
+  'surah.maun': { tr: 'Maun', en: 'Al-Ma\'un' },
+  'surah.fil': { tr: 'Fil', en: 'Al-Fil' },
   
   // Duas
   'dua.beforeEating': { tr: 'Yemekten Önce', en: 'Before Eating' },
   'dua.afterEating': { tr: 'Yemekten Sonra', en: 'After Eating' },
   'dua.beforeSleeping': { tr: 'Uyumadan Önce', en: 'Before Sleeping' },
+  'dua.wakingUp': { tr: 'Uyanınca', en: 'Upon Waking Up' },
+  'dua.enteringHome': { tr: 'Eve Girerken', en: 'Entering Home' },
+  'dua.leavingHome': { tr: 'Evden Çıkarken', en: 'Leaving Home' },
+  'dua.enteringBathroom': { tr: 'Tuvalete Girerken', en: 'Entering Bathroom' },
+  'dua.leavingBathroom': { tr: 'Tuvalet Çıkışı', en: 'Leaving Bathroom' },
+  'dua.morningSupplication': { tr: 'Sabah Duası', en: 'Morning Supplication' },
+  'dua.eveningSupplication': { tr: 'Akşam Duası', en: 'Evening Supplication' },
+  
+  // Prayer Page
+  'prayer.title': { tr: 'Namaz Vakitleri', en: 'Prayer Times' },
+  'prayer.nextPrayer': { tr: 'Sonraki Namaz', en: 'Next Prayer' },
+  'prayer.fajr': { tr: 'Sabah', en: 'Fajr' },
+  'prayer.sunrise': { tr: 'Güneş', en: 'Sunrise' },
+  'prayer.dhuhr': { tr: 'Öğle', en: 'Dhuhr' },
+  'prayer.asr': { tr: 'İkindi', en: 'Asr' },
+  'prayer.maghrib': { tr: 'Akşam', en: 'Maghrib' },
+  'prayer.isha': { tr: 'Yatsı', en: 'Isha' },
+  'prayer.change': { tr: 'Değiştir', en: 'Change' },
+  'prayer.in': { tr: 'sonra', en: 'in' },
+  'prayer.adhanSettings': { tr: 'Ezan ve Bildirim Ayarları', en: 'Adhan & Notification Settings' },
   
   // Profile Page
   'profile.welcome': { tr: 'Hoş Geldin', en: 'Welcome' },
@@ -121,12 +149,20 @@ const translations: Translations = {
   'history.today': { tr: 'Bugün', en: 'Today' },
   'history.yesterday': { tr: 'Dün', en: 'Yesterday' },
   
+  // Badges
+  'badge.earned': { tr: 'Rozet Kazanıldı!', en: 'Badge Earned!' },
+  'badge.myBadges': { tr: 'Rozetlerim', en: 'My Badges' },
+  'badge.badgesEarned': { tr: 'rozet kazanıldı', en: 'badges earned' },
+  'badge.viewAll': { tr: 'Tümünü Gör', en: 'View All' },
+  'badge.nextBadge': { tr: 'Sonraki rozet', en: 'Next badge' },
+  
   // Common
   'common.xp': { tr: 'XP', en: 'XP' },
   'common.loading': { tr: 'Yükleniyor...', en: 'Loading...' },
   'common.cancel': { tr: 'İptal', en: 'Cancel' },
   'common.confirm': { tr: 'Onayla', en: 'Confirm' },
   'common.back': { tr: 'Geri', en: 'Back' },
+  'common.great': { tr: 'Harika!', en: 'Great!' },
 };
 
 interface LanguageContextType {

@@ -1,75 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Volume2, Check } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-interface Ayah {
-  number: number;
-  arabic: string;
-  translation: string;
-  transliteration: string;
-  isLearned: boolean;
-}
-
-const ayahs: Ayah[] = [
-  { 
-    number: 1, 
-    arabic: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', 
-    translation: 'In the name of Allah, the Most Gracious, the Most Merciful',
-    transliteration: 'Bismillah ir-Rahman ir-Raheem',
-    isLearned: true 
-  },
-  { 
-    number: 2, 
-    arabic: 'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ', 
-    translation: 'All praise is due to Allah, Lord of all the worlds',
-    transliteration: 'Alhamdu lillahi Rabbil aalameen',
-    isLearned: true 
-  },
-  { 
-    number: 3, 
-    arabic: 'الرَّحْمَٰنِ الرَّحِيمِ', 
-    translation: 'The Most Gracious, the Most Merciful',
-    transliteration: 'Ar-Rahman ir-Raheem',
-    isLearned: false 
-  },
-  { 
-    number: 4, 
-    arabic: 'مَالِكِ يَوْمِ الدِّينِ', 
-    translation: 'Master of the Day of Judgment',
-    transliteration: 'Maliki yawm id-Deen',
-    isLearned: false 
-  },
-  { 
-    number: 5, 
-    arabic: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ', 
-    translation: 'You alone we worship, and You alone we ask for help',
-    transliteration: "Iyyaka na'budu wa iyyaka nasta'een",
-    isLearned: false 
-  },
-  { 
-    number: 6, 
-    arabic: 'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ', 
-    translation: 'Guide us to the straight path',
-    transliteration: 'Ihdinas siratal mustaqeem',
-    isLearned: false 
-  },
-  { 
-    number: 7, 
-    arabic: 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ', 
-    translation: 'The path of those upon whom You have bestowed favor, not of those who have earned anger or of those who are astray',
-    transliteration: "Siratal lazeena an'amta alayhim, ghayril maghdubi alayhim wa lad-daalleen",
-    isLearned: false 
-  },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getSurahById } from '@/data/surahsData';
 
 const SurahDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [currentAyah, setCurrentAyah] = useState(2); // 0-indexed, start at ayah 3
+  const { t, language } = useLanguage();
+  
+  const surah = getSurahById(id || '1');
+  const ayahs = surah?.ayahs || [];
+  
+  const [currentAyah, setCurrentAyah] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTransliteration, setShowTransliteration] = useState(true);
+
+  if (!surah) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">{language === 'tr' ? 'Sure bulunamadı' : 'Surah not found'}</p>
+      </div>
+    );
+  }
 
   const ayah = ayahs[currentAyah];
   const progress = ((currentAyah + 1) / ayahs.length) * 100;
@@ -93,8 +48,8 @@ const SurahDetailPage: React.FC = () => {
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="text-center">
-          <h1 className="font-semibold">Al-Fatiha</h1>
-          <p className="text-xs text-muted-foreground">الفاتحة</p>
+          <h1 className="font-semibold">{language === 'tr' ? surah.nameTr : surah.nameEn}</h1>
+          <p className="text-xs text-muted-foreground">{surah.nameArabic}</p>
         </div>
         <div className="w-10" />
       </header>
@@ -102,8 +57,8 @@ const SurahDetailPage: React.FC = () => {
       {/* Progress Bar */}
       <div className="px-6 py-4">
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-          <span>Ayah {currentAyah + 1} of {ayahs.length}</span>
-          <span>{Math.round(progress)}% complete</span>
+          <span>{t('learn.ayah')} {currentAyah + 1} {t('learn.of')} {ayahs.length}</span>
+          <span>%{Math.round(progress)} {t('learn.complete')}</span>
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
           <div 
@@ -139,7 +94,7 @@ const SurahDetailPage: React.FC = () => {
 
           {/* Translation */}
           <p className="text-muted-foreground text-body-lg leading-relaxed max-w-sm mx-auto">
-            {ayah.translation}
+            {language === 'tr' ? ayah.translationTr : ayah.translationEn}
           </p>
         </div>
       </div>
@@ -198,7 +153,7 @@ const SurahDetailPage: React.FC = () => {
           <div className="flex justify-center mt-4">
             <button className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <RotateCcw className="w-4 h-4" />
-              Repeat this ayah
+              {t('learn.repeatAyah')}
             </button>
           </div>
         </div>
@@ -208,7 +163,7 @@ const SurahDetailPage: React.FC = () => {
       <div className="px-6 py-4 pb-8">
         <Button variant="sage" className="w-full" size="lg">
           <Check className="w-5 h-5" />
-          Mark as Learned
+          {t('learn.markLearned')}
         </Button>
       </div>
     </div>
