@@ -3,9 +3,10 @@ import { MapPin, Bell, BellOff, Volume2 } from 'lucide-react';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Prayer {
-  name: string;
+  nameKey: string;
   nameArabic: string;
   time: string;
   isNext: boolean;
@@ -14,34 +15,38 @@ interface Prayer {
 }
 
 const prayers: Prayer[] = [
-  { name: 'Fajr', nameArabic: 'الفجر', time: '05:23', isNext: false, isPast: true, notificationEnabled: true },
-  { name: 'Sunrise', nameArabic: 'الشروق', time: '06:52', isNext: false, isPast: true, notificationEnabled: false },
-  { name: 'Dhuhr', nameArabic: 'الظهر', time: '12:45', isNext: true, isPast: false, notificationEnabled: true },
-  { name: 'Asr', nameArabic: 'العصر', time: '16:15', isNext: false, isPast: false, notificationEnabled: true },
-  { name: 'Maghrib', nameArabic: 'المغرب', time: '19:32', isNext: false, isPast: false, notificationEnabled: true },
-  { name: 'Isha', nameArabic: 'العشاء', time: '21:05', isNext: false, isPast: false, notificationEnabled: true },
+  { nameKey: 'prayer.fajr', nameArabic: 'الفجر', time: '05:23', isNext: false, isPast: true, notificationEnabled: true },
+  { nameKey: 'prayer.sunrise', nameArabic: 'الشروق', time: '06:52', isNext: false, isPast: true, notificationEnabled: false },
+  { nameKey: 'prayer.dhuhr', nameArabic: 'الظهر', time: '12:45', isNext: true, isPast: false, notificationEnabled: true },
+  { nameKey: 'prayer.asr', nameArabic: 'العصر', time: '16:15', isNext: false, isPast: false, notificationEnabled: true },
+  { nameKey: 'prayer.maghrib', nameArabic: 'المغرب', time: '19:32', isNext: false, isPast: false, notificationEnabled: true },
+  { nameKey: 'prayer.isha', nameArabic: 'العشاء', time: '21:05', isNext: false, isPast: false, notificationEnabled: true },
 ];
 
 const PrayerPage: React.FC = () => {
-  const today = new Date().toLocaleDateString('en-US', { 
+  const { t, language } = useLanguage();
+  
+  const today = new Date().toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { 
     weekday: 'long', 
     month: 'long', 
     day: 'numeric' 
   });
+
+  const nextPrayer = prayers.find(p => p.isNext);
 
   return (
     <MobileLayout>
       <div className="animate-fade-in">
         {/* Header */}
         <div className="px-6 pt-8 pb-6">
-          <h1 className="text-2xl font-bold text-foreground mb-1">Prayer Times</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-1">{t('prayer.title')}</h1>
           <p className="text-muted-foreground">{today}</p>
           
           {/* Location */}
           <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
-            <span>New York, USA</span>
-            <button className="text-primary font-medium ml-2">Change</button>
+            <span>İstanbul, Türkiye</span>
+            <button className="text-primary font-medium ml-2">{t('prayer.change')}</button>
           </div>
         </div>
 
@@ -50,15 +55,15 @@ const PrayerPage: React.FC = () => {
           <div className="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-cream relative overflow-hidden">
             <div className="absolute inset-0 pattern-islamic opacity-10" />
             <div className="relative z-10">
-              <p className="text-cream/60 text-sm mb-2">Next Prayer</p>
+              <p className="text-cream/60 text-sm mb-2">{t('prayer.nextPrayer')}</p>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="font-arabic text-xl text-gold mb-1">الظهر</p>
-                  <h2 className="text-3xl font-bold">Dhuhr</h2>
+                  <p className="font-arabic text-xl text-gold mb-1">{nextPrayer?.nameArabic}</p>
+                  <h2 className="text-3xl font-bold">{t(nextPrayer?.nameKey || '')}</h2>
                 </div>
                 <div className="text-right">
-                  <p className="text-4xl font-bold">12:45</p>
-                  <p className="text-cream/60 text-sm mt-1">in 2h 15m</p>
+                  <p className="text-4xl font-bold">{nextPrayer?.time}</p>
+                  <p className="text-cream/60 text-sm mt-1">2s 15dk {t('prayer.in')}</p>
                 </div>
               </div>
             </div>
@@ -70,7 +75,7 @@ const PrayerPage: React.FC = () => {
           <div className="space-y-3">
             {prayers.map((prayer) => (
               <div
-                key={prayer.name}
+                key={prayer.nameKey}
                 className={cn(
                   "flex items-center justify-between p-4 rounded-2xl transition-all",
                   prayer.isNext 
@@ -93,7 +98,7 @@ const PrayerPage: React.FC = () => {
                       "font-semibold",
                       prayer.isNext ? "text-sage-dark" : "text-foreground"
                     )}>
-                      {prayer.name}
+                      {t(prayer.nameKey)}
                     </p>
                     <p className="font-arabic text-sm text-muted-foreground">
                       {prayer.nameArabic}
@@ -130,7 +135,7 @@ const PrayerPage: React.FC = () => {
         <div className="px-6 py-6">
           <Button variant="gentle" className="w-full">
             <Volume2 className="w-5 h-5" />
-            Adhan & Notification Settings
+            {t('prayer.adhanSettings')}
           </Button>
         </div>
       </div>
