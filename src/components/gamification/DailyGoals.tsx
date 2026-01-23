@@ -2,6 +2,7 @@ import React from 'react';
 import { Check, ChevronRight, Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DailyGoal } from '@/types/gamification';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface DailyGoalsProps {
   goals: DailyGoal[];
@@ -9,9 +10,30 @@ interface DailyGoalsProps {
 }
 
 const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
+  const { t } = useLanguage();
   const completedCount = goals.filter(g => g.isCompleted).length;
   const totalXP = goals.reduce((acc, g) => acc + (g.isCompleted ? g.xpReward : 0), 0);
   const allCompleted = completedCount === goals.length;
+
+  const getGoalTitle = (goal: DailyGoal) => {
+    switch (goal.id) {
+      case 'learn_ayah': return t('goals.learnAyah');
+      case 'daily_dua': return t('goals.dailyDua');
+      case 'quiz_complete': return t('goals.completeQuiz');
+      case 'review_surah': return t('goals.reviewSurah');
+      default: return goal.title;
+    }
+  };
+
+  const getGoalDescription = (goal: DailyGoal) => {
+    switch (goal.id) {
+      case 'learn_ayah': return t('goals.learnAyahDesc');
+      case 'daily_dua': return t('goals.dailyDuaDesc');
+      case 'quiz_complete': return t('goals.completeQuizDesc');
+      case 'review_surah': return t('goals.reviewSurahDesc');
+      default: return goal.description;
+    }
+  };
 
   return (
     <div className="bg-card rounded-3xl p-5 border border-border/50 shadow-soft">
@@ -19,16 +41,16 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-bold text-foreground flex items-center gap-2">
-            <span className="text-xl">🎯</span> Günlük Görevler
+            <span className="text-xl">🎯</span> {t('goals.title')}
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {completedCount}/{goals.length} tamamlandı • +{totalXP} XP kazanıldı
+            {completedCount}/{goals.length} {t('goals.completed')} • +{totalXP} XP {t('goals.earned')}
           </p>
         </div>
         {allCompleted && (
           <div className="flex items-center gap-1 px-3 py-1.5 bg-sage-light rounded-xl">
             <Gift className="w-4 h-4 text-sage" />
-            <span className="text-sm font-medium text-sage">Harika!</span>
+            <span className="text-sm font-medium text-sage">{t('goals.great')}</span>
           </div>
         )}
       </div>
@@ -49,15 +71,13 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
       {/* Goals List */}
       <div className="space-y-2">
         {goals.map((goal, index) => (
-          <button
+          <div
             key={goal.id}
-            onClick={() => !goal.isCompleted && onGoalClick?.(goal.id)}
-            disabled={goal.isCompleted}
             className={cn(
               "w-full flex items-center gap-3 p-3 rounded-2xl transition-all text-left",
               goal.isCompleted 
                 ? "bg-sage-light/50 opacity-80" 
-                : "bg-muted hover:bg-muted/80 active:scale-[0.98]",
+                : "bg-muted",
               "animate-fade-in"
             )}
             style={{ animationDelay: `${index * 50}ms` }}
@@ -80,9 +100,9 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
                 "font-medium",
                 goal.isCompleted ? "text-muted-foreground line-through" : "text-foreground"
               )}>
-                {goal.title}
+                {getGoalTitle(goal)}
               </p>
-              <p className="text-xs text-muted-foreground">{goal.description}</p>
+              <p className="text-xs text-muted-foreground">{getGoalDescription(goal)}</p>
             </div>
 
             {/* XP Reward */}
@@ -102,7 +122,7 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
             {!goal.isCompleted && (
               <ChevronRight className="w-4 h-4 text-muted-foreground" />
             )}
-          </button>
+          </div>
         ))}
       </div>
 
@@ -110,7 +130,7 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
       {allCompleted && (
         <div className="mt-4 p-3 bg-gradient-to-r from-sage-light to-teal-100 dark:from-sage-light/20 dark:to-teal-900/20 rounded-2xl text-center">
           <p className="text-sm text-sage font-medium">
-            ✨ Tüm günlük görevleri tamamladın! Yarın görüşürüz.
+            ✨ {t('goals.allCompleted')}
           </p>
         </div>
       )}

@@ -83,7 +83,7 @@ const QuizPage: React.FC = () => {
       setIsAnswered(false);
     } else {
       // Quiz complete
-      recordQuizResult(score, activeQuizSet.questions.length, bestStreak);
+      recordQuizResult(score, activeQuizSet.questions.length, bestStreak, activeQuizSet.title);
       markQuizSetCompleted(activeQuizSet.id);
       
       // Add bonus XP for completing the quiz set
