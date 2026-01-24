@@ -30,6 +30,7 @@ const STORAGE_KEYS = {
   QUIZ_STATS: 'game_quiz_stats',
   COMPLETED_QUIZ_SETS: 'completed_quiz_sets',
   ACTIVITY_HISTORY: 'activity_history',
+  LEARNED_CONTENT: 'learned_content',
 };
 
 const defaultProgress: UserProgress = {
@@ -206,6 +207,9 @@ export function usePersistedGameProgress() {
   const [activityHistory, setActivityHistory] = useState<ActivityItem[]>(() => 
     loadFromStorage(STORAGE_KEYS.ACTIVITY_HISTORY, [])
   );
+  const [learnedContent, setLearnedContent] = useState<{ surahs: string[]; duas: string[] }>(() => 
+    loadFromStorage(STORAGE_KEYS.LEARNED_CONTENT, { surahs: [], duas: [] })
+  );
   const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
     show: false,
     newLevel: 0,
@@ -236,6 +240,10 @@ export function usePersistedGameProgress() {
   useEffect(() => {
     saveToStorage(STORAGE_KEYS.ACTIVITY_HISTORY, activityHistory);
   }, [activityHistory]);
+
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.LEARNED_CONTENT, learnedContent);
+  }, [learnedContent]);
 
   const addActivity = useCallback((
     type: ActivityItem['type'],
@@ -376,6 +384,60 @@ export function usePersistedGameProgress() {
     return completedQuizSets.includes(quizSetId);
   }, [completedQuizSets]);
 
+  const markSurahLearned = useCallback((surahId: string, surahName: string) => {
+    setLearnedContent((prev) => {
+      if (!prev.surahs.includes(surahId)) {
+        addActivity('goal_completed', `${surahName} öğrenildi`, 'Sure başarıyla tamamlandı', 50);
+        addXP(50);
+        completeGoal('learn_ayah');
+        
+        // Check for badges
+        const newSurahs = [...prev.surahs, surahId];
+        if (surahId === '1') {
+          earnBadge('fatiha_master');
+        }
+        if (newSurahs.length >= 5) {
+          earnBadge('five_surahs');
+        }
+        if (newSurahs.length === 1) {
+          earnBadge('first_surah');
+        }
+        
+        // Update badge progress
+        setBadges((badges) =>
+          badges.map((badge) =>
+            badge.id === 'five_surahs' && !badge.isEarned
+              ? { ...badge, progress: Math.min(newSurahs.length, badge.maxProgress || 5) }
+              : badge
+          )
+        );
+        
+        return { ...prev, surahs: newSurahs };
+      }
+      return prev;
+    });
+  }, [addActivity, addXP, completeGoal, earnBadge]);
+
+  const markDuaLearned = useCallback((duaId: string, duaName: string) => {
+    setLearnedContent((prev) => {
+      if (!prev.duas.includes(duaId)) {
+        addActivity('goal_completed', `${duaName} öğrenildi`, 'Dua başarıyla tamamlandı', 30);
+        addXP(30);
+        completeGoal('daily_dua');
+        return { ...prev, duas: [...prev.duas, duaId] };
+      }
+      return prev;
+    });
+  }, [addActivity, addXP, completeGoal]);
+
+  const isSurahLearned = useCallback((surahId: string) => {
+    return learnedContent.surahs.includes(surahId);
+  }, [learnedContent.surahs]);
+
+  const isDuaLearned = useCallback((duaId: string) => {
+    return learnedContent.duas.includes(duaId);
+  }, [learnedContent.duas]);
+
   const resetProgress = useCallback(() => {
     setProgress(defaultProgress);
     setBadges(defaultBadges);
@@ -383,6 +445,7 @@ export function usePersistedGameProgress() {
     setQuizStats(defaultQuizStats);
     setCompletedQuizSets([]);
     setActivityHistory([]);
+    setLearnedContent({ surahs: [], duas: [] });
     previousLevelRef.current = defaultProgress.level;
     Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
   }, []);
@@ -394,12 +457,17 @@ export function usePersistedGameProgress() {
     quizStats,
     completedQuizSets,
     activityHistory,
+    learnedContent,
     addXP,
     completeGoal,
     earnBadge,
     recordQuizResult,
     markQuizSetCompleted,
     isQuizSetCompleted,
+    markSurahLearned,
+    markDuaLearned,
+    isSurahLearned,
+    isDuaLearned,
     resetProgress,
     levelUpData,
     closeLevelUpCelebration,
