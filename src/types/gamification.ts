@@ -43,7 +43,7 @@ export interface QuizQuestion {
   correctAnswer: string | number;
   explanation?: string;
   xpReward: number;
-  category: 'surah' | 'dua' | 'islamic_knowledge';
+  category: 'surah' | 'dua' | 'islamic_knowledge' | 'friday' | 'ramadan';
 }
 
 export interface LeaderboardEntry {

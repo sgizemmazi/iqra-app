@@ -4,10 +4,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import PrayerPage from "./pages/PrayerPage";
 import LearnPage from "./pages/LearnPage";
 import SurahDetailPage from "./pages/SurahDetailPage";
+import DuaDetailPage from "./pages/DuaDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import QuizPage from "./pages/QuizPage";
 import HistoryPage from "./pages/HistoryPage";
@@ -17,25 +19,28 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/prayer" element={<PrayerPage />} />
-            <Route path="/learn" element={<LearnPage />} />
-            <Route path="/learn/surah/:id" element={<SurahDetailPage />} />
-            <Route path="/quiz" element={<QuizPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/prayer" element={<PrayerPage />} />
+              <Route path="/learn" element={<LearnPage />} />
+              <Route path="/learn/surah/:id" element={<SurahDetailPage />} />
+              <Route path="/learn/dua/:id" element={<DuaDetailPage />} />
+              <Route path="/quiz" element={<QuizPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/history" element={<HistoryPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
