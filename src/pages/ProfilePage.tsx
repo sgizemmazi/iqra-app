@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Bell, Moon, Globe, Volume2, Info, Heart, History, Trash2 } from 'lucide-react';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   Dialog,
   DialogContent,
@@ -21,10 +21,14 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   const { progress, quizStats, resetProgress } = usePersistedGameProgress();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [showLanguageDialog, setShowLanguageDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+
+  const handleDarkModeToggle = (checked: boolean) => {
+    setTheme(checked ? 'dark' : 'light');
+  };
 
   const handleResetProgress = () => {
     resetProgress();
@@ -121,7 +125,7 @@ const ProfilePage: React.FC = () => {
 
             {/* Dark Mode */}
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={() => handleDarkModeToggle(resolvedTheme !== 'dark')}
               className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left border-b border-border/50"
             >
               <div className="flex items-center gap-4">
@@ -133,7 +137,7 @@ const ProfilePage: React.FC = () => {
                   <p className="text-sm text-muted-foreground">{t('profile.darkModeDesc')}</p>
                 </div>
               </div>
-              <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+              <Switch checked={resolvedTheme === 'dark'} onCheckedChange={handleDarkModeToggle} />
             </button>
 
             {/* History */}

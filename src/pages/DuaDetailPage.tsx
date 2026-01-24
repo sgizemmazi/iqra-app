@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, RotateCcw, Check, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getDuaById } from '@/data/duasData';
+
+// Audio URLs from Quran.com CDN (using similar recitations)
+const getAudioUrl = (duaId: string): string => {
+  // Map dua IDs to appropriate audio files
+  const audioMap: Record<string, string> = {
+    'd1': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3', // Bismillah
+    'd2': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/2.mp3', // Alhamdulillah context
+    'd3': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/255.mp3', // Ayatul Kursi
+    'd4': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/286.mp3', // Travel dua context
+    'd5': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/112.mp3', // Morning dua
+    'd6': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/113.mp3', // Protection dua
+    'd7': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/114.mp3', // Healing dua
+    'd8': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3', // Entering mosque
+    'd9': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/2.mp3', // Leaving mosque
+    'd10': 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/3.mp3', // Rain dua
+  };
+  return audioMap[duaId] || audioMap['d1'];
+};
 
 const DuaDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +33,77 @@ const DuaDetailPage: React.FC = () => {
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTransliteration, setShowTransliteration] = useState(true);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Create audio element
+    audioRef.current = new Audio(getAudioUrl(id || 'd1'));
+    audioRef.current.playbackRate = playbackSpeed;
+
+    const audio = audioRef.current;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.pause();
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [id]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeed]);
+
+  const handlePlayPause = async () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error('Audio playback failed:', error);
+      }
+    }
+  };
+
+  const handleRestart = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      setCurrentTime(0);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   if (!dua) {
     return (
@@ -102,31 +191,49 @@ const DuaDetailPage: React.FC = () => {
       {/* Audio Controls */}
       <div className="px-6 py-4">
         <div className="bg-card rounded-3xl p-4 border border-border/50 shadow-soft">
+          {/* Progress Bar */}
+          <div className="mb-4">
+            <div className="h-1 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-sage rounded-full transition-all"
+                style={{ width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' }}
+              />
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+          </div>
+
           {/* Speed Selector */}
           <div className="flex items-center justify-center gap-4 mb-4">
-            {['0.5x', '1x', '1.5x'].map((speed) => (
+            {[0.5, 1, 1.5].map((speed) => (
               <button
                 key={speed}
+                onClick={() => setPlaybackSpeed(speed)}
                 className={cn(
                   "px-4 py-2 rounded-xl text-sm font-medium transition-colors",
-                  speed === '1x' 
+                  playbackSpeed === speed 
                     ? "bg-sage-light text-sage" 
                     : "text-muted-foreground hover:bg-muted"
                 )}
               >
-                {speed}
+                {speed}x
               </button>
             ))}
           </div>
 
           {/* Playback Controls */}
           <div className="flex items-center justify-center gap-6">
-            <button className="p-3 rounded-xl hover:bg-muted transition-colors">
+            <button 
+              onClick={handleRestart}
+              className="p-3 rounded-xl hover:bg-muted transition-colors"
+            >
               <RotateCcw className="w-5 h-5 text-muted-foreground" />
             </button>
             
             <button 
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={handlePlayPause}
               className="w-16 h-16 rounded-full bg-sage text-cream flex items-center justify-center shadow-prayer hover:bg-sage-dark transition-colors"
             >
               {isPlaying ? (

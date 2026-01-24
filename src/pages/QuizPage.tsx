@@ -6,10 +6,12 @@ import { cn } from '@/lib/utils';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { quizSets, getQuizSetById, getNextQuizSet } from '@/data/quizSets';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const QuizPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { language } = useLanguage();
   const quizSetId = searchParams.get('set');
   
   const { 
@@ -83,7 +85,7 @@ const QuizPage: React.FC = () => {
       setIsAnswered(false);
     } else {
       // Quiz complete
-      recordQuizResult(score, activeQuizSet.questions.length, bestStreak, activeQuizSet.title);
+      recordQuizResult(score, activeQuizSet.questions.length, bestStreak, language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn);
       markQuizSetCompleted(activeQuizSet.id);
       
       // Add bonus XP for completing the quiz set
@@ -165,10 +167,10 @@ const QuizPage: React.FC = () => {
                 
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-foreground">{set.title}</h3>
+                    <h3 className="font-semibold text-foreground">{language === 'tr' ? set.titleTr : set.titleEn}</h3>
                     {isCompleted && <CheckCircle2 className="w-5 h-5 text-sage" />}
                   </div>
-                  <p className="text-sm text-muted-foreground">{set.description}</p>
+                  <p className="text-sm text-muted-foreground">{language === 'tr' ? set.descriptionTr : set.descriptionEn}</p>
                   <div className="flex items-center gap-3 mt-2">
                     <span className={cn(
                       "text-xs px-2 py-0.5 rounded-full",
@@ -258,7 +260,7 @@ const QuizPage: React.FC = () => {
               {nextSet && (
                 <Button onClick={handleNextQuizSet} variant="sage" size="lg" className="w-full">
                   <BookOpen className="w-5 h-5" />
-                  Sonraki Quiz: {nextSet.title}
+                  Sonraki Quiz: {language === 'tr' ? nextSet.titleTr : nextSet.titleEn}
                   <ChevronRight className="w-5 h-5" />
                 </Button>
               )}
@@ -295,7 +297,7 @@ const QuizPage: React.FC = () => {
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="text-center">
-          <h1 className="font-semibold text-sm">{activeQuizSet.title}</h1>
+          <h1 className="font-semibold text-sm">{language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn}</h1>
           <p className="text-xs text-muted-foreground">Soru {currentQuestion + 1}/{activeQuizSet.questions.length}</p>
         </div>
         <div className="flex items-center gap-1 px-3 py-1.5 bg-gold-light rounded-xl">
