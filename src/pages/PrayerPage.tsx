@@ -1,30 +1,24 @@
-import React from 'react';
-import { MapPin, Bell, BellOff, Volume2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Bell, BellOff, Volume2, Loader2, RefreshCw } from 'lucide-react';
 import MobileLayout from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-interface Prayer {
-  nameKey: string;
-  nameArabic: string;
-  time: string;
-  isNext: boolean;
-  isPast: boolean;
-  notificationEnabled: boolean;
-}
-
-const prayers: Prayer[] = [
-  { nameKey: 'prayer.fajr', nameArabic: 'الفجر', time: '05:23', isNext: false, isPast: true, notificationEnabled: true },
-  { nameKey: 'prayer.sunrise', nameArabic: 'الشروق', time: '06:52', isNext: false, isPast: true, notificationEnabled: false },
-  { nameKey: 'prayer.dhuhr', nameArabic: 'الظهر', time: '12:45', isNext: true, isPast: false, notificationEnabled: true },
-  { nameKey: 'prayer.asr', nameArabic: 'العصر', time: '16:15', isNext: false, isPast: false, notificationEnabled: true },
-  { nameKey: 'prayer.maghrib', nameArabic: 'المغرب', time: '19:32', isNext: false, isPast: false, notificationEnabled: true },
-  { nameKey: 'prayer.isha', nameArabic: 'العشاء', time: '21:05', isNext: false, isPast: false, notificationEnabled: true },
-];
+import { usePrayerTimes, getNextPrayer, prayerNamesTr } from '@/hooks/usePrayerTimes';
 
 const PrayerPage: React.FC = () => {
   const { t, language } = useLanguage();
+  const { prayerTimes, location, loading, refetch } = usePrayerTimes();
+  const nextPrayer = getNextPrayer(prayerTimes);
+  
+  const [notifications, setNotifications] = useState<Record<string, boolean>>({
+    Fajr: true,
+    Sunrise: false,
+    Dhuhr: true,
+    Asr: true,
+    Maghrib: true,
+    Isha: true,
+  });
   
   const today = new Date().toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', { 
     weekday: 'long', 
@@ -32,112 +26,165 @@ const PrayerPage: React.FC = () => {
     day: 'numeric' 
   });
 
-  const nextPrayer = prayers.find(p => p.isNext);
+  const toggleNotification = (prayerKey: string) => {
+    setNotifications(prev => ({
+      ...prev,
+      [prayerKey]: !prev[prayerKey]
+    }));
+  };
+
+  const prayerList = prayerTimes ? [
+    { key: 'Fajr', time: prayerTimes.Fajr },
+    { key: 'Sunrise', time: prayerTimes.Sunrise },
+    { key: 'Dhuhr', time: prayerTimes.Dhuhr },
+    { key: 'Asr', time: prayerTimes.Asr },
+    { key: 'Maghrib', time: prayerTimes.Maghrib },
+    { key: 'Isha', time: prayerTimes.Isha },
+  ] : [];
+
+  const isPast = (time: string) => {
+    const now = new Date();
+    const [hours, minutes] = time.split(':').map(Number);
+    const prayerTime = hours * 60 + minutes;
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    return prayerTime < currentTime;
+  };
+
+  const nextPrayerInfo = nextPrayer ? prayerNamesTr[nextPrayer.name] : null;
 
   return (
     <MobileLayout>
       <div className="animate-fade-in">
         {/* Header */}
         <div className="px-6 pt-8 pb-6">
-          <h1 className="text-2xl font-bold text-foreground mb-1">{t('prayer.title')}</h1>
-          <p className="text-muted-foreground">{today}</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground mb-1">{t('prayer.title')}</h1>
+              <p className="text-muted-foreground">{today}</p>
+            </div>
+            <button 
+              onClick={refetch}
+              className="p-2 rounded-xl bg-muted hover:bg-muted/80 transition-colors"
+            >
+              <RefreshCw className={cn("w-5 h-5 text-muted-foreground", loading && "animate-spin")} />
+            </button>
+          </div>
           
           {/* Location */}
           <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
             <MapPin className="w-4 h-4" />
-            <span>İstanbul, Türkiye</span>
+            <span>{location?.city}, {location?.country}</span>
             <button className="text-primary font-medium ml-2">{t('prayer.change')}</button>
           </div>
         </div>
 
-        {/* Current Prayer Highlight */}
-        <div className="px-6 mb-6">
-          <div className="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-cream relative overflow-hidden">
-            <div className="absolute inset-0 pattern-islamic opacity-10" />
-            <div className="relative z-10">
-              <p className="text-cream/60 text-sm mb-2">{t('prayer.nextPrayer')}</p>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="font-arabic text-xl text-gold mb-1">{nextPrayer?.nameArabic}</p>
-                  <h2 className="text-3xl font-bold">{t(nextPrayer?.nameKey || '')}</h2>
-                </div>
-                <div className="text-right">
-                  <p className="text-4xl font-bold">{nextPrayer?.time}</p>
-                  <p className="text-cream/60 text-sm mt-1">2s 15dk {t('prayer.in')}</p>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <>
+            {/* Current Prayer Highlight */}
+            <div className="px-6 mb-6">
+              <div className="bg-gradient-to-br from-primary to-accent rounded-3xl p-6 text-primary-foreground relative overflow-hidden">
+                <div className="absolute inset-0 pattern-islamic opacity-10" />
+                <div className="relative z-10">
+                  <p className="opacity-60 text-sm mb-2">{t('prayer.nextPrayer')}</p>
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="font-arabic text-xl text-gold mb-1">{nextPrayerInfo?.arabic}</p>
+                      <h2 className="text-3xl font-bold">
+                        {language === 'tr' ? nextPrayerInfo?.tr : nextPrayer?.name}
+                      </h2>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-4xl font-bold tabular-nums">{nextPrayer?.time}</p>
+                      <p className="opacity-60 text-sm mt-1">{nextPrayer?.timeUntil} {t('prayer.remaining')}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Prayer List */}
-        <div className="px-6">
-          <div className="space-y-3">
-            {prayers.map((prayer) => (
-              <div
-                key={prayer.nameKey}
-                className={cn(
-                  "flex items-center justify-between p-4 rounded-2xl transition-all",
-                  prayer.isNext 
-                    ? "bg-sage-light border-2 border-sage/30" 
-                    : "bg-card border border-border/50",
-                  prayer.isPast && "opacity-50"
-                )}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center",
-                    prayer.isNext ? "bg-sage text-cream" : "bg-muted"
-                  )}>
-                    <span className="font-arabic text-lg">
-                      {prayer.nameArabic.slice(0, 2)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className={cn(
-                      "font-semibold",
-                      prayer.isNext ? "text-sage-dark" : "text-foreground"
-                    )}>
-                      {t(prayer.nameKey)}
-                    </p>
-                    <p className="font-arabic text-sm text-muted-foreground">
-                      {prayer.nameArabic}
-                    </p>
-                  </div>
-                </div>
+            {/* Prayer List */}
+            <div className="px-6">
+              <div className="space-y-3">
+                {prayerList.map((prayer) => {
+                  const info = prayerNamesTr[prayer.key];
+                  const isNext = nextPrayer?.name === prayer.key;
+                  const passed = isPast(prayer.time);
+                  
+                  return (
+                    <div
+                      key={prayer.key}
+                      className={cn(
+                        "flex items-center justify-between p-4 rounded-2xl transition-all",
+                        isNext 
+                          ? "bg-primary/10 border-2 border-primary/30" 
+                          : "bg-card border border-border/50",
+                        passed && !isNext && "opacity-50"
+                      )}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl flex items-center justify-center",
+                          isNext ? "bg-primary text-primary-foreground" : "bg-muted"
+                        )}>
+                          <span className="font-arabic text-lg">
+                            {info.arabic.slice(0, 2)}
+                          </span>
+                        </div>
+                        <div>
+                          <p className={cn(
+                            "font-semibold",
+                            isNext ? "text-primary" : "text-foreground"
+                          )}>
+                            {language === 'tr' ? info.tr : prayer.key}
+                          </p>
+                          <p className="font-arabic text-sm text-muted-foreground">
+                            {info.arabic}
+                          </p>
+                        </div>
+                      </div>
 
-                <div className="flex items-center gap-4">
-                  <span className={cn(
-                    "text-xl font-semibold tabular-nums",
-                    prayer.isNext ? "text-sage" : "text-foreground"
-                  )}>
-                    {prayer.time}
-                  </span>
-                  <button className={cn(
-                    "p-2 rounded-lg transition-colors",
-                    prayer.notificationEnabled 
-                      ? "text-primary hover:bg-muted" 
-                      : "text-muted-foreground hover:bg-muted"
-                  )}>
-                    {prayer.notificationEnabled ? (
-                      <Bell className="w-5 h-5" />
-                    ) : (
-                      <BellOff className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
+                      <div className="flex items-center gap-4">
+                        <span className={cn(
+                          "text-xl font-semibold tabular-nums",
+                          isNext ? "text-primary" : "text-foreground"
+                        )}>
+                          {prayer.time}
+                        </span>
+                        <button 
+                          onClick={() => toggleNotification(prayer.key)}
+                          className={cn(
+                            "p-2 rounded-lg transition-colors",
+                            notifications[prayer.key] 
+                              ? "text-primary hover:bg-muted" 
+                              : "text-muted-foreground hover:bg-muted"
+                          )}
+                        >
+                          {notifications[prayer.key] ? (
+                            <Bell className="w-5 h-5" />
+                          ) : (
+                            <BellOff className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Adhan Settings */}
-        <div className="px-6 py-6">
-          <Button variant="gentle" className="w-full">
-            <Volume2 className="w-5 h-5" />
-            {t('prayer.adhanSettings')}
-          </Button>
-        </div>
+            {/* Adhan Settings */}
+            <div className="px-6 py-6">
+              <Button variant="gentle" className="w-full">
+                <Volume2 className="w-5 h-5" />
+                {t('prayer.adhanSettings')}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </MobileLayout>
   );

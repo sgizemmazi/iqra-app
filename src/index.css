@@ -2,160 +2,160 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Islamic App Design System - Calm, Minimal, Eye-Friendly */
+/* Islamic App Design System - Warm Earth Tones & Cream */
 
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Warm, eye-friendly backgrounds */
-    --background: 40 30% 96%;
-    --foreground: 220 25% 20%;
+    /* Warm cream backgrounds */
+    --background: 35 40% 95%;
+    --foreground: 25 30% 18%;
 
-    /* Cards with subtle warmth */
-    --card: 40 25% 98%;
-    --card-foreground: 220 25% 20%;
+    /* Cards with warm cream */
+    --card: 38 45% 97%;
+    --card-foreground: 25 30% 18%;
 
     /* Popover */
-    --popover: 40 25% 98%;
-    --popover-foreground: 220 25% 20%;
+    --popover: 38 45% 97%;
+    --popover-foreground: 25 30% 18%;
 
-    /* Sage green - calming Islamic primary */
-    --primary: 150 25% 45%;
-    --primary-foreground: 40 30% 98%;
+    /* Warm brown primary */
+    --primary: 28 45% 35%;
+    --primary-foreground: 38 50% 96%;
 
-    /* Deep navy secondary */
-    --secondary: 220 35% 25%;
-    --secondary-foreground: 40 30% 96%;
+    /* Deep coffee secondary */
+    --secondary: 20 35% 22%;
+    --secondary-foreground: 38 50% 96%;
 
-    /* Muted cream tones */
-    --muted: 40 20% 90%;
-    --muted-foreground: 220 15% 45%;
+    /* Muted sand tones */
+    --muted: 35 30% 88%;
+    --muted-foreground: 25 20% 45%;
 
-    /* Soft teal accent */
-    --accent: 170 30% 40%;
-    --accent-foreground: 40 30% 98%;
+    /* Terracotta accent */
+    --accent: 18 55% 45%;
+    --accent-foreground: 38 50% 96%;
 
-    /* Gentle coral for alerts (non-harsh) */
-    --destructive: 10 50% 55%;
-    --destructive-foreground: 40 30% 98%;
+    /* Gentle coral for alerts */
+    --destructive: 8 60% 50%;
+    --destructive-foreground: 38 50% 96%;
 
     /* Subtle borders */
-    --border: 40 15% 85%;
-    --input: 40 15% 88%;
-    --ring: 150 25% 45%;
+    --border: 30 25% 82%;
+    --input: 30 25% 85%;
+    --ring: 28 45% 35%;
 
     --radius: 1rem;
 
-    /* Custom Islamic palette */
-    --sage: 150 25% 45%;
-    --sage-light: 150 20% 92%;
-    --sage-dark: 150 30% 35%;
+    /* Custom Earth palette */
+    --sage: 28 45% 35%;
+    --sage-light: 35 35% 92%;
+    --sage-dark: 25 50% 28%;
     
-    --navy: 220 35% 25%;
-    --navy-light: 220 25% 35%;
+    --navy: 20 35% 22%;
+    --navy-light: 22 28% 32%;
     
-    --cream: 40 30% 96%;
-    --cream-dark: 40 25% 90%;
+    --cream: 35 40% 95%;
+    --cream-dark: 32 35% 88%;
     
-    --gold: 38 60% 55%;
-    --gold-light: 38 50% 85%;
+    --gold: 38 70% 50%;
+    --gold-light: 40 60% 85%;
     
-    --sand: 35 25% 88%;
+    --sand: 32 35% 85%;
 
     /* Gamification Colors */
-    --xp-blue: 210 80% 55%;
-    --xp-blue-light: 210 70% 90%;
-    --streak-orange: 30 85% 55%;
-    --streak-orange-light: 30 75% 90%;
-    --badge-purple: 270 60% 55%;
-    --badge-purple-light: 270 50% 90%;
-    --level-gold: 45 90% 50%;
-    --level-gold-light: 45 80% 90%;
+    --xp-blue: 200 65% 50%;
+    --xp-blue-light: 200 55% 90%;
+    --streak-orange: 25 80% 50%;
+    --streak-orange-light: 28 70% 90%;
+    --badge-purple: 280 50% 50%;
+    --badge-purple-light: 280 40% 90%;
+    --level-gold: 42 85% 48%;
+    --level-gold-light: 42 75% 88%;
 
     /* Gradients */
-    --gradient-prayer: linear-gradient(135deg, hsl(220 35% 25%) 0%, hsl(200 40% 30%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(40 25% 99%) 0%, hsl(40 20% 96%) 100%);
-    --gradient-sage: linear-gradient(135deg, hsl(150 25% 45%) 0%, hsl(160 30% 40%) 100%);
+    --gradient-prayer: linear-gradient(135deg, hsl(28 45% 35%) 0%, hsl(18 55% 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(38 45% 98%) 0%, hsl(35 40% 94%) 100%);
+    --gradient-sage: linear-gradient(135deg, hsl(28 45% 35%) 0%, hsl(22 50% 40%) 100%);
 
-    /* Shadows - soft and subtle */
-    --shadow-sm: 0 2px 8px -2px hsl(220 25% 20% / 0.06);
-    --shadow-md: 0 4px 16px -4px hsl(220 25% 20% / 0.08);
-    --shadow-lg: 0 8px 32px -8px hsl(220 25% 20% / 0.1);
-    --shadow-prayer: 0 4px 20px -4px hsl(150 25% 45% / 0.25);
+    /* Shadows - warm and soft */
+    --shadow-sm: 0 2px 8px -2px hsl(25 30% 18% / 0.06);
+    --shadow-md: 0 4px 16px -4px hsl(25 30% 18% / 0.08);
+    --shadow-lg: 0 8px 32px -8px hsl(25 30% 18% / 0.12);
+    --shadow-prayer: 0 4px 20px -4px hsl(28 45% 35% / 0.25);
 
-    /* Sidebar - not used but defined */
-    --sidebar-background: 40 30% 96%;
-    --sidebar-foreground: 220 25% 20%;
-    --sidebar-primary: 150 25% 45%;
-    --sidebar-primary-foreground: 40 30% 98%;
-    --sidebar-accent: 170 30% 40%;
-    --sidebar-accent-foreground: 40 30% 98%;
-    --sidebar-border: 40 15% 85%;
-    --sidebar-ring: 150 25% 45%;
+    /* Sidebar */
+    --sidebar-background: 35 40% 95%;
+    --sidebar-foreground: 25 30% 18%;
+    --sidebar-primary: 28 45% 35%;
+    --sidebar-primary-foreground: 38 50% 96%;
+    --sidebar-accent: 18 55% 45%;
+    --sidebar-accent-foreground: 38 50% 96%;
+    --sidebar-border: 30 25% 82%;
+    --sidebar-ring: 28 45% 35%;
   }
 
   .dark {
-    /* Night mode - deep navy with warm accents */
-    --background: 220 35% 12%;
-    --foreground: 40 20% 92%;
+    /* Night mode - deep warm brown */
+    --background: 20 30% 10%;
+    --foreground: 35 30% 90%;
 
-    --card: 220 30% 16%;
-    --card-foreground: 40 20% 92%;
+    --card: 22 28% 14%;
+    --card-foreground: 35 30% 90%;
 
-    --popover: 220 30% 16%;
-    --popover-foreground: 40 20% 92%;
+    --popover: 22 28% 14%;
+    --popover-foreground: 35 30% 90%;
 
-    --primary: 150 30% 55%;
-    --primary-foreground: 220 35% 12%;
+    --primary: 32 50% 55%;
+    --primary-foreground: 20 30% 10%;
 
-    --secondary: 220 25% 22%;
-    --secondary-foreground: 40 20% 92%;
+    --secondary: 22 25% 18%;
+    --secondary-foreground: 35 30% 90%;
 
-    --muted: 220 25% 20%;
-    --muted-foreground: 40 15% 65%;
+    --muted: 22 22% 18%;
+    --muted-foreground: 35 20% 60%;
 
-    --accent: 170 35% 50%;
-    --accent-foreground: 220 35% 12%;
+    --accent: 22 60% 55%;
+    --accent-foreground: 20 30% 10%;
 
-    --destructive: 10 45% 50%;
-    --destructive-foreground: 40 20% 92%;
+    --destructive: 8 50% 48%;
+    --destructive-foreground: 35 30% 90%;
 
-    --border: 220 25% 22%;
-    --input: 220 25% 20%;
-    --ring: 150 30% 55%;
+    --border: 22 22% 20%;
+    --input: 22 22% 18%;
+    --ring: 32 50% 55%;
 
-    --sage: 150 30% 55%;
-    --sage-light: 150 25% 25%;
-    --sage-dark: 150 35% 45%;
+    --sage: 32 50% 55%;
+    --sage-light: 28 30% 22%;
+    --sage-dark: 32 55% 45%;
     
-    --navy: 220 30% 16%;
-    --navy-light: 220 25% 25%;
+    --navy: 22 28% 14%;
+    --navy-light: 22 25% 22%;
     
-    --cream: 40 15% 85%;
-    --cream-dark: 220 35% 12%;
+    --cream: 35 25% 82%;
+    --cream-dark: 20 30% 10%;
     
-    --gold: 38 55% 60%;
-    --gold-light: 38 40% 25%;
+    --gold: 40 65% 55%;
+    --gold-light: 40 50% 22%;
 
     /* Gamification Colors - Dark Mode */
-    --xp-blue: 210 70% 60%;
-    --xp-blue-light: 210 60% 25%;
-    --streak-orange: 30 75% 60%;
-    --streak-orange-light: 30 65% 25%;
-    --badge-purple: 270 50% 60%;
-    --badge-purple-light: 270 40% 25%;
-    --level-gold: 45 80% 55%;
-    --level-gold-light: 45 70% 25%;
+    --xp-blue: 200 60% 55%;
+    --xp-blue-light: 200 50% 22%;
+    --streak-orange: 25 70% 55%;
+    --streak-orange-light: 28 60% 22%;
+    --badge-purple: 280 45% 55%;
+    --badge-purple-light: 280 35% 22%;
+    --level-gold: 42 75% 52%;
+    --level-gold-light: 42 65% 22%;
 
-    --sidebar-background: 220 35% 12%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 150 30% 55%;
-    --sidebar-primary-foreground: 220 35% 12%;
-    --sidebar-accent: 170 35% 50%;
-    --sidebar-accent-foreground: 220 35% 12%;
-    --sidebar-border: 220 25% 22%;
-    --sidebar-ring: 150 30% 55%;
+    --sidebar-background: 20 30% 10%;
+    --sidebar-foreground: 35 30% 90%;
+    --sidebar-primary: 32 50% 55%;
+    --sidebar-primary-foreground: 20 30% 10%;
+    --sidebar-accent: 22 60% 55%;
+    --sidebar-accent-foreground: 20 30% 10%;
+    --sidebar-border: 22 22% 20%;
+    --sidebar-ring: 32 50% 55%;
   }
 }
 
@@ -166,7 +166,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
   }
 
   /* Arabic text styling */
@@ -187,18 +187,18 @@
 
   /* Islamic geometric pattern background */
   .pattern-islamic {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='none' stroke='%23b8c4a8' stroke-width='0.5' opacity='0.15'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='none' stroke='%23c4a77d' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
     background-size: 30px 30px;
   }
 
   /* Subtle glow effect */
   .glow-sage {
-    box-shadow: 0 0 40px -10px hsl(150 25% 45% / 0.3);
+    box-shadow: 0 0 40px -10px hsl(28 45% 35% / 0.3);
   }
 
   /* Text gradient */
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(38 60% 55%) 0%, hsl(38 50% 45%) 100%);
+    background: linear-gradient(135deg, hsl(40 70% 50%) 0%, hsl(35 60% 40%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
