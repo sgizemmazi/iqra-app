@@ -12,6 +12,7 @@ import SurahDetailPage from "./pages/SurahDetailPage";
 import DuaDetailPage from "./pages/DuaDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import QuizPage from "./pages/QuizPage";
+import QiblaPage from "./pages/QiblaPage";
 import HistoryPage from "./pages/HistoryPage";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/learn/surah/:id" element={<SurahDetailPage />} />
               <Route path="/learn/dua/:id" element={<DuaDetailPage />} />
               <Route path="/quiz" element={<QuizPage />} />
+              <Route path="/qibla" element={<QiblaPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/history" element={<HistoryPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
