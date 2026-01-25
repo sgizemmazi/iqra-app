@@ -2,31 +2,36 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Compass, Heart, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const actions = [
   { 
     icon: BookOpen, 
-    label: 'Öğrenmeye\nDevam Et', 
+    label: 'Öğren', 
+    sublabel: 'Sure & Dua',
     path: '/learn',
-    color: 'bg-sage-light text-sage' 
+    gradient: 'from-primary to-primary/80'
   },
   { 
     icon: HelpCircle, 
-    label: 'Quiz\nOyna', 
+    label: 'Quiz', 
+    sublabel: 'Bilgini Test Et',
     path: '/quiz',
-    color: 'bg-badge-light text-badge' 
+    gradient: 'from-badge to-badge/80'
   },
   { 
     icon: Heart, 
-    label: 'Günlük\nDua', 
+    label: 'Dualar', 
+    sublabel: 'Günlük Dualar',
     path: '/learn',
-    color: 'bg-gold-light text-gold' 
+    gradient: 'from-accent to-accent/80'
   },
   { 
     icon: Compass, 
-    label: 'Kıble\nYönü', 
+    label: 'Kıble', 
+    sublabel: 'Yön Bul',
     path: '/qibla',
-    color: 'bg-muted text-navy' 
+    gradient: 'from-xp to-xp/80'
   },
 ];
 
@@ -38,26 +43,31 @@ const QuickActions: React.FC = () => {
       <h3 className="text-lg font-semibold text-foreground mb-4">
         Hızlı Erişim
       </h3>
-      <div className="grid grid-cols-4 gap-3">
-        {actions.map((action) => {
+      <div className="grid grid-cols-2 gap-3">
+        {actions.map((action, index) => {
           const Icon = action.icon;
           return (
-            <button
+            <motion.button
               key={action.label}
               onClick={() => navigate(action.path)}
-              className="flex flex-col items-center gap-2 group"
+              className="floating-card p-4 flex items-center gap-4 text-left"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
             >
               <div className={cn(
-                "w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300",
-                "group-hover:scale-105 group-active:scale-95 shadow-soft",
-                action.color
+                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm",
+                action.gradient
               )}>
-                <Icon className="w-7 h-7" />
+                <Icon className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xs text-center text-muted-foreground font-medium leading-tight whitespace-pre-line">
-                {action.label}
-              </span>
-            </button>
+              <div>
+                <p className="font-semibold text-foreground">{action.label}</p>
+                <p className="text-xs text-muted-foreground">{action.sublabel}</p>
+              </div>
+            </motion.button>
           );
         })}
       </div>
