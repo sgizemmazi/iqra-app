@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// Prayer remaining translation key
+
 type Language = 'tr' | 'en';
 
 interface Translations {
@@ -76,6 +78,8 @@ const translations: Translations = {
   'prayer.isha': { tr: 'Yatsı', en: 'Isha' },
   'prayer.change': { tr: 'Değiştir', en: 'Change' },
   'prayer.in': { tr: 'sonra', en: 'in' },
+  'prayer.remaining': { tr: 'kaldı', en: 'remaining' },
+  'prayer.listenAdhan': { tr: 'Ezan Dinle', en: 'Listen to Adhan' },
   'prayer.adhanSettings': { tr: 'Ezan ve Bildirim Ayarları', en: 'Adhan & Notification Settings' },
   
   // Profile Page
