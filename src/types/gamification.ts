@@ -53,3 +53,11 @@ export interface LeaderboardEntry {
   level: number;
   isCurrentUser: boolean;
 }
+
+export interface QuizStats {
+  totalQuizzes: number;
+  averageScore: number;
+  bestScore: number;
+  totalQuestions: number;
+  correctAnswers: number;
+}

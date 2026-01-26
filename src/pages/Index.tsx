@@ -1,46 +1,43 @@
 import React from 'react';
-import MobileLayout from '@/components/layout/MobileLayout';
-import GreetingHeader from '@/components/home/GreetingHeader';
-import CurrentPrayerCard from '@/components/home/CurrentPrayerCard';
-import QuickActions from '@/components/home/QuickActions';
-import ProgressOverview from '@/components/home/ProgressOverview';
-import LevelProgress from '@/components/gamification/LevelProgress';
-import DailyGoals from '@/components/gamification/DailyGoals';
-import BadgeCollection from '@/components/gamification/BadgeCollection';
+import MobileLayout3D from '@/components/layout/MobileLayout3D';
+import HeroSection from '@/components/home/HeroSection';
+import PrayerCard3D from '@/components/home/PrayerCard3D';
+import QuickActionsFloating from '@/components/home/QuickActionsFloating';
+import StatsCards from '@/components/home/StatsCards';
+import GoalsSection from '@/components/home/GoalsSection';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
+import { motion } from 'framer-motion';
 
 const Index: React.FC = () => {
   const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = usePersistedGameProgress();
 
   return (
-    <MobileLayout>
-      <div className="animate-fade-in space-y-4">
-        <GreetingHeader />
+    <MobileLayout3D>
+      <motion.div 
+        className="space-y-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Hero greeting section */}
+        <HeroSection />
         
-        {/* Level & Streak - Compact */}
-        <div className="px-6">
-          <LevelProgress progress={progress} compact />
-        </div>
-
-        <CurrentPrayerCard />
-        <QuickActions />
+        {/* Stats overview - compact horizontal cards */}
+        <StatsCards progress={progress} quizStats={quizStats} />
         
-        {/* Progress Overview - Quiz Stats */}
-        <div className="px-6">
-          <ProgressOverview quizStats={quizStats} />
-        </div>
+        {/* 3D Prayer Card - Main focal point */}
+        <PrayerCard3D />
         
-        {/* Daily Goals */}
-        <div className="px-6">
-          <DailyGoals goals={dailyGoals} onGoalClick={completeGoal} />
-        </div>
-
-        {/* Badges */}
-        <div className="px-6 pb-4">
-          <BadgeCollection badges={badges} />
-        </div>
-      </div>
+        {/* Floating quick actions */}
+        <QuickActionsFloating />
+        
+        {/* Goals with circular progress */}
+        <GoalsSection goals={dailyGoals} onGoalClick={completeGoal} />
+        
+        {/* Bottom spacing */}
+        <div className="h-4" />
+      </motion.div>
 
       {/* Level Up Celebration */}
       <LevelUpCelebration
@@ -48,7 +45,7 @@ const Index: React.FC = () => {
         isVisible={levelUpData.show}
         onClose={closeLevelUpCelebration}
       />
-    </MobileLayout>
+    </MobileLayout3D>
   );
 };
 
