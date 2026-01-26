@@ -1,10 +1,10 @@
 import React from 'react';
-import MobileLayout3D from '@/components/layout/MobileLayout3D';
-import HeroSection from '@/components/home/HeroSection';
-import PrayerCard3D from '@/components/home/PrayerCard3D';
-import QuickActionsFloating from '@/components/home/QuickActionsFloating';
-import StatsCards from '@/components/home/StatsCards';
-import GoalsSection from '@/components/home/GoalsSection';
+import MobileLayoutWarm from '@/components/layout/MobileLayoutWarm';
+import HeaderWarm from '@/components/home/HeaderWarm';
+import LastReadCard from '@/components/home/LastReadCard';
+import QuickActionsWarm from '@/components/home/QuickActionsWarm';
+import SurahListPreview from '@/components/home/SurahListPreview';
+import ProgressCardWarm from '@/components/home/ProgressCardWarm';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { motion } from 'framer-motion';
@@ -13,27 +13,27 @@ const Index: React.FC = () => {
   const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = usePersistedGameProgress();
 
   return (
-    <MobileLayout3D>
+    <MobileLayoutWarm>
       <motion.div 
-        className="space-y-6"
+        className="space-y-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
       >
-        {/* Hero greeting section */}
-        <HeroSection />
+        {/* Header */}
+        <HeaderWarm />
         
-        {/* Stats overview - compact horizontal cards */}
-        <StatsCards progress={progress} quizStats={quizStats} />
+        {/* Last Read Card - Featured */}
+        <LastReadCard />
         
-        {/* 3D Prayer Card - Main focal point */}
-        <PrayerCard3D />
+        {/* Quick Actions Grid */}
+        <QuickActionsWarm />
         
-        {/* Floating quick actions */}
-        <QuickActionsFloating />
+        {/* Surah List Preview */}
+        <SurahListPreview />
         
-        {/* Goals with circular progress */}
-        <GoalsSection goals={dailyGoals} onGoalClick={completeGoal} />
+        {/* Progress Card */}
+        <ProgressCardWarm progress={progress} />
         
         {/* Bottom spacing */}
         <div className="h-4" />
@@ -45,7 +45,7 @@ const Index: React.FC = () => {
         isVisible={levelUpData.show}
         onClose={closeLevelUpCelebration}
       />
-    </MobileLayout3D>
+    </MobileLayoutWarm>
   );
 };
 
