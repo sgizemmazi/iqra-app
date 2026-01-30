@@ -8,157 +8,158 @@
 
 @layer base {
   :root {
-    /* Warm cream background */
-    --background: 40 40% 97%;
-    --foreground: 25 30% 18%;
+    /* Light mint/teal background */
+    --background: 160 35% 96%;
+    --foreground: 180 25% 15%;
 
     /* Clean white cards */
     --card: 0 0% 100%;
-    --card-foreground: 25 30% 18%;
+    --card-foreground: 180 25% 15%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 25 30% 18%;
+    --popover-foreground: 180 25% 15%;
 
-    /* Terracotta primary */
-    --primary: 25 55% 55%;
+    /* Teal primary - main brand color */
+    --primary: 168 65% 42%;
     --primary-foreground: 0 0% 100%;
 
-    /* Warm brown secondary */
-    --secondary: 30 25% 35%;
+    /* Darker teal secondary */
+    --secondary: 170 50% 35%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Soft cream muted */
-    --muted: 35 30% 92%;
-    --muted-foreground: 25 20% 50%;
+    /* Soft mint muted */
+    --muted: 160 25% 92%;
+    --muted-foreground: 170 15% 45%;
 
-    /* Warm terracotta accent */
-    --accent: 20 60% 50%;
+    /* Teal accent */
+    --accent: 168 60% 48%;
     --accent-foreground: 0 0% 100%;
 
-    /* Gentle red for alerts */
-    --destructive: 0 65% 50%;
+    /* Red for errors/wrong answers */
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
     /* Subtle borders */
-    --border: 35 25% 88%;
-    --input: 35 20% 90%;
-    --ring: 25 55% 55%;
+    --border: 160 20% 88%;
+    --input: 160 15% 90%;
+    --ring: 168 65% 42%;
 
     --radius: 1rem;
 
-    /* Custom terracotta palette */
-    --terracotta: 25 55% 55%;
-    --terracotta-light: 30 45% 95%;
-    --terracotta-dark: 20 55% 42%;
+    /* Teal palette */
+    --teal: 168 65% 42%;
+    --teal-light: 165 40% 94%;
+    --teal-dark: 170 60% 32%;
     
-    --brown: 30 25% 30%;
-    --brown-light: 35 20% 45%;
+    /* Category card colors */
+    --category-blue: 200 70% 50%;
+    --category-pink: 340 70% 60%;
+    --category-purple: 280 60% 55%;
+    --category-orange: 30 85% 55%;
+    --category-green: 145 60% 45%;
     
-    --cream: 40 50% 97%;
-    --cream-dark: 35 35% 92%;
+    /* Gold for XP/rewards */
+    --gold: 38 85% 55%;
+    --gold-light: 40 70% 94%;
     
-    --gold: 38 75% 55%;
-    --gold-light: 40 60% 94%;
-    
-    --sand: 35 35% 90%;
+    /* Sage green for correct answers */
+    --sage: 145 45% 45%;
+    --sage-light: 145 40% 92%;
 
-    /* Gamification Colors - Warm tones */
-    --xp-terracotta: 25 55% 55%;
-    --xp-terracotta-light: 30 45% 94%;
-    --streak-orange: 30 70% 55%;
-    --streak-orange-light: 35 60% 94%;
-    --badge-brown: 25 40% 45%;
-    --badge-brown-light: 30 35% 94%;
-    --level-gold: 38 75% 55%;
-    --level-gold-light: 40 60% 94%;
+    /* Gamification Colors */
+    --xp-gold: 38 85% 55%;
+    --xp-gold-light: 40 70% 94%;
+    --streak-orange: 30 80% 55%;
+    --streak-orange-light: 35 70% 94%;
+    --badge-teal: 168 60% 45%;
+    --badge-teal-light: 165 40% 94%;
+    --level-gold: 38 85% 55%;
+    --level-gold-light: 40 70% 94%;
 
-    /* Soft shadows */
-    --shadow-xs: 0 1px 2px -1px hsla(25, 30%, 18%, 0.03);
-    --shadow-sm: 0 2px 8px -2px hsla(25, 30%, 18%, 0.06), 0 2px 4px -2px hsla(25, 30%, 18%, 0.04);
-    --shadow-md: 0 4px 16px -4px hsla(25, 30%, 18%, 0.08), 0 4px 8px -4px hsla(25, 30%, 18%, 0.05);
-    --shadow-lg: 0 8px 24px -6px hsla(25, 30%, 18%, 0.1), 0 8px 16px -8px hsla(25, 30%, 18%, 0.06);
-    --shadow-xl: 0 12px 32px -8px hsla(25, 30%, 18%, 0.12), 0 12px 24px -12px hsla(25, 30%, 18%, 0.08);
-    --shadow-card: 0 2px 12px -2px hsla(25, 30%, 18%, 0.08);
-    --shadow-hover: 0 8px 24px -8px hsla(25, 55%, 55%, 0.2);
+    /* Soft shadows with teal tint */
+    --shadow-xs: 0 1px 2px -1px hsla(168, 30%, 15%, 0.03);
+    --shadow-sm: 0 2px 8px -2px hsla(168, 30%, 15%, 0.06), 0 2px 4px -2px hsla(168, 30%, 15%, 0.04);
+    --shadow-md: 0 4px 16px -4px hsla(168, 30%, 15%, 0.08), 0 4px 8px -4px hsla(168, 30%, 15%, 0.05);
+    --shadow-lg: 0 8px 24px -6px hsla(168, 30%, 15%, 0.1), 0 8px 16px -8px hsla(168, 30%, 15%, 0.06);
+    --shadow-xl: 0 12px 32px -8px hsla(168, 30%, 15%, 0.12), 0 12px 24px -12px hsla(168, 30%, 15%, 0.08);
+    --shadow-card: 0 2px 12px -2px hsla(168, 30%, 15%, 0.08);
+    --shadow-hover: 0 8px 24px -8px hsla(168, 65%, 42%, 0.25);
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 25 30% 18%;
-    --sidebar-primary: 25 55% 55%;
+    --sidebar-foreground: 180 25% 15%;
+    --sidebar-primary: 168 65% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 60% 50%;
+    --sidebar-accent: 168 60% 48%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 35 25% 88%;
-    --sidebar-ring: 25 55% 55%;
+    --sidebar-border: 160 20% 88%;
+    --sidebar-ring: 168 65% 42%;
   }
 
   .dark {
-    /* Dark warm background */
-    --background: 25 25% 10%;
-    --foreground: 35 25% 92%;
+    /* Dark teal background */
+    --background: 170 25% 10%;
+    --foreground: 160 20% 92%;
 
-    --card: 25 22% 14%;
-    --card-foreground: 35 25% 92%;
+    --card: 170 22% 14%;
+    --card-foreground: 160 20% 92%;
 
-    --popover: 25 22% 14%;
-    --popover-foreground: 35 25% 92%;
+    --popover: 170 22% 14%;
+    --popover-foreground: 160 20% 92%;
 
-    --primary: 25 55% 58%;
-    --primary-foreground: 25 25% 10%;
+    --primary: 168 60% 50%;
+    --primary-foreground: 170 25% 10%;
 
-    --secondary: 30 18% 22%;
-    --secondary-foreground: 35 25% 92%;
+    --secondary: 170 20% 22%;
+    --secondary-foreground: 160 20% 92%;
 
-    --muted: 25 18% 18%;
-    --muted-foreground: 30 15% 55%;
+    --muted: 170 18% 18%;
+    --muted-foreground: 165 15% 55%;
 
-    --accent: 20 55% 55%;
-    --accent-foreground: 25 25% 10%;
+    --accent: 168 55% 48%;
+    --accent-foreground: 170 25% 10%;
 
-    --destructive: 0 60% 48%;
-    --destructive-foreground: 35 25% 92%;
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 160 20% 92%;
 
-    --border: 25 18% 20%;
-    --input: 25 18% 18%;
-    --ring: 25 55% 58%;
+    --border: 170 18% 22%;
+    --input: 170 18% 18%;
+    --ring: 168 60% 50%;
 
-    --terracotta: 25 55% 58%;
-    --terracotta-light: 25 35% 18%;
-    --terracotta-dark: 20 50% 48%;
+    --teal: 168 60% 50%;
+    --teal-light: 170 35% 18%;
+    --teal-dark: 170 55% 42%;
     
-    --brown: 30 20% 20%;
-    --brown-light: 35 18% 28%;
+    --gold: 38 75% 55%;
+    --gold-light: 38 60% 18%;
     
-    --cream: 35 20% 88%;
-    --cream-dark: 25 25% 10%;
-    
-    --gold: 38 70% 55%;
-    --gold-light: 38 55% 18%;
+    --sage: 145 40% 50%;
+    --sage-light: 145 35% 18%;
 
     /* Dark mode gamification */
-    --xp-terracotta: 25 50% 55%;
-    --xp-terracotta-light: 25 40% 18%;
-    --streak-orange: 30 65% 55%;
-    --streak-orange-light: 30 50% 18%;
-    --badge-brown: 25 35% 50%;
-    --badge-brown-light: 25 30% 18%;
-    --level-gold: 38 70% 55%;
-    --level-gold-light: 38 55% 18%;
+    --xp-gold: 38 75% 55%;
+    --xp-gold-light: 40 60% 18%;
+    --streak-orange: 30 75% 55%;
+    --streak-orange-light: 30 60% 18%;
+    --badge-teal: 168 55% 50%;
+    --badge-teal-light: 168 40% 18%;
+    --level-gold: 38 75% 55%;
+    --level-gold-light: 38 60% 18%;
 
     /* Dark shadows */
     --shadow-sm: 0 2px 8px -2px hsla(0, 0%, 0%, 0.35);
     --shadow-md: 0 6px 20px -4px hsla(0, 0%, 0%, 0.4);
     --shadow-lg: 0 12px 32px -8px hsla(0, 0%, 0%, 0.5);
 
-    --sidebar-background: 25 25% 10%;
-    --sidebar-foreground: 35 25% 92%;
-    --sidebar-primary: 25 55% 58%;
-    --sidebar-primary-foreground: 25 25% 10%;
-    --sidebar-accent: 20 55% 55%;
-    --sidebar-accent-foreground: 25 25% 10%;
-    --sidebar-border: 25 18% 20%;
-    --sidebar-ring: 25 55% 58%;
+    --sidebar-background: 170 25% 10%;
+    --sidebar-foreground: 160 20% 92%;
+    --sidebar-primary: 168 60% 50%;
+    --sidebar-primary-foreground: 170 25% 10%;
+    --sidebar-accent: 168 55% 48%;
+    --sidebar-accent-foreground: 170 25% 10%;
+    --sidebar-border: 170 18% 22%;
+    --sidebar-ring: 168 60% 50%;
   }
 }
 
