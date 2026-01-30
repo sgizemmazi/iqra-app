@@ -1,12 +1,61 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Check, X, Sparkles, ChevronRight, RotateCcw, BookOpen, Lock, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Check, X, Sparkles, ChevronRight, RotateCcw, Lock, CheckCircle2, Moon, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { quizSets, getQuizSetById, getNextQuizSet } from '@/data/quizSets';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Wave decoration component
+const WaveDecoration = () => (
+  <div className="absolute top-0 left-0 right-0 h-48 overflow-hidden">
+    <svg 
+      viewBox="0 0 1200 120" 
+      preserveAspectRatio="none" 
+      className="absolute bottom-0 w-full h-24 fill-primary"
+    >
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" />
+    </svg>
+    <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary to-transparent" />
+    
+    {/* Decorative dots */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute top-4 left-8 w-2 h-2 bg-primary-foreground rounded-full" />
+      <div className="absolute top-12 left-20 w-1.5 h-1.5 bg-primary-foreground rounded-full" />
+      <div className="absolute top-6 right-12 w-2 h-2 bg-primary-foreground rounded-full" />
+      <div className="absolute top-16 right-24 w-1 h-1 bg-primary-foreground rounded-full" />
+    </div>
+  </div>
+);
+
+// Islamic emblem component
+const IslamicEmblem = ({ size = 'lg' }: { size?: 'sm' | 'md' | 'lg' }) => {
+  const sizes = {
+    sm: 'w-16 h-16',
+    md: 'w-24 h-24',
+    lg: 'w-32 h-32'
+  };
+  
+  return (
+    <div className={cn("relative flex items-center justify-center", sizes[size])}>
+      <div className="absolute inset-0 bg-primary/20 rounded-full" />
+      <div className="absolute inset-2 bg-gradient-to-br from-teal-light to-card rounded-full border-4 border-primary/30" />
+      <div className="relative text-4xl">🕌</div>
+    </div>
+  );
+};
+
+// Category card colors
+const categoryColors: Record<string, { bg: string; icon: string }> = {
+  surah: { bg: 'bg-gradient-to-br from-primary to-secondary', icon: '📖' },
+  dua: { bg: 'bg-gradient-to-br from-accent to-primary', icon: '🤲' },
+  islamic_knowledge: { bg: 'bg-gradient-to-br from-secondary to-primary', icon: '🕌' },
+  ramadan: { bg: 'bg-gradient-to-br from-gold to-accent', icon: '🌙' },
+  friday: { bg: 'bg-gradient-to-br from-primary to-teal-dark', icon: '🕋' },
+};
 
 const QuizPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +83,7 @@ const QuizPage: React.FC = () => {
   const [quizComplete, setQuizComplete] = useState(false);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
 
   const activeQuizSet = useMemo(() => {
     if (selectedQuizSet) {
@@ -55,6 +105,7 @@ const QuizPage: React.FC = () => {
     setQuizComplete(false);
     setCurrentStreak(0);
     setBestStreak(0);
+    setWrongAnswers(0);
   };
 
   const handleAnswer = (answerIndex: number) => {
@@ -73,6 +124,7 @@ const QuizPage: React.FC = () => {
       addXP(question.xpReward);
     } else {
       setCurrentStreak(0);
+      setWrongAnswers(prev => prev + 1);
     }
   };
 
@@ -84,17 +136,11 @@ const QuizPage: React.FC = () => {
       setSelectedAnswer(null);
       setIsAnswered(false);
     } else {
-      // Quiz complete
       recordQuizResult(score, activeQuizSet.questions.length, bestStreak, language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn);
       markQuizSetCompleted(activeQuizSet.id);
-      
-      // Add bonus XP for completing the quiz set
       addXP(activeQuizSet.xpBonus);
       setTotalXP(prev => prev + activeQuizSet.xpBonus);
-      
-      // Complete daily goal if exists
       completeGoal('quiz_complete');
-      
       setQuizComplete(true);
     }
   };
@@ -104,7 +150,6 @@ const QuizPage: React.FC = () => {
     if (nextSet) {
       handleSelectQuizSet(nextSet.id);
     } else {
-      // All quizzes completed, go back to selection
       setSelectedQuizSet(null);
       setQuizComplete(false);
     }
@@ -119,76 +164,119 @@ const QuizPage: React.FC = () => {
     setQuizComplete(false);
     setCurrentStreak(0);
     setBestStreak(0);
+    setWrongAnswers(0);
   };
 
   // Quiz Selection Screen
   if (!selectedQuizSet) {
     return (
-      <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
-        <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
-          <button 
-            onClick={() => navigate('/learn')}
-            className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6" />
-          </button>
-          <h1 className="font-semibold">Quiz Seç</h1>
-          <div className="w-10" />
-        </header>
+      <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto relative">
+        {/* Header with wave */}
+        <div className="relative h-32 bg-primary">
+          <WaveDecoration />
+          <div className="relative z-10 flex items-center justify-between px-4 pt-4">
+            <div className="flex items-center gap-2">
+              <span className="text-primary-foreground font-semibold">🕌 QUIZ APP</span>
+            </div>
+            <button className="p-2 rounded-full bg-primary-foreground/20 text-primary-foreground">
+              <Moon className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
 
-        <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-          <p className="text-muted-foreground text-sm mb-4">
-            Bir quiz seçerek öğrenmeye başla. Tamamladığın quizler işaretlenecek.
-          </p>
-          
-          {quizSets.map((set, index) => {
-            const isCompleted = isQuizSetCompleted(set.id);
-            const previousCompleted = index === 0 || isQuizSetCompleted(quizSets[index - 1].id);
-            const isLocked = !previousCompleted && !isCompleted;
-            
-            return (
-              <button
-                key={set.id}
-                onClick={() => !isLocked && handleSelectQuizSet(set.id)}
-                disabled={isLocked}
-                className={cn(
-                  "w-full p-4 rounded-2xl border-2 transition-all text-left flex items-center gap-4",
-                  isLocked && "opacity-50 cursor-not-allowed border-border bg-muted",
-                  isCompleted && "border-sage bg-sage-light/30",
-                  !isLocked && !isCompleted && "border-border bg-card hover:border-sage hover:bg-sage-light/20"
-                )}
-              >
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center text-2xl",
-                  isCompleted ? "bg-sage/20" : isLocked ? "bg-muted" : "bg-gold-light"
-                )}>
-                  {isLocked ? <Lock className="w-6 h-6 text-muted-foreground" /> : set.icon}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-foreground">{language === 'tr' ? set.titleTr : set.titleEn}</h3>
-                    {isCompleted && <CheckCircle2 className="w-5 h-5 text-sage" />}
+        {/* Content */}
+        <div className="flex-1 px-4 -mt-4 relative z-10">
+          <div className="bg-card rounded-2xl shadow-lg p-6 mb-4">
+            <h1 className="text-xl font-bold text-center text-foreground mb-1">
+              {language === 'tr' ? 'Quiz Seç & Oyna!' : 'Choose a Quiz & Play!'}
+            </h1>
+            <p className="text-center text-muted-foreground text-sm">
+              {language === 'tr' ? 'Bilgini test et ve XP kazan' : 'Test your knowledge and earn XP'}
+            </p>
+          </div>
+
+          {/* Quiz Cards Grid */}
+          <div className="grid grid-cols-2 gap-3 pb-24">
+            {quizSets.map((set, index) => {
+              const isCompleted = isQuizSetCompleted(set.id);
+              const previousCompleted = index === 0 || isQuizSetCompleted(quizSets[index - 1].id);
+              const isLocked = !previousCompleted && !isCompleted;
+              const colors = categoryColors[set.category] || categoryColors.islamic_knowledge;
+              
+              return (
+                <motion.button
+                  key={set.id}
+                  onClick={() => !isLocked && handleSelectQuizSet(set.id)}
+                  disabled={isLocked}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className={cn(
+                    "relative p-4 rounded-2xl text-left transition-all overflow-hidden",
+                    isLocked ? "opacity-50 cursor-not-allowed bg-muted" : colors.bg,
+                    "hover:scale-[1.02] active:scale-[0.98]"
+                  )}
+                >
+                  {isCompleted && (
+                    <div className="absolute top-2 right-2">
+                      <CheckCircle2 className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                  )}
+                  
+                  <div className="text-3xl mb-2">
+                    {isLocked ? '🔒' : colors.icon}
                   </div>
-                  <p className="text-sm text-muted-foreground">{language === 'tr' ? set.descriptionTr : set.descriptionEn}</p>
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className={cn(
-                      "text-xs px-2 py-0.5 rounded-full",
-                      set.difficulty === 'easy' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-                      set.difficulty === 'medium' && "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-                      set.difficulty === 'hard' && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                    )}>
-                      {set.difficulty === 'easy' ? 'Kolay' : set.difficulty === 'medium' ? 'Orta' : 'Zor'}
-                    </span>
-                    <span className="text-xs text-muted-foreground">{set.questions.length} soru</span>
-                    <span className="text-xs text-gold font-medium">+{set.xpBonus} bonus XP</span>
+                  
+                  <h3 className={cn(
+                    "font-bold text-sm mb-1",
+                    isLocked ? "text-muted-foreground" : "text-primary-foreground"
+                  )}>
+                    {language === 'tr' ? set.titleTr : set.titleEn}
+                  </h3>
+                  
+                  <p className={cn(
+                    "text-xs mb-2",
+                    isLocked ? "text-muted-foreground" : "text-primary-foreground/80"
+                  )}>
+                    {set.questions.length} {language === 'tr' ? 'Soru' : 'Questions'}
+                  </p>
+                  
+                  <div className={cn(
+                    "flex items-center gap-1 text-xs font-medium",
+                    isLocked ? "text-muted-foreground" : "text-primary-foreground"
+                  )}>
+                    {language === 'tr' ? "Başla" : "Let's Start"} 
+                    <ChevronRight className="w-4 h-4" />
                   </div>
-                </div>
-                
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
-              </button>
-            );
-          })}
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+          <div className="max-w-lg mx-auto flex items-center justify-around py-3">
+            <button 
+              onClick={() => navigate('/history')}
+              className="flex flex-col items-center gap-1 text-muted-foreground"
+            >
+              <History className="w-6 h-6" />
+              <span className="text-xs">{language === 'tr' ? 'Geçmiş' : 'History'}</span>
+            </button>
+            <button className="flex flex-col items-center gap-1 text-primary">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center -mt-6 shadow-lg">
+                <span className="text-xl">🏠</span>
+              </div>
+            </button>
+            <button 
+              onClick={() => navigate('/profile')}
+              className="flex flex-col items-center gap-1 text-muted-foreground"
+            >
+              <span className="text-xl">👤</span>
+              <span className="text-xs">{language === 'tr' ? 'Profil' : 'Profile'}</span>
+            </button>
+          </div>
         </div>
 
         <LevelUpCelebration
@@ -206,73 +294,128 @@ const QuizPage: React.FC = () => {
     const nextSet = getNextQuizSet(completedQuizSets);
     
     return (
-      <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
-        <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
+      <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto relative overflow-hidden">
+        {/* Confetti effect */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(30)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ 
+                y: -20, 
+                x: Math.random() * 400, 
+                rotate: 0,
+                opacity: 1 
+              }}
+              animate={{ 
+                y: 800, 
+                rotate: 360 * (Math.random() > 0.5 ? 1 : -1),
+                opacity: 0
+              }}
+              transition={{ 
+                duration: 3 + Math.random() * 2, 
+                delay: Math.random() * 0.5,
+                repeat: Infinity,
+                repeatDelay: 2
+              }}
+              className={cn(
+                "absolute w-3 h-3 rounded-sm",
+                i % 4 === 0 && "bg-primary",
+                i % 4 === 1 && "bg-gold",
+                i % 4 === 2 && "bg-accent",
+                i % 4 === 3 && "bg-secondary"
+              )}
+            />
+          ))}
+        </div>
+
+        {/* Header */}
+        <div className="relative pt-8 pb-4 text-center">
           <button 
             onClick={() => setSelectedQuizSet(null)}
-            className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
+            className="absolute left-4 top-4 p-2 rounded-xl hover:bg-muted transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
-          <h1 className="font-semibold">Quiz Tamamlandı!</h1>
-          <div className="w-10" />
-        </header>
+          
+          <p className="text-muted-foreground text-sm mb-2">
+            {language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn}
+          </p>
+          
+          <IslamicEmblem size="md" />
+        </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
-          <div className="text-center animate-fade-in">
-            {/* Result Icon */}
-            <div className={cn(
-              "w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center",
-              percentage >= 80 
-                ? "bg-gradient-to-br from-gold to-amber-500" 
-                : percentage >= 50 
-                  ? "bg-gradient-to-br from-sage to-teal-500"
-                  : "bg-gradient-to-br from-orange-400 to-red-400"
-            )}>
-              <span className="text-5xl">
-                {percentage >= 80 ? '🏆' : percentage >= 50 ? '👏' : '💪'}
-              </span>
+        {/* Result Card */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-4">
+              {language === 'tr' ? 'Tebrikler!' : 'Congrats!'}
+            </h1>
+            
+            <div className="bg-card rounded-3xl shadow-xl p-8 mb-6">
+              <p className="text-muted-foreground mb-2">
+                {language === 'tr' ? 'Quiz Sonucu' : 'Quiz Result'}
+              </p>
+              
+              <div className="flex items-center justify-center gap-1 mb-4">
+                <Sparkles className="w-6 h-6 text-gold" />
+                <span className="text-sm text-muted-foreground">{language === 'tr' ? 'Skor' : 'Score'}</span>
+              </div>
+              
+              <div className="text-6xl font-bold text-primary mb-6">
+                {Math.round(percentage)}
+              </div>
+              
+              {/* Stats */}
+              <div className="flex items-center justify-center gap-8 py-4 border-t border-border">
+                <div className="text-center">
+                  <div className="flex items-center gap-1 text-muted-foreground mb-1">
+                    <span className="text-xs">Q</span>
+                    <span className="text-sm">{language === 'tr' ? 'Toplam' : 'Total'}</span>
+                  </div>
+                  <span className="text-xl font-bold text-foreground">{activeQuizSet.questions.length}</span>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center gap-1 text-sage mb-1">
+                    <Check className="w-4 h-4" />
+                    <span className="text-sm">{language === 'tr' ? 'Doğru' : 'Right'}</span>
+                  </div>
+                  <span className="text-xl font-bold text-sage">{score}</span>
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex items-center gap-1 text-destructive mb-1">
+                    <X className="w-4 h-4" />
+                    <span className="text-sm">{language === 'tr' ? 'Yanlış' : 'Wrong'}</span>
+                  </div>
+                  <span className="text-xl font-bold text-destructive">{wrongAnswers}</span>
+                </div>
+              </div>
             </div>
 
-            {/* Score */}
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              {score}/{activeQuizSet.questions.length} Doğru
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              {percentage >= 80 
-                ? 'Muhteşem! Harika iş çıkardın!' 
-                : percentage >= 50 
-                  ? 'İyi gidiyorsun! Devam et!'
-                  : 'Her gün biraz daha iyi olacaksın!'}
-            </p>
-
-            {/* XP Earned */}
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gold-light rounded-2xl mb-2">
-              <Sparkles className="w-6 h-6 text-gold" />
-              <span className="text-2xl font-bold text-gold">+{totalXP} XP</span>
-            </div>
-            <p className="text-xs text-muted-foreground mb-8">
-              ({activeQuizSet.xpBonus} bonus XP dahil)
-            </p>
-
-            {/* Actions */}
-            <div className="space-y-3">
-              {nextSet && (
-                <Button onClick={handleNextQuizSet} variant="sage" size="lg" className="w-full">
-                  <BookOpen className="w-5 h-5" />
-                  Sonraki Quiz: {language === 'tr' ? nextSet.titleTr : nextSet.titleEn}
-                  <ChevronRight className="w-5 h-5" />
-                </Button>
-              )}
-              <Button onClick={handleRestart} variant="outline" size="lg" className="w-full">
-                <RotateCcw className="w-5 h-5" />
-                Tekrar Dene
+            {/* Play Again Button */}
+            <Button 
+              onClick={handleRestart}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-6 text-lg font-semibold shadow-lg"
+            >
+              {language === 'tr' ? 'Tekrar Oyna' : 'Play Again'}
+            </Button>
+            
+            {nextSet && (
+              <Button 
+                onClick={handleNextQuizSet}
+                variant="ghost"
+                className="w-full mt-3 text-primary"
+              >
+                {language === 'tr' ? 'Sonraki Quiz' : 'Next Quiz'}: {language === 'tr' ? nextSet.titleTr : nextSet.titleEn}
+                <ChevronRight className="w-5 h-5" />
               </Button>
-              <Button onClick={() => setSelectedQuizSet(null)} variant="ghost" size="lg" className="w-full">
-                Tüm Quizlere Dön
-              </Button>
-            </div>
-          </div>
+            )}
+          </motion.div>
         </div>
 
         <LevelUpCelebration
@@ -286,10 +429,11 @@ const QuizPage: React.FC = () => {
 
   if (!question || !activeQuizSet) return null;
 
+  // Question Screen
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
+      <header className="flex items-center justify-between px-4 py-4">
         <button 
           onClick={() => setSelectedQuizSet(null)}
           className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
@@ -297,138 +441,154 @@ const QuizPage: React.FC = () => {
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="text-center">
-          <h1 className="font-semibold text-sm">{language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn}</h1>
-          <p className="text-xs text-muted-foreground">Soru {currentQuestion + 1}/{activeQuizSet.questions.length}</p>
+          <p className="text-muted-foreground text-xs">
+            {language === 'tr' ? activeQuizSet.titleTr : activeQuizSet.titleEn}
+          </p>
         </div>
-        <div className="flex items-center gap-1 px-3 py-1.5 bg-gold-light rounded-xl">
-          <Sparkles className="w-4 h-4 text-gold" />
-          <span className="text-sm font-bold text-gold">{totalXP}</span>
-        </div>
+        <IslamicEmblem size="sm" />
       </header>
 
-      {/* Progress Bar */}
-      <div className="px-6 py-4">
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-sage rounded-full transition-all duration-500"
-            style={{ width: `${((currentQuestion + 1) / activeQuizSet.questions.length) * 100}%` }}
-          />
+      {/* Progress */}
+      <div className="px-6 py-2">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm text-muted-foreground">
+            {currentQuestion + 1} {language === 'tr' ? 'soru' : 'question of'} {activeQuizSet.questions.length}
+          </span>
+          <div className="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center">
+            <span className="text-sm font-bold text-primary">
+              {Math.round(((currentQuestion + 1) / activeQuizSet.questions.length) * 10)}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Question */}
       <div className="flex-1 px-6 py-4">
-        <div className="animate-fade-in" key={currentQuestion}>
-          {/* Question Text */}
-          <div className="mb-8">
-            {question.questionArabic && (
-              <p className="font-arabic text-arabic-xl text-center mb-4 text-foreground">
-                {question.questionArabic}
-              </p>
-            )}
-            <h2 className="text-xl font-semibold text-foreground text-center">
-              {question.question}
-            </h2>
-          </div>
-
-          {/* Options */}
-          <div className="space-y-3">
-            {question.options?.map((option, index) => {
-              const isSelected = selectedAnswer === index;
-              const isCorrectAnswer = index === question.correctAnswer;
-              
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleAnswer(index)}
-                  disabled={isAnswered}
-                  className={cn(
-                    "w-full p-4 rounded-2xl border-2 transition-all text-left flex items-center gap-3",
-                    !isAnswered && "hover:border-sage hover:bg-sage-light/30 active:scale-[0.98]",
-                    isAnswered && isCorrectAnswer && "border-sage bg-sage-light",
-                    isAnswered && isSelected && !isCorrectAnswer && "border-destructive bg-red-50 dark:bg-red-900/20",
-                    !isAnswered && isSelected && "border-sage bg-sage-light/50",
-                    !isAnswered && !isSelected && "border-border bg-card"
-                  )}
-                >
-                  {/* Option Letter */}
-                  <div className={cn(
-                    "w-10 h-10 rounded-xl flex items-center justify-center font-bold",
-                    isAnswered && isCorrectAnswer && "bg-sage text-white",
-                    isAnswered && isSelected && !isCorrectAnswer && "bg-destructive text-white",
-                    !isAnswered && "bg-muted text-muted-foreground"
-                  )}>
-                    {isAnswered && isCorrectAnswer ? (
-                      <Check className="w-5 h-5" />
-                    ) : isAnswered && isSelected && !isCorrectAnswer ? (
-                      <X className="w-5 h-5" />
-                    ) : (
-                      String.fromCharCode(65 + index)
-                    )}
-                  </div>
-
-                  {/* Option Text */}
-                  <span className={cn(
-                    "flex-1 font-medium",
-                    isAnswered && isCorrectAnswer && "text-sage",
-                    isAnswered && isSelected && !isCorrectAnswer && "text-destructive"
-                  )}>
-                    {option}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Explanation */}
-          {isAnswered && (
-            <div className={cn(
-              "mt-6 p-4 rounded-2xl animate-fade-in",
-              isCorrect ? "bg-sage-light" : "bg-orange-50 dark:bg-orange-900/20"
-            )}>
-              <div className="flex items-start gap-3">
-                <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
-                  isCorrect ? "bg-sage/20" : "bg-orange-200 dark:bg-orange-800/50"
-                )}>
-                  {isCorrect ? (
-                    <Check className="w-4 h-4 text-sage" />
-                  ) : (
-                    <span className="text-orange-600">💡</span>
-                  )}
-                </div>
-                <div>
-                  <p className={cn(
-                    "font-medium mb-1",
-                    isCorrect ? "text-sage" : "text-orange-700 dark:text-orange-400"
-                  )}>
-                    {isCorrect ? 'Doğru! +' + question.xpReward + ' XP' : 'Doğru cevap değil'}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {question.explanation}
-                  </p>
-                </div>
-              </div>
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={currentQuestion}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+          >
+            {/* Question Text */}
+            <div className="mb-8">
+              {question.questionArabic && (
+                <p className="font-arabic text-2xl text-center mb-4 text-foreground leading-loose">
+                  {question.questionArabic}
+                </p>
+              )}
+              <h2 className="text-lg font-semibold text-foreground">
+                {question.question}
+              </h2>
             </div>
-          )}
-        </div>
+
+            {/* Options */}
+            <div className="space-y-3">
+              {question.options?.map((option, index) => {
+                const isSelected = selectedAnswer === index;
+                const isCorrectAnswer = index === question.correctAnswer;
+                const letter = String.fromCharCode(65 + index);
+                
+                return (
+                  <motion.button
+                    key={index}
+                    onClick={() => handleAnswer(index)}
+                    disabled={isAnswered}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={cn(
+                      "w-full p-4 rounded-2xl border-2 transition-all text-left flex items-center gap-3",
+                      !isAnswered && "hover:border-primary hover:bg-primary/5 active:scale-[0.98]",
+                      isAnswered && isCorrectAnswer && "border-sage bg-sage-light",
+                      isAnswered && isSelected && !isCorrectAnswer && "border-destructive bg-destructive/10",
+                      !isAnswered && isSelected && "border-primary bg-primary/10",
+                      !isAnswered && !isSelected && "border-border bg-card"
+                    )}
+                  >
+                    {/* Option Letter */}
+                    <div className={cn(
+                      "w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm",
+                      isAnswered && isCorrectAnswer && "bg-sage text-primary-foreground",
+                      isAnswered && isSelected && !isCorrectAnswer && "bg-destructive text-primary-foreground",
+                      !isAnswered && "bg-muted text-muted-foreground"
+                    )}>
+                      {letter}
+                    </div>
+
+                    {/* Option Text */}
+                    <span className={cn(
+                      "flex-1 font-medium",
+                      isAnswered && isCorrectAnswer && "text-sage",
+                      isAnswered && isSelected && !isCorrectAnswer && "text-destructive"
+                    )}>
+                      {option}
+                    </span>
+
+                    {/* Result Icon */}
+                    {isAnswered && isCorrectAnswer && (
+                      <Check className="w-5 h-5 text-sage" />
+                    )}
+                    {isAnswered && isSelected && !isCorrectAnswer && (
+                      <X className="w-5 h-5 text-destructive" />
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Next Button */}
-      {isAnswered && (
-        <div className="px-6 py-4 pb-8 animate-fade-in">
-          <Button onClick={handleNext} variant="sage" size="lg" className="w-full">
-            {currentQuestion < activeQuizSet.questions.length - 1 ? (
-              <>
-                Sonraki Soru
-                <ChevronRight className="w-5 h-5" />
-              </>
-            ) : (
-              'Sonuçları Gör'
-            )}
-          </Button>
-        </div>
-      )}
+      {/* Answer Feedback & Next Button */}
+      <AnimatePresence>
+        {isAnswered && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="px-6 py-4 pb-8"
+          >
+            {/* Feedback Message */}
+            <div className={cn(
+              "flex items-center justify-center gap-3 py-4 rounded-2xl mb-4",
+              isCorrect ? "bg-sage-light" : "bg-muted"
+            )}>
+              <div className={cn(
+                "w-10 h-10 rounded-full flex items-center justify-center",
+                isCorrect ? "bg-sage" : "bg-muted-foreground/20"
+              )}>
+                {isCorrect ? (
+                  <span className="text-xl">😊</span>
+                ) : (
+                  <span className="text-xl">😔</span>
+                )}
+              </div>
+              <span className={cn(
+                "font-semibold",
+                isCorrect ? "text-sage" : "text-foreground"
+              )}>
+                {isCorrect 
+                  ? (language === 'tr' ? 'Doğru Cevap' : 'Right Answer')
+                  : (language === 'tr' ? 'Yanlış Cevap' : 'Wrong Answer')
+                }
+              </span>
+            </div>
+
+            {/* Next Button */}
+            <Button 
+              onClick={handleNext}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-6 text-lg font-semibold"
+            >
+              {currentQuestion < activeQuizSet.questions.length - 1 
+                ? (language === 'tr' ? 'Sonraki Soru' : 'Next Question')
+                : (language === 'tr' ? 'Sonuçları Gör' : 'See Results')
+              }
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <LevelUpCelebration
         newLevel={levelUpData.newLevel}

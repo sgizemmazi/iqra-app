@@ -57,37 +57,32 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Custom Warm Islamic palette
-        terracotta: {
-          DEFAULT: "hsl(var(--terracotta))",
-          light: "hsl(var(--terracotta-light))",
-          dark: "hsl(var(--terracotta-dark))",
-        },
-        brown: {
-          DEFAULT: "hsl(var(--brown))",
-          light: "hsl(var(--brown-light))",
-        },
-        cream: {
-          DEFAULT: "hsl(var(--cream))",
-          dark: "hsl(var(--cream-dark))",
+// Custom Teal Islamic palette
+        teal: {
+          DEFAULT: "hsl(var(--teal))",
+          light: "hsl(var(--teal-light))",
+          dark: "hsl(var(--teal-dark))",
         },
         gold: {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
         },
-        sand: "hsl(var(--sand))",
-        // Gamification colors - Warm tones
+        sage: {
+          DEFAULT: "hsl(var(--sage))",
+          light: "hsl(var(--sage-light))",
+        },
+        // Gamification colors
         xp: {
-          DEFAULT: "hsl(var(--xp-terracotta))",
-          light: "hsl(var(--xp-terracotta-light))",
+          DEFAULT: "hsl(var(--xp-gold))",
+          light: "hsl(var(--xp-gold-light))",
         },
         streak: {
           DEFAULT: "hsl(var(--streak-orange))",
           light: "hsl(var(--streak-orange-light))",
         },
         badge: {
-          DEFAULT: "hsl(var(--badge-brown))",
-          light: "hsl(var(--badge-brown-light))",
+          DEFAULT: "hsl(var(--badge-teal))",
+          light: "hsl(var(--badge-teal-light))",
         },
         level: {
           DEFAULT: "hsl(var(--level-gold))",
