@@ -66,7 +66,7 @@ const SurahListPreview: React.FC = () => {
             </div>
 
             {/* Arabic name */}
-            <span className="font-arabic text-xl text-primary/80">
+            <span className="font-arabic text-xl text-teal">
               {surah.arabicName}
             </span>
 

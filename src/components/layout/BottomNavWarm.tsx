@@ -37,7 +37,7 @@ const BottomNavWarm: React.FC = () => {
                 {isActive && (
                   <motion.div
                     layoutId="navActive"
-                    className="absolute inset-0 bg-terracotta-light rounded-xl"
+                    className="absolute inset-0 bg-teal-light rounded-xl"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
