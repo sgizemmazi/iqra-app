@@ -200,7 +200,7 @@
 
   /* Featured Card - For hero sections */
   .featured-card {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--terracotta-dark)) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--teal-dark)) 100%);
     border-radius: calc(var(--radius) + 4px);
     box-shadow: var(--shadow-lg);
     position: relative;
@@ -227,8 +227,8 @@
   }
 
   .dark .soft-glass {
-    background: hsla(25, 22%, 16%, 0.85);
-    border: 1px solid hsla(25, 18%, 25%, 0.4);
+    background: hsla(170, 22%, 16%, 0.85);
+    border: 1px solid hsla(170, 18%, 25%, 0.4);
   }
 
   /* Pill Badge */
@@ -241,7 +241,7 @@
 
   .pill-badge-primary {
     @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold;
-    background: hsl(var(--terracotta-light));
+    background: hsl(var(--teal-light));
     color: hsl(var(--primary));
     border: 1px solid hsl(var(--primary) / 0.2);
   }
@@ -249,7 +249,7 @@
   /* Icon Container */
   .icon-box {
     @apply flex items-center justify-center rounded-xl;
-    background: hsl(var(--terracotta-light));
+    background: hsl(var(--teal-light));
   }
 
   .icon-box-primary {
@@ -261,7 +261,7 @@
   /* Islamic star decoration */
   .islamic-star {
     @apply w-6 h-6;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2 2.4-7.2-6-4.8h7.6L12 2z' fill='%23C4956A' opacity='0.4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16l-6.4 5.2 2.4-7.2-6-4.8h7.6L12 2z' fill='%2336A89A' opacity='0.4'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -377,6 +377,6 @@
 
 /* Selection color */
 ::selection {
-  background: hsla(25, 55%, 55%, 0.2);
+  background: hsla(168, 65%, 42%, 0.2);
   color: hsl(var(--foreground));
 }

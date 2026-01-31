@@ -47,12 +47,13 @@ const LastReadCard: React.FC = () => {
           </div>
         </div>
 
-        {/* Decorative book illustration */}
-        <div className="absolute top-4 right-4 opacity-20">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-            <rect x="10" y="8" width="40" height="44" rx="3" fill="white"/>
-            <rect x="12" y="10" width="36" height="40" rx="2" stroke="white" strokeWidth="2"/>
-            <line x1="30" y1="10" x2="30" y2="50" stroke="white" strokeWidth="1"/>
+        {/* Decorative Islamic pattern */}
+        <div className="absolute top-3 right-3 opacity-20">
+          <svg width="70" height="70" viewBox="0 0 70 70" fill="none">
+            <circle cx="35" cy="35" r="30" stroke="white" strokeWidth="1.5" />
+            <circle cx="35" cy="35" r="22" stroke="white" strokeWidth="1" />
+            <path d="M35 5L35 65M5 35L65 35" stroke="white" strokeWidth="1" opacity="0.5"/>
+            <path d="M35 15L55 35L35 55L15 35Z" stroke="white" strokeWidth="1.5" fill="none"/>
           </svg>
         </div>
       </motion.div>
