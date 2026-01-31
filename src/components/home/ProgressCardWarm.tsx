@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { UserProgress } from '@/types/gamification';
+import { Zap, Flame, Star } from 'lucide-react';
 
 interface ProgressCardWarmProps {
   progress: UserProgress;
@@ -11,7 +12,7 @@ const ProgressCardWarm: React.FC<ProgressCardWarmProps> = ({ progress }) => {
   const { language } = useLanguage();
   
   const progressPercent = Math.min((progress.currentXP / progress.xpForNextLevel) * 100, 100);
-  const radius = 40;
+  const radius = 45;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
@@ -24,26 +25,26 @@ const ProgressCardWarm: React.FC<ProgressCardWarmProps> = ({ progress }) => {
         transition={{ delay: 0.45 }}
       >
         <div className="flex items-center gap-5">
-          {/* Circular Progress */}
-          <div className="relative w-24 h-24">
-            <svg className="w-full h-full progress-ring">
+          {/* Circular Progress - Like reference dial */}
+          <div className="relative w-28 h-28">
+            <svg className="w-full h-full progress-ring" viewBox="0 0 100 100">
               {/* Background circle */}
               <circle
-                cx="48"
-                cy="48"
+                cx="50"
+                cy="50"
                 r={radius}
                 fill="none"
                 stroke="hsl(var(--muted))"
-                strokeWidth="8"
+                strokeWidth="10"
               />
               {/* Progress circle */}
               <motion.circle
-                cx="48"
-                cy="48"
+                cx="50"
+                cy="50"
                 r={radius}
                 fill="none"
-                stroke="hsl(var(--primary))"
-                strokeWidth="8"
+                stroke="hsl(var(--sage))"
+                strokeWidth="10"
                 strokeLinecap="round"
                 strokeDasharray={circumference}
                 initial={{ strokeDashoffset: circumference }}
@@ -51,10 +52,13 @@ const ProgressCardWarm: React.FC<ProgressCardWarmProps> = ({ progress }) => {
                 transition={{ duration: 1, delay: 0.6 }}
               />
             </svg>
-            {/* Center percentage */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xl font-bold text-foreground">
-                {Math.round(progressPercent)}%
+            {/* Center content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-xs text-muted-foreground">
+                {language === 'tr' ? 'Seviye' : 'Level'}
+              </span>
+              <span className="text-2xl font-bold text-foreground">
+                {progress.level}
               </span>
             </div>
           </div>
@@ -62,35 +66,38 @@ const ProgressCardWarm: React.FC<ProgressCardWarmProps> = ({ progress }) => {
           {/* Progress info */}
           <div className="flex-1">
             <h3 className="font-bold text-foreground mb-1">
-              {language === 'tr' ? 'Öğrenme İlerlemesi' : 'Learning Progress'}
+              {language === 'tr' ? 'İlerleme Durumu' : 'Progress Status'}
             </h3>
-            <p className="text-sm text-muted-foreground mb-3">
-              {language === 'tr' 
-                ? `${progress.currentXP} / ${progress.xpForNextLevel} XP`
-                : `${progress.currentXP} / ${progress.xpForNextLevel} XP`
-              }
+            <p className="text-sm text-muted-foreground mb-4">
+              {progress.currentXP} / {progress.xpForNextLevel} XP
             </p>
 
-            {/* Stats row */}
-            <div className="flex gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg icon-box flex items-center justify-center">
-                  <span className="text-xs font-bold text-primary">{progress.level}</span>
-                </div>
+            {/* Stats row - device cards style */}
+            <div className="flex gap-3">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gold-light">
+                <Zap className="w-4 h-4 text-gold" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
-                    {language === 'tr' ? 'Seviye' : 'Level'}
+                  <p className="text-xs font-bold text-foreground">{progress.totalXP}</p>
+                  <p className="text-[10px] text-muted-foreground">XP</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-streak-light">
+                <Flame className="w-4 h-4 text-streak" />
+                <div>
+                  <p className="text-xs font-bold text-foreground">{progress.streak}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {language === 'tr' ? 'Gün' : 'Days'}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-streak-orange-light flex items-center justify-center">
-                  <span className="text-xs font-bold text-streak-orange">{progress.streak}</span>
-                </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-sage-light">
+                <Star className="w-4 h-4 text-sage" />
                 <div>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
-                    {language === 'tr' ? 'Gün' : 'Days'}
+                  <p className="text-xs font-bold text-foreground">{progress.dailyGoalsCompleted}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {language === 'tr' ? 'Görev' : 'Goals'}
                   </p>
                 </div>
               </div>
