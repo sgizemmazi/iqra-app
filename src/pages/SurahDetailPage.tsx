@@ -1,26 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Check, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Check, CheckCircle2, Timer, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getSurahById } from '@/data/surahsData';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
+import { motion } from 'framer-motion';
 
 // Audio URLs from Al-Afasy recitation
 const getAudioUrl = (surahId: string, ayahNumber: number): string => {
-  const surahNum = parseInt(surahId);
-  // Calculate verse number in Quran (simplified - assumes short surahs at the end)
   const audioMap: Record<string, number> = {
-    '1': 1, // Fatiha starts at verse 1
-    '108': 6206, // Kawthar
-    '109': 6209, // Kafirun
-    '110': 6215, // Nasr
-    '111': 6218, // Masad
-    '112': 6223, // Ikhlas
-    '113': 6227, // Falaq
-    '114': 6232, // Nas
+    '1': 1,
+    '108': 6206,
+    '109': 6209,
+    '110': 6215,
+    '111': 6218,
+    '112': 6223,
+    '113': 6227,
+    '114': 6232,
   };
   const startVerse = audioMap[surahId] || 1;
   return `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${startVerse + ayahNumber - 1}.mp3`;
@@ -127,41 +126,95 @@ const SurahDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
-        <button 
-          onClick={() => navigate('/learn')}
-          className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-2">
-            <h1 className="font-semibold">{language === 'tr' ? surah.nameTr : surah.nameEn}</h1>
-            {isLearned && <CheckCircle2 className="w-5 h-5 text-sage" />}
+      {/* Dark Header - Like reference Bedroom screen */}
+      <motion.div 
+        className="detail-header"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <button 
+            onClick={() => navigate('/learn')}
+            className="p-2 -ml-2 rounded-xl hover:bg-cream/10 transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6 text-cream" />
+          </button>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="font-semibold text-cream">{language === 'tr' ? surah.nameTr : surah.nameEn}</h1>
+              {isLearned && <CheckCircle2 className="w-5 h-5 text-gold" />}
+            </div>
+            <p className="text-sm text-cream/70 font-arabic">{surah.nameArabic}</p>
           </div>
-          <p className="text-xs text-muted-foreground">{surah.nameArabic}</p>
+          <div className="w-10" />
         </div>
-        <div className="w-10" />
-      </header>
 
-      {/* Progress Bar */}
+        {/* Control buttons - Like reference mode buttons */}
+        <div className="flex items-center justify-center gap-4 mt-4">
+          <button 
+            onClick={() => setShowTransliteration(!showTransliteration)}
+            className={cn("control-btn", showTransliteration && "active")}
+          >
+            <span className="text-lg">Aa</span>
+            <span className="text-[10px]">
+              {language === 'tr' ? 'Okunuş' : 'Transliteration'}
+            </span>
+          </button>
+          
+          <button className="control-btn">
+            <Timer className="w-5 h-5" />
+            <span className="text-[10px]">
+              {language === 'tr' ? 'Zamanlayıcı' : 'Timer'}
+            </span>
+          </button>
+          
+          <button 
+            onClick={() => {
+              if (audioRef.current) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+                setIsPlaying(true);
+              }
+            }}
+            className="control-btn"
+          >
+            <RotateCcw className="w-5 h-5" />
+            <span className="text-[10px]">
+              {language === 'tr' ? 'Tekrar' : 'Repeat'}
+            </span>
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Progress indicator */}
       <div className="px-6 py-4">
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-          <span>{t('learn.ayah')} {currentAyah + 1} {t('learn.of')} {ayahs.length}</span>
-          <span>%{Math.round(progress)} {t('learn.complete')}</span>
+          <span>{t('learn.ayah')} {currentAyah + 1} / {ayahs.length}</span>
+          <span className="flex items-center gap-1">
+            <Zap className="w-4 h-4 text-gold" />
+            +50 XP
+          </span>
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-sage rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
+          <motion.div 
+            className="h-full bg-sage rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
           />
         </div>
       </div>
 
       {/* Ayah Display */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-8">
-        <div className="text-center space-y-8 animate-fade-in" key={currentAyah}>
+      <div className="flex-1 flex flex-col justify-center px-6 py-4">
+        <motion.div 
+          className="text-center space-y-6"
+          key={currentAyah}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           {/* Ayah Number Badge */}
           <div className="flex justify-center">
             <div className="w-12 h-12 rounded-full bg-gold-light border-2 border-gold/30 flex items-center justify-center">
@@ -170,7 +223,7 @@ const SurahDetailPage: React.FC = () => {
           </div>
 
           {/* Arabic Text */}
-          <div className="py-8">
+          <div className="py-6">
             <p className="font-arabic text-arabic-2xl leading-loose text-foreground">
               {ayah.arabic}
             </p>
@@ -178,32 +231,41 @@ const SurahDetailPage: React.FC = () => {
 
           {/* Transliteration */}
           {showTransliteration && (
-            <p className="text-lg text-sage italic">
+            <motion.p 
+              className="text-lg text-sage italic"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
               {ayah.transliteration}
-            </p>
+            </motion.p>
           )}
 
           {/* Translation */}
           <p className="text-muted-foreground text-body-lg leading-relaxed max-w-sm mx-auto">
             {language === 'tr' ? ayah.translationTr : ayah.translationEn}
           </p>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Audio Controls */}
+      {/* Audio Controls Card */}
       <div className="px-6 py-4">
-        <div className="bg-card rounded-3xl p-4 border border-border/50 shadow-soft">
+        <motion.div 
+          className="clean-card p-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           {/* Speed Selector */}
-          <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="flex items-center justify-center gap-3 mb-5">
             {[0.5, 1, 1.5].map((speed) => (
               <button
                 key={speed}
                 onClick={() => setPlaybackSpeed(speed)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-sm font-medium transition-colors",
+                  "px-4 py-2 rounded-xl text-sm font-medium transition-all",
                   playbackSpeed === speed 
-                    ? "bg-sage-light text-sage" 
-                    : "text-muted-foreground hover:bg-muted"
+                    ? "bg-sage text-cream shadow-sm" 
+                    : "bg-sage-light text-sage hover:bg-sage/20"
                 )}
               >
                 {speed}x
@@ -212,79 +274,73 @@ const SurahDetailPage: React.FC = () => {
           </div>
 
           {/* Playback Controls */}
-          <div className="flex items-center justify-center gap-6">
-            <button 
+          <div className="flex items-center justify-center gap-8">
+            <motion.button 
               onClick={goToPrev}
               disabled={currentAyah === 0}
-              className="p-3 rounded-xl hover:bg-muted transition-colors disabled:opacity-30"
+              className="p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors disabled:opacity-30"
+              whileTap={{ scale: 0.95 }}
             >
               <ChevronLeft className="w-6 h-6" />
-            </button>
+            </motion.button>
             
-            <button 
+            <motion.button 
               onClick={handlePlayPause}
-              className="w-16 h-16 rounded-full bg-sage text-cream flex items-center justify-center shadow-prayer hover:bg-sage-dark transition-colors"
+              className="w-16 h-16 rounded-full bg-sage text-cream flex items-center justify-center shadow-prayer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {isPlaying ? (
                 <Pause className="w-7 h-7" />
               ) : (
                 <Play className="w-7 h-7 ml-1" />
               )}
-            </button>
+            </motion.button>
 
-            <button 
+            <motion.button 
               onClick={goToNext}
               disabled={currentAyah === ayahs.length - 1}
-              className="p-3 rounded-xl hover:bg-muted transition-colors disabled:opacity-30"
+              className="p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors disabled:opacity-30"
+              whileTap={{ scale: 0.95 }}
             >
               <ChevronRight className="w-6 h-6" />
-            </button>
+            </motion.button>
           </div>
-
-          {/* Repeat Button */}
-          <div className="flex justify-center mt-4">
-            <button 
-              onClick={() => {
-                if (audioRef.current) {
-                  audioRef.current.currentTime = 0;
-                  audioRef.current.play();
-                  setIsPlaying(true);
-                }
-              }}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {t('learn.repeatAyah')}
-            </button>
-          </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Mark as Learned */}
       <div className="px-6 py-4 pb-8">
         {isLearned ? (
-          <div className="w-full py-4 rounded-2xl bg-sage/10 border border-sage/30 flex items-center justify-center gap-2 text-sage">
+          <motion.div 
+            className="w-full py-4 rounded-2xl bg-sage/10 border border-sage/30 flex items-center justify-center gap-2 text-sage"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
             <CheckCircle2 className="w-5 h-5" />
             <span className="font-medium">
               {language === 'tr' ? 'Öğrenildi!' : 'Learned!'}
             </span>
-          </div>
+          </motion.div>
         ) : (
           <Button 
             onClick={handleMarkLearned}
-            variant="sage" 
-            className="w-full" 
+            className="w-full bg-sage hover:bg-sage-dark text-cream rounded-2xl py-6" 
             size="lg"
           >
-            <Check className="w-5 h-5" />
+            <Check className="w-5 h-5 mr-2" />
             {t('learn.markLearned')}
           </Button>
         )}
         
         {showSuccess && (
-          <div className="mt-3 text-center text-sm text-sage animate-fade-in">
+          <motion.div 
+            className="mt-3 text-center text-sm text-sage"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             +50 XP {language === 'tr' ? 'kazandın!' : 'earned!'}
-          </div>
+          </motion.div>
         )}
       </div>
 
