@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Heart, ChevronRight, CheckCircle2 } from 'lucide-react';
-import MobileLayout from '@/components/layout/MobileLayout';
+import { BookOpen, Heart, ChevronRight, CheckCircle2, ArrowLeft, Grid3X3, List } from 'lucide-react';
+import MobileLayoutWarm from '@/components/layout/MobileLayoutWarm';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
+import { motion } from 'framer-motion';
 
 interface LearnItem {
   id: string;
@@ -62,72 +63,80 @@ const LearnPage: React.FC = () => {
   const totalDuas = duas.length;
 
   return (
-    <MobileLayout>
-      <div className="animate-fade-in">
+    <MobileLayoutWarm hideNav>
+      <div className="min-h-screen bg-background">
         {/* Header */}
-        <div className="px-6 pt-8 pb-4">
-          <h1 className="text-2xl font-bold text-foreground mb-1">{t('learn.title')}</h1>
-          <p className="text-muted-foreground">{t('learn.subtitle')}</p>
-        </div>
+        <div className="detail-header">
+          <div className="flex items-center justify-between mb-4">
+            <button 
+              onClick={() => navigate('/')}
+              className="w-10 h-10 rounded-xl bg-cream/10 flex items-center justify-center"
+            >
+              <ArrowLeft className="w-5 h-5 text-cream" />
+            </button>
+            <h1 className="text-lg font-semibold text-cream">{t('learn.title')}</h1>
+            <div className="w-10" />
+          </div>
 
-        {/* Progress Summary */}
-        <div className="px-6 mb-4">
-          <div className="bg-card rounded-2xl p-4 border border-border/50">
-            <div className="flex items-center justify-between">
-              <div className="text-center flex-1">
-                <p className="text-2xl font-bold text-foreground">{learnedSurahsCount}/{totalSurahs}</p>
-                <p className="text-xs text-muted-foreground">{t('learn.surahs')}</p>
+          {/* Progress Stats */}
+          <div className="flex items-center justify-center gap-8 py-4">
+            <div className="text-center">
+              <div className="dial-control w-16 h-16 mx-auto mb-2">
+                <span className="text-lg font-bold text-sage">{learnedSurahsCount}/{totalSurahs}</span>
               </div>
-              <div className="w-px h-10 bg-border" />
-              <div className="text-center flex-1">
-                <p className="text-2xl font-bold text-foreground">{learnedDuasCount}/{totalDuas}</p>
-                <p className="text-xs text-muted-foreground">{t('learn.duas')}</p>
+              <span className="text-xs text-cream/80">{t('learn.surahs')}</span>
+            </div>
+            <div className="text-center">
+              <div className="dial-control w-16 h-16 mx-auto mb-2">
+                <span className="text-lg font-bold text-sage">{learnedDuasCount}/{totalDuas}</span>
               </div>
+              <span className="text-xs text-cream/80">{t('learn.duas')}</span>
             </div>
           </div>
         </div>
 
-        {/* Tab Selector */}
-        <div className="px-6 mb-6">
-          <div className="flex bg-muted rounded-2xl p-1.5">
-            <button
-              onClick={() => setActiveTab('surahs')}
-              className={cn(
-                "flex-1 py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
-                activeTab === 'surahs'
-                  ? "bg-card text-foreground shadow-soft"
-                  : "text-muted-foreground"
-              )}
-            >
-              <BookOpen className="w-5 h-5" />
-              {t('learn.surahs')}
-            </button>
-            <button
-              onClick={() => setActiveTab('duas')}
-              className={cn(
-                "flex-1 py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2",
-                activeTab === 'duas'
-                  ? "bg-card text-foreground shadow-soft"
-                  : "text-muted-foreground"
-              )}
-            >
-              <Heart className="w-5 h-5" />
-              {t('learn.duas')}
-            </button>
-          </div>
-        </div>
+        {/* Content */}
+        <div className="px-5 -mt-4 relative z-10">
+          {/* Tab Switcher */}
+          <motion.div 
+            className="flex items-center justify-center mb-5"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="tab-switcher">
+              <button 
+                onClick={() => setActiveTab('surahs')}
+                className={cn("tab-switcher-item", activeTab === 'surahs' && "active")}
+              >
+                <Grid3X3 className="w-4 h-4 inline-block mr-1.5" />
+                {t('learn.surahs')}
+              </button>
+              <button 
+                onClick={() => setActiveTab('duas')}
+                className={cn("tab-switcher-item", activeTab === 'duas' && "active")}
+              >
+                <List className="w-4 h-4 inline-block mr-1.5" />
+                {t('learn.duas')}
+              </button>
+            </div>
+          </motion.div>
 
-        {/* Continue Learning Card */}
-        {items.find(i => !getItemProgress(i).isCompleted) && (
-          <div className="px-6 mb-6">
-            <div className="bg-sage-light rounded-3xl p-5 border border-sage/20">
-              <p className="text-sm text-sage font-medium mb-2">{t('learn.continueWhere')}</p>
+          {/* Continue Card */}
+          {items.find(i => !getItemProgress(i).isCompleted) && (
+            <motion.div 
+              className="featured-card p-5 mb-5"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
+              <p className="text-sm text-cream/80 mb-2">{t('learn.continueWhere')}</p>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-foreground">
+                  <p className="font-semibold text-cream">
                     {t(items.find(i => !getItemProgress(i).isCompleted)?.nameKey || '')}
                   </p>
-                  <p className="font-arabic text-muted-foreground">
+                  <p className="font-arabic text-cream/70">
                     {items.find(i => !getItemProgress(i).isCompleted)?.nameArabic}
                   </p>
                 </div>
@@ -136,86 +145,72 @@ const LearnPage: React.FC = () => {
                     const item = items.find(i => !getItemProgress(i).isCompleted);
                     if (item) navigate(`/learn/${item.type}/${item.id}`);
                   }}
-                  className="bg-sage text-cream px-5 py-2.5 rounded-xl font-medium hover:bg-sage-dark transition-colors"
+                  className="control-btn active"
                 >
-                  {t('learn.continue')}
+                  <span className="text-sm font-medium">{t('learn.continue')}</span>
                 </button>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
 
-        {/* Items List */}
-        <div className="px-6 space-y-3 pb-6">
-          {items.map((item, index) => {
-            const { progress, isCompleted } = getItemProgress(item);
-            
-            return (
-              <button
-                key={item.id}
-                onClick={() => navigate(`/learn/${item.type}/${item.id}`)}
-                className={cn(
-                  "w-full flex items-center gap-4 p-4 rounded-2xl bg-card border transition-all hover:shadow-soft text-left",
-                  isCompleted ? "border-sage/30" : "border-border/50",
-                  "animate-fade-in"
-                )}
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                {/* Icon */}
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center relative",
-                  isCompleted ? "bg-sage/20" : "bg-muted"
-                )}>
-                  {isCompleted ? (
-                    <CheckCircle2 className="w-7 h-7 text-sage" />
-                  ) : (
-                    <span className="font-arabic text-xl text-muted-foreground">
-                      {item.nameArabic.slice(0, 2)}
+          {/* Room Cards Grid */}
+          <motion.div 
+            className="grid grid-cols-2 gap-3 pb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            {items.map((item, index) => {
+              const { isCompleted } = getItemProgress(item);
+              
+              return (
+                <motion.button
+                  key={item.id}
+                  onClick={() => navigate(`/learn/${item.type}/${item.id}`)}
+                  className={cn(
+                    "room-card text-left",
+                    isCompleted && "active"
+                  )}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 + index * 0.03 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="room-card-icon">
+                    {isCompleted ? (
+                      <CheckCircle2 className="w-6 h-6" />
+                    ) : activeTab === 'surahs' ? (
+                      <BookOpen className="w-6 h-6" />
+                    ) : (
+                      <Heart className="w-6 h-6" />
+                    )}
+                  </div>
+                  <div className="text-center w-full">
+                    <span className="text-sm font-semibold block truncate">
+                      {t(item.nameKey)}
                     </span>
-                  )}
-                  {/* Progress ring for non-completed items */}
-                  {!isCompleted && progress > 0 && (
-                    <svg className="absolute inset-0 w-full h-full -rotate-90">
-                      <circle
-                        cx="28"
-                        cy="28"
-                        r="24"
-                        fill="none"
-                        stroke="hsl(var(--sage))"
-                        strokeWidth="3"
-                        strokeDasharray={`${(progress / 100) * 150.8} 150.8`}
-                        strokeLinecap="round"
-                        className="opacity-50"
-                      />
-                    </svg>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-foreground">{t(item.nameKey)}</p>
+                    <span className="font-arabic text-xs opacity-70 block">
+                      {item.nameArabic}
+                    </span>
                     {item.versesCount && (
-                      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                      <span className="text-xs opacity-60 mt-1 block">
                         {item.versesCount} {t('learn.verses')}
                       </span>
                     )}
                   </div>
-                  <p className="font-arabic text-muted-foreground">{item.nameArabic}</p>
                   {isCompleted && (
-                    <p className="text-sm text-sage mt-1">
-                      {language === 'tr' ? 'Tamamlandı ✓' : 'Completed ✓'}
-                    </p>
+                    <div className="absolute top-2 right-2">
+                      <div className="w-2 h-2 rounded-full bg-gold" />
+                    </div>
                   )}
-                </div>
-
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
-              </button>
-            );
-          })}
+                </motion.button>
+              );
+            })}
+          </motion.div>
         </div>
       </div>
-    </MobileLayout>
+    </MobileLayoutWarm>
   );
 };
 
