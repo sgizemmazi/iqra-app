@@ -264,7 +264,10 @@ const QuizPage: React.FC = () => {
               <History className="w-6 h-6" />
               <span className="text-xs">{language === 'tr' ? 'Geçmiş' : 'History'}</span>
             </button>
-            <button className="flex flex-col items-center gap-1 text-primary">
+            <button 
+              onClick={() => navigate('/')}
+              className="flex flex-col items-center gap-1 text-primary"
+            >
               <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center -mt-6 shadow-lg">
                 <span className="text-xl">🏠</span>
               </div>
