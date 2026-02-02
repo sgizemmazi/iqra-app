@@ -1,22 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Lightbulb, Wind, Tv, Speaker } from 'lucide-react';
+import { BookOpen, HandHeart, HelpCircle, Compass } from 'lucide-react';
 
 interface DeviceCardProps {
   icon: React.ElementType;
   label: string;
   isActive?: boolean;
   onToggle?: () => void;
+  onClick?: () => void;
 }
 
-const DeviceCard: React.FC<DeviceCardProps> = ({ icon: Icon, label, isActive = false, onToggle }) => {
+const DeviceCard: React.FC<DeviceCardProps> = ({ icon: Icon, label, isActive = false, onToggle, onClick }) => {
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    if (onToggle) {
+      onToggle();
+    }
+  };
+
   return (
     <motion.div 
       className="device-card cursor-pointer"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onToggle}
+      onClick={handleClick}
     >
       <div className="device-card-icon">
         <Icon className="w-5 h-5" />
@@ -29,17 +40,52 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ icon: Icon, label, isActive = f
 
 const DeviceCardsWarm: React.FC = () => {
   const { language } = useLanguage();
-  const [devices, setDevices] = React.useState([
-    { icon: Lightbulb, label: language === 'tr' ? 'Sureler' : 'Surahs', isActive: true },
-    { icon: Wind, label: language === 'tr' ? 'Dualar' : 'Duas', isActive: false },
-    { icon: Tv, label: 'Quiz', isActive: true },
-    { icon: Speaker, label: language === 'tr' ? 'Kıble' : 'Qibla', isActive: false },
-  ]);
+  const navigate = useNavigate();
+  
+  const [activeDevices, setActiveDevices] = React.useState<Record<string, boolean>>({
+    surahs: true,
+    duas: false,
+    quiz: true,
+    qibla: false,
+  });
 
-  const toggleDevice = (index: number) => {
-    setDevices(prev => prev.map((d, i) => 
-      i === index ? { ...d, isActive: !d.isActive } : d
-    ));
+  const devices = [
+    { 
+      id: 'surahs',
+      icon: BookOpen, 
+      label: language === 'tr' ? 'Sureler' : 'Surahs', 
+      route: '/learn'
+    },
+    { 
+      id: 'duas',
+      icon: HandHeart, 
+      label: language === 'tr' ? 'Dualar' : 'Duas', 
+      route: '/learn'
+    },
+    { 
+      id: 'quiz',
+      icon: HelpCircle, 
+      label: 'Quiz', 
+      route: '/quiz'
+    },
+    { 
+      id: 'qibla',
+      icon: Compass, 
+      label: language === 'tr' ? 'Kıble' : 'Qibla', 
+      route: '/qibla'
+    },
+  ];
+
+  const toggleDevice = (id: string) => {
+    setActiveDevices(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  const handleCardClick = (route: string, id: string) => {
+    toggleDevice(id);
+    navigate(route);
   };
 
   return (
@@ -50,13 +96,13 @@ const DeviceCardsWarm: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        {devices.map((device, index) => (
+        {devices.map((device) => (
           <DeviceCard 
-            key={device.label}
+            key={device.id}
             icon={device.icon}
             label={device.label}
-            isActive={device.isActive}
-            onToggle={() => toggleDevice(index)}
+            isActive={activeDevices[device.id]}
+            onClick={() => handleCardClick(device.route, device.id)}
           />
         ))}
       </motion.div>
