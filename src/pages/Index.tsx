@@ -1,39 +1,35 @@
 import React from 'react';
 import MobileLayoutWarm from '@/components/layout/MobileLayoutWarm';
 import HeaderWarm from '@/components/home/HeaderWarm';
-import LastReadCard from '@/components/home/LastReadCard';
 import QuickActionsWarm from '@/components/home/QuickActionsWarm';
-import SurahListPreview from '@/components/home/SurahListPreview';
-import ProgressCardWarm from '@/components/home/ProgressCardWarm';
+import DialControlWarm from '@/components/home/DialControlWarm';
+import DeviceCardsWarm from '@/components/home/DeviceCardsWarm';
 import { LevelUpCelebration } from '@/components/gamification/LevelUpCelebration';
 import { usePersistedGameProgress } from '@/hooks/usePersistedGameProgress';
 import { motion } from 'framer-motion';
 
 const Index: React.FC = () => {
-  const { progress, dailyGoals, badges, quizStats, completeGoal, levelUpData, closeLevelUpCelebration } = usePersistedGameProgress();
+  const { progress, levelUpData, closeLevelUpCelebration } = usePersistedGameProgress();
 
   return (
     <MobileLayoutWarm>
       <motion.div 
-        className="space-y-2"
+        className="space-y-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
       >
-        {/* Header */}
+        {/* Header with status info */}
         <HeaderWarm />
         
-        {/* Last Read Card - Featured */}
-        <LastReadCard />
-        
-        {/* Quick Actions Grid */}
+        {/* Quick Actions Grid - Rooms style */}
         <QuickActionsWarm />
         
-        {/* Surah List Preview */}
-        <SurahListPreview />
+        {/* Dial Control - Temperature style */}
+        <DialControlWarm progress={progress} />
         
-        {/* Progress Card */}
-        <ProgressCardWarm progress={progress} />
+        {/* Device Cards - Bottom devices */}
+        <DeviceCardsWarm />
         
         {/* Bottom spacing */}
         <div className="h-4" />
