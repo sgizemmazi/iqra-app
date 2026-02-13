@@ -436,19 +436,19 @@ const QuizPage: React.FC = () => {
             >
               {/* Question Text */}
               <div className="clean-card p-5 mb-5">
-                {question.questionArabic && (
+                {question.verseAr && (
                   <p className="font-arabic text-xl text-center mb-3 text-foreground leading-loose">
-                    {question.questionArabic}
+                    {question.verseAr}
                   </p>
                 )}
                 <h2 className="text-base font-semibold text-foreground text-center">
-                  {question.question}
+                  {language === 'en' ? question.questionEn : question.questionTr}
                 </h2>
               </div>
 
               {/* Options */}
               <div className="space-y-3">
-                {question.options?.map((option, index) => {
+                {(language === 'en' ? question.optionsEn : question.optionsTr)?.map((option, index) => {
                   const isSelected = selectedAnswer === index;
                   const isCorrectAnswer = index === question.correctAnswer;
                   const letter = String.fromCharCode(65 + index);

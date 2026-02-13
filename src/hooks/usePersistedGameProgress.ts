@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { UserProgress, Badge, DailyGoal } from '@/types/gamification';
+import { UserProgress, Badge, DailyGoal, LessonProgress } from '@/types/gamification';
 
 export interface QuizStats {
   totalQuizzes: number;
@@ -31,6 +31,7 @@ const STORAGE_KEYS = {
   COMPLETED_QUIZ_SETS: 'completed_quiz_sets',
   ACTIVITY_HISTORY: 'activity_history',
   LEARNED_CONTENT: 'learned_content',
+  LESSON_PROGRESS: 'lesson_progress',
 };
 
 const defaultProgress: UserProgress = {
@@ -207,8 +208,11 @@ export function usePersistedGameProgress() {
   const [activityHistory, setActivityHistory] = useState<ActivityItem[]>(() => 
     loadFromStorage(STORAGE_KEYS.ACTIVITY_HISTORY, [])
   );
-  const [learnedContent, setLearnedContent] = useState<{ surahs: string[]; duas: string[] }>(() => 
+  const [learnedContent, setLearnedContent] = useState<{ surahs: string[]; duas: string[] }>(() =>
     loadFromStorage(STORAGE_KEYS.LEARNED_CONTENT, { surahs: [], duas: [] })
+  );
+  const [lessonProgress, setLessonProgress] = useState<LessonProgress[]>(() =>
+    loadFromStorage(STORAGE_KEYS.LESSON_PROGRESS, [])
   );
   const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
     show: false,
@@ -244,6 +248,10 @@ export function usePersistedGameProgress() {
   useEffect(() => {
     saveToStorage(STORAGE_KEYS.LEARNED_CONTENT, learnedContent);
   }, [learnedContent]);
+
+  useEffect(() => {
+    saveToStorage(STORAGE_KEYS.LESSON_PROGRESS, lessonProgress);
+  }, [lessonProgress]);
 
   const addActivity = useCallback((
     type: ActivityItem['type'],
@@ -438,6 +446,56 @@ export function usePersistedGameProgress() {
     return learnedContent.duas.includes(duaId);
   }, [learnedContent.duas]);
 
+  const getLessonProgress = useCallback((lessonId: string): LessonProgress | null => {
+    return lessonProgress.find(p => p.lessonId === lessonId) || null;
+  }, [lessonProgress]);
+
+  const isLessonCompleted = useCallback((lessonId: string): boolean => {
+    return lessonProgress.some(p => p.lessonId === lessonId && p.isCompleted);
+  }, [lessonProgress]);
+
+  const markLessonStepCompleted = useCallback((lessonId: string, stepId: string, xpReward: number) => {
+    setLessonProgress(prev => {
+      const existing = prev.find(p => p.lessonId === lessonId);
+      if (existing) {
+        if (existing.completedSteps.includes(stepId)) return prev;
+        return prev.map(p =>
+          p.lessonId === lessonId
+            ? { ...p, completedSteps: [...p.completedSteps, stepId], xpEarned: p.xpEarned + xpReward }
+            : p
+        );
+      }
+      return [...prev, {
+        lessonId,
+        completedSteps: [stepId],
+        isCompleted: false,
+        xpEarned: xpReward,
+      }];
+    });
+    addXP(xpReward);
+  }, [addXP]);
+
+  const markLessonCompleted = useCallback((lessonId: string, lessonTitle: string) => {
+    setLessonProgress(prev => {
+      const existing = prev.find(p => p.lessonId === lessonId);
+      if (existing) {
+        return prev.map(p =>
+          p.lessonId === lessonId
+            ? { ...p, isCompleted: true, completedAt: new Date().toISOString() }
+            : p
+        );
+      }
+      return [...prev, {
+        lessonId,
+        completedSteps: [],
+        isCompleted: true,
+        completedAt: new Date().toISOString(),
+        xpEarned: 0,
+      }];
+    });
+    addActivity('goal_completed', `${lessonTitle} tamamlandı`, 'Ders başarıyla tamamlandı');
+  }, [addActivity]);
+
   const resetProgress = useCallback(() => {
     setProgress(defaultProgress);
     setBadges(defaultBadges);
@@ -446,6 +504,7 @@ export function usePersistedGameProgress() {
     setCompletedQuizSets([]);
     setActivityHistory([]);
     setLearnedContent({ surahs: [], duas: [] });
+    setLessonProgress([]);
     previousLevelRef.current = defaultProgress.level;
     Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
   }, []);
@@ -472,5 +531,10 @@ export function usePersistedGameProgress() {
     levelUpData,
     closeLevelUpCelebration,
     addActivity,
+    lessonProgress,
+    getLessonProgress,
+    isLessonCompleted,
+    markLessonStepCompleted,
+    markLessonCompleted,
   };
 }
