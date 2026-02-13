@@ -135,35 +135,35 @@ const QuizPage: React.FC = () => {
       <MobileLayoutWarm hideNav>
         <div className="min-h-screen bg-background">
           {/* Header */}
-          <div className="detail-header">
-            <div className="flex items-center justify-between mb-4">
-              <button 
+          <div className="p-5 pb-8 bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-600 rounded-b-3xl">
+            <div className="flex items-center justify-between mb-6">
+              <button
                 onClick={() => navigate('/')}
-                className="w-10 h-10 rounded-xl bg-cream/10 flex items-center justify-center"
+                className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg"
               >
-                <Home className="w-5 h-5 text-cream" />
+                <Home className="w-5 h-5 text-white" />
               </button>
-              <h1 className="text-lg font-semibold text-cream">
+              <h1 className="text-xl font-black text-white">
                 {language === 'tr' ? 'Quiz' : 'Quiz'}
               </h1>
-              <div className="w-10" />
+              <div className="w-11" />
             </div>
 
             {/* Stats */}
-            <div className="flex items-center justify-center gap-6 py-2">
-              <div className="text-center">
-                <div className="dial-control w-14 h-14 mx-auto mb-1">
-                  <span className="text-sm font-bold text-sage">{completedQuizSets.length}</span>
+            <div className="flex items-center justify-center gap-4">
+              <div className="flex-1 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-white/30 flex items-center justify-center mx-auto mb-2">
+                  <span className="text-xl font-black text-white">{completedQuizSets.length}/{quizSets.length}</span>
                 </div>
-                <span className="text-xs text-cream/80">
+                <span className="text-xs font-bold text-white/90">
                   {language === 'tr' ? 'Tamamlanan' : 'Completed'}
                 </span>
               </div>
-              <div className="text-center">
-                <div className="dial-control w-14 h-14 mx-auto mb-1">
-                  <span className="text-sm font-bold text-sage">{quizSets.length}</span>
+              <div className="flex-1 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-white/30 flex items-center justify-center mx-auto mb-2">
+                  <span className="text-xl font-black text-white">{quizSets.length}</span>
                 </div>
-                <span className="text-xs text-cream/80">
+                <span className="text-xs font-bold text-white/90">
                   {language === 'tr' ? 'Toplam' : 'Total'}
                 </span>
               </div>
@@ -172,8 +172,8 @@ const QuizPage: React.FC = () => {
 
           {/* Content */}
           <div className="px-5 -mt-4 relative z-10">
-            <motion.p 
-              className="text-center text-muted-foreground text-sm mb-4"
+            <motion.p
+              className="text-center text-muted-foreground text-sm mb-5 font-semibold"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -181,8 +181,8 @@ const QuizPage: React.FC = () => {
             </motion.p>
 
             {/* Quiz Cards Grid */}
-            <motion.div 
-              className="grid grid-cols-2 gap-3 pb-6"
+            <motion.div
+              className="grid grid-cols-2 gap-4 pb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1 }}
@@ -191,7 +191,14 @@ const QuizPage: React.FC = () => {
                 const isCompleted = isQuizSetCompleted(set.id);
                 const previousCompleted = index === 0 || isQuizSetCompleted(quizSets[index - 1].id);
                 const isLocked = !previousCompleted && !isCompleted;
-                
+                const gradients = [
+                  'from-emerald-600 to-teal-600',
+                  'from-teal-600 to-cyan-600',
+                  'from-blue-700 to-blue-500',
+                  'from-amber-500 to-orange-500',
+                ];
+                const gradient = gradients[index % gradients.length];
+
                 return (
                   <motion.button
                     key={set.id}
@@ -200,33 +207,47 @@ const QuizPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.15 + index * 0.03 }}
-                    whileHover={{ scale: isLocked ? 1 : 1.02 }}
-                    whileTap={{ scale: isLocked ? 1 : 0.98 }}
+                    whileHover={{ scale: isLocked ? 1 : 1.03 }}
+                    whileTap={{ scale: isLocked ? 1 : 0.97 }}
                     className={cn(
-                      "room-card text-left relative",
-                      isCompleted && "active",
+                      "relative glass-card p-5 rounded-2xl overflow-hidden group text-left",
                       isLocked && "opacity-50 cursor-not-allowed"
                     )}
                   >
+                    {/* Gradient glow on hover */}
+                    {!isLocked && (
+                      <div className={cn(
+                        'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity',
+                        gradient
+                      )} />
+                    )}
+
                     {isCompleted && (
-                      <div className="absolute top-2 right-2">
-                        <CheckCircle2 className="w-4 h-4" />
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-4 h-4 text-white" />
                       </div>
                     )}
-                    
-                    <div className="room-card-icon">
-                      <span className="text-2xl">
-                        {isLocked ? '🔒' : categoryIcons[set.category] || '📚'}
-                      </span>
-                    </div>
-                    
-                    <div className="text-center w-full">
-                      <span className="text-sm font-semibold block truncate">
-                        {language === 'tr' ? set.titleTr : set.titleEn}
-                      </span>
-                      <span className="text-xs opacity-60 block mt-1">
-                        {set.questions.length} {language === 'tr' ? 'Soru' : 'Questions'}
-                      </span>
+
+                    <div className="relative z-10 flex flex-col items-center gap-3">
+                      <div className={cn(
+                        "w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all",
+                        isLocked ? "bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800" :
+                        isCompleted ? "bg-gradient-to-br from-emerald-600 to-teal-600" :
+                        `bg-gradient-to-br ${gradient}`
+                      )}>
+                        <span className="text-2xl">
+                          {isLocked ? '🔒' : categoryIcons[set.category] || '📚'}
+                        </span>
+                      </div>
+
+                      <div className="text-center w-full">
+                        <span className="text-sm font-black block truncate text-foreground">
+                          {language === 'tr' ? set.titleTr : set.titleEn}
+                        </span>
+                        <span className="text-xs text-muted-foreground block mt-1 font-semibold">
+                          {set.questions.length} {language === 'tr' ? 'Soru' : 'Questions'}
+                        </span>
+                      </div>
                     </div>
                   </motion.button>
                 );

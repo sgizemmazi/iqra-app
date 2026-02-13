@@ -1,8 +1,14 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -57,37 +63,6 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-// Custom Teal Islamic palette
-        teal: {
-          DEFAULT: "hsl(var(--teal))",
-          light: "hsl(var(--teal-light))",
-          dark: "hsl(var(--teal-dark))",
-        },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
-        },
-        sage: {
-          DEFAULT: "hsl(var(--sage))",
-          light: "hsl(var(--sage-light))",
-        },
-        // Gamification colors
-        xp: {
-          DEFAULT: "hsl(var(--xp-gold))",
-          light: "hsl(var(--xp-gold-light))",
-        },
-        streak: {
-          DEFAULT: "hsl(var(--streak-orange))",
-          light: "hsl(var(--streak-orange-light))",
-        },
-        badge: {
-          DEFAULT: "hsl(var(--badge-teal))",
-          light: "hsl(var(--badge-teal-light))",
-        },
-        level: {
-          DEFAULT: "hsl(var(--level-gold))",
-          light: "hsl(var(--level-gold-light))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -98,28 +73,28 @@ export default {
         "3xl": "calc(var(--radius) + 16px)",
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        arabic: ['Amiri', 'serif'],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        arabic: ["Amiri", "serif"],
       },
       fontSize: {
-        'display': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'heading': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
-        'subheading': ['1.25rem', { lineHeight: '1.4' }],
-        'body-lg': ['1.125rem', { lineHeight: '1.6' }],
-        'arabic-xl': ['2rem', { lineHeight: '2' }],
-        'arabic-2xl': ['2.5rem', { lineHeight: '2.2' }],
+        display: ["3.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        heading: ["2rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+        subheading: ["1.25rem", { lineHeight: "1.4" }],
+        "body-lg": ["1.125rem", { lineHeight: "1.6" }],
+        "arabic-xl": ["2rem", { lineHeight: "2" }],
+        "arabic-2xl": ["2.5rem", { lineHeight: "2.2" }],
       },
       spacing: {
-        'safe-top': 'env(safe-area-inset-top)',
-        'safe-bottom': 'env(safe-area-inset-bottom)',
-        '18': '4.5rem',
-        '22': '5.5rem',
+        "safe-top": "env(safe-area-inset-top)",
+        "safe-bottom": "env(safe-area-inset-bottom)",
+        "18": "4.5rem",
+        "22": "5.5rem",
       },
       boxShadow: {
-        'soft': 'var(--shadow-sm)',
-        'medium': 'var(--shadow-md)',
-        'large': 'var(--shadow-lg)',
-        'prayer': 'var(--shadow-prayer)',
+        soft: "var(--shadow-sm)",
+        medium: "var(--shadow-md)",
+        large: "var(--shadow-lg)",
+        prayer: "var(--shadow-prayer)",
       },
       keyframes: {
         "accordion-down": {
@@ -131,7 +106,7 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
+          from: { opacity: "0", transform: "translateY(10px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "scale-in": {
@@ -142,6 +117,30 @@ export default {
           from: { transform: "translateY(100%)" },
           to: { transform: "translateY(0)" },
         },
+        shimmer: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        },
+        pulse: {
+          "0%, 100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.05)" },
+        },
+        "bounce-subtle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(262 83% 58% / 0.3)" },
+          "50%": { boxShadow: "0 0 40px hsl(262 83% 58% / 0.6)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        spin: {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -149,8 +148,14 @@ export default {
         "fade-in": "fade-in 0.4s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
         "slide-up": "slide-up 0.4s ease-out forwards",
+        shimmer: "shimmer 3s linear infinite",
+        "pulse-soft": "pulse 2s ease-in-out infinite",
+        "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
+        glow: "glow-pulse 2s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite",
+        spin: "spin 1s linear infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

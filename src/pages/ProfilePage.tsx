@@ -16,11 +16,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import LevelProgress from '@/components/gamification/LevelProgress';
+import BadgeCollection from '@/components/gamification/BadgeCollection';
+import DailyGoals from '@/components/gamification/DailyGoals';
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
-  const { progress, quizStats, resetProgress } = usePersistedGameProgress();
+  const { progress, resetProgress } = usePersistedGameProgress();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [showLanguageDialog, setShowLanguageDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
@@ -47,22 +50,96 @@ const ProfilePage: React.FC = () => {
           <p className="text-muted-foreground mt-1">{t('profile.subtitle')}</p>
         </div>
 
-        {/* Stats Summary */}
-        <div className="px-6 mb-6">
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-card rounded-2xl p-4 text-center border border-border/50">
-              <p className="text-2xl font-bold text-foreground">{quizStats.totalQuizzes}</p>
-              <p className="text-xs text-muted-foreground mt-1">{t('profile.surahs')}</p>
-            </div>
-            <div className="bg-card rounded-2xl p-4 text-center border border-border/50">
-              <p className="text-2xl font-bold text-foreground">{progress.streak}</p>
-              <p className="text-xs text-muted-foreground mt-1">{t('profile.days')}</p>
-            </div>
-            <div className="bg-card rounded-2xl p-4 text-center border border-border/50">
-              <p className="text-2xl font-bold text-foreground">{progress.level}</p>
-              <p className="text-xs text-muted-foreground mt-1">{t('progress.level')}</p>
-            </div>
-          </div>
+        {/* Gamification Section */}
+        <div className="px-6 mb-6 space-y-4">
+          <LevelProgress progress={progress} />
+
+          <DailyGoals
+            goals={[
+              {
+                id: 'learn_ayah',
+                title: 'Ayet Öğren',
+                description: '1 ayet öğren',
+                icon: '📖',
+                xpReward: 50,
+                isCompleted: true,
+                progress: 1,
+                maxProgress: 1,
+                type: 'surah',
+              },
+              {
+                id: 'daily_dua',
+                title: 'Günlük Dua',
+                description: 'Bir dua oku',
+                icon: '🤲',
+                xpReward: 30,
+                isCompleted: false,
+                progress: 0,
+                maxProgress: 1,
+                type: 'dua',
+              },
+              {
+                id: 'quiz_complete',
+                title: 'Quiz Tamamla',
+                description: 'Bir quiz çöz',
+                icon: '🎯',
+                xpReward: 100,
+                isCompleted: false,
+                progress: 0,
+                maxProgress: 1,
+                type: 'quiz',
+              },
+            ]}
+          />
+
+          <BadgeCollection
+            badges={[
+              {
+                id: '1',
+                name: 'İlk Adım',
+                nameArabic: 'أول خطوة',
+                icon: '🌟',
+                description: 'İlk adımı attın',
+                requirement: '5 sure öğren',
+                category: 'learning',
+                isEarned: true,
+              },
+              {
+                id: '2',
+                name: 'Düzenli',
+                nameArabic: 'منتظم',
+                icon: '🔥',
+                description: '7 gün seri yaptın',
+                requirement: '7 gün seri',
+                category: 'streak',
+                isEarned: true,
+              },
+              {
+                id: '3',
+                name: 'Uzman',
+                nameArabic: 'خبير',
+                icon: '🏆',
+                description: 'Quiz uzmanı',
+                requirement: '50 quiz tamamla',
+                category: 'learning',
+                isEarned: false,
+                progress: 23,
+                maxProgress: 50,
+              },
+              {
+                id: '4',
+                name: 'Hafız',
+                nameArabic: 'حافظ',
+                icon: '📿',
+                description: 'Hafızlık yolunda',
+                requirement: '10 sure ezberle',
+                category: 'special',
+                isEarned: false,
+                progress: 4,
+                maxProgress: 10,
+              },
+            ]}
+          />
         </div>
 
         {/* Preferences */}

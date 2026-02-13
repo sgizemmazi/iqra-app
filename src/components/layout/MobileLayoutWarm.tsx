@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import BottomNavWarm from './BottomNavWarm';
+import BottomNav from './BottomNav';
 
 interface MobileLayoutWarmProps {
   children: React.ReactNode;
@@ -8,26 +8,26 @@ interface MobileLayoutWarmProps {
   hideNav?: boolean;
 }
 
-const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({ 
-  children, 
+const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
+  children,
   className,
-  hideNav = false 
+  hideNav = false
 }) => {
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto relative">
       {/* Main content area */}
-      <main 
+      <main
         className={cn(
           "flex-1 overflow-y-auto relative",
-          !hideNav && "pb-24",
+          !hideNav && "pb-28",
           className
         )}
       >
         {children}
       </main>
-      
-      {/* Bottom Navigation */}
-      {!hideNav && <BottomNavWarm />}
+
+      {/* Bottom Navigation - Unified across all pages */}
+      {!hideNav && <BottomNav />}
     </div>
   );
 };

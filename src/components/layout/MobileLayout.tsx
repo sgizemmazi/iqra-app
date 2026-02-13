@@ -8,25 +8,25 @@ interface MobileLayoutProps {
   hideNav?: boolean;
 }
 
-const MobileLayout: React.FC<MobileLayoutProps> = ({ 
-  children, 
+const MobileLayout: React.FC<MobileLayoutProps> = ({
+  children,
   className,
-  hideNav = false 
+  hideNav = false
 }) => {
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto relative">
       {/* Main content area */}
-      <main 
+      <main
         className={cn(
           "flex-1 overflow-y-auto",
-          !hideNav && "pb-24",
+          !hideNav && "pb-28",
           className
         )}
       >
         {children}
       </main>
-      
-      {/* Bottom Navigation */}
+
+      {/* Bottom Navigation - Unified across all pages */}
       {!hideNav && <BottomNav />}
     </div>
   );

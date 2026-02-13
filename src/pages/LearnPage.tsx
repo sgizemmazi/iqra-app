@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Heart, ChevronRight, CheckCircle2, ArrowLeft, Grid3X3, List } from 'lucide-react';
+import { BookOpen, Heart, ChevronRight, CheckCircle2, ArrowLeft, Sparkles, Star } from 'lucide-react';
 import MobileLayoutWarm from '@/components/layout/MobileLayoutWarm';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -62,35 +62,42 @@ const LearnPage: React.FC = () => {
   const totalSurahs = surahs.length;
   const totalDuas = duas.length;
 
+  const gradients = [
+    'from-emerald-600 to-teal-600',
+    'from-teal-600 to-cyan-600',
+    'from-blue-700 to-blue-500',
+    'from-amber-500 to-orange-500',
+  ];
+
   return (
     <MobileLayoutWarm hideNav>
       <div className="min-h-screen bg-background">
-        {/* Header */}
-        <div className="detail-header">
-          <div className="flex items-center justify-between mb-4">
-            <button 
+        {/* Gradient Header */}
+        <div className="p-5 pb-8 bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-600 rounded-b-3xl">
+          <div className="flex items-center justify-between mb-6">
+            <button
               onClick={() => navigate('/')}
-              className="w-10 h-10 rounded-xl bg-cream/10 flex items-center justify-center"
+              className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg"
             >
-              <ArrowLeft className="w-5 h-5 text-cream" />
+              <ArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-lg font-semibold text-cream">{t('learn.title')}</h1>
-            <div className="w-10" />
+            <h1 className="text-xl font-black text-white">{t('learn.title')}</h1>
+            <div className="w-11" />
           </div>
 
-          {/* Progress Stats */}
-          <div className="flex items-center justify-center gap-8 py-4">
-            <div className="text-center">
-              <div className="dial-control w-16 h-16 mx-auto mb-2">
-                <span className="text-lg font-bold text-sage">{learnedSurahsCount}/{totalSurahs}</span>
+          {/* Progress Stats with gradient cards */}
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex-1 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-white/30 flex items-center justify-center mx-auto mb-2">
+                <span className="text-xl font-black text-white">{learnedSurahsCount}/{totalSurahs}</span>
               </div>
-              <span className="text-xs text-cream/80">{t('learn.surahs')}</span>
+              <span className="text-xs font-bold text-white/90">{t('learn.surahs')}</span>
             </div>
-            <div className="text-center">
-              <div className="dial-control w-16 h-16 mx-auto mb-2">
-                <span className="text-lg font-bold text-sage">{learnedDuasCount}/{totalDuas}</span>
+            <div className="flex-1 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-white/30 flex items-center justify-center mx-auto mb-2">
+                <span className="text-xl font-black text-white">{learnedDuasCount}/{totalDuas}</span>
               </div>
-              <span className="text-xs text-cream/80">{t('learn.duas')}</span>
+              <span className="text-xs font-bold text-white/90">{t('learn.duas')}</span>
             </div>
           </div>
         </div>
@@ -98,25 +105,35 @@ const LearnPage: React.FC = () => {
         {/* Content */}
         <div className="px-5 -mt-4 relative z-10">
           {/* Tab Switcher */}
-          <motion.div 
+          <motion.div
             className="flex items-center justify-center mb-5"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="tab-switcher">
-              <button 
+            <div className="inline-flex items-center gap-2 p-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-950/30 dark:to-teal-950/30 rounded-2xl shadow-sm">
+              <button
                 onClick={() => setActiveTab('surahs')}
-                className={cn("tab-switcher-item", activeTab === 'surahs' && "active")}
+                className={cn(
+                  'px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
+                  activeTab === 'surahs'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
               >
-                <Grid3X3 className="w-4 h-4 inline-block mr-1.5" />
+                <BookOpen className="w-4 h-4" />
                 {t('learn.surahs')}
               </button>
-              <button 
+              <button
                 onClick={() => setActiveTab('duas')}
-                className={cn("tab-switcher-item", activeTab === 'duas' && "active")}
+                className={cn(
+                  'px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
+                  activeTab === 'duas'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
               >
-                <List className="w-4 h-4 inline-block mr-1.5" />
+                <Heart className="w-4 h-4" />
                 {t('learn.duas')}
               </button>
             </div>
@@ -124,86 +141,113 @@ const LearnPage: React.FC = () => {
 
           {/* Continue Card */}
           {items.find(i => !getItemProgress(i).isCompleted) && (
-            <motion.div 
-              className="featured-card p-5 mb-5"
+            <motion.div
+              className="glass-card p-5 mb-5 rounded-2xl overflow-hidden relative group"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
             >
-              <p className="text-sm text-cream/80 mb-2">{t('learn.continueWhere')}</p>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-cream">
-                    {t(items.find(i => !getItemProgress(i).isCompleted)?.nameKey || '')}
-                  </p>
-                  <p className="font-arabic text-cream/70">
-                    {items.find(i => !getItemProgress(i).isCompleted)?.nameArabic}
-                  </p>
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-teal-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative z-10">
+                <p className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-600" />
+                  {t('learn.continueWhere')}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-foreground">
+                      {t(items.find(i => !getItemProgress(i).isCompleted)?.nameKey || '')}
+                    </p>
+                    <p className="font-arabic text-base text-muted-foreground">
+                      {items.find(i => !getItemProgress(i).isCompleted)?.nameArabic}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const item = items.find(i => !getItemProgress(i).isCompleted);
+                      if (item) navigate(`/learn/${item.type}/${item.id}`);
+                    }}
+                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                  >
+                    <span className="text-sm">{t('learn.continue')}</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    const item = items.find(i => !getItemProgress(i).isCompleted);
-                    if (item) navigate(`/learn/${item.type}/${item.id}`);
-                  }}
-                  className="control-btn active"
-                >
-                  <span className="text-sm font-medium">{t('learn.continue')}</span>
-                </button>
               </div>
             </motion.div>
           )}
 
-          {/* Room Cards Grid */}
-          <motion.div 
-            className="grid grid-cols-2 gap-3 pb-6"
+          {/* Grid Cards with gradients */}
+          <motion.div
+            className="grid grid-cols-2 gap-4 pb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
             {items.map((item, index) => {
               const { isCompleted } = getItemProgress(item);
-              
+              const gradient = gradients[index % gradients.length];
+
               return (
                 <motion.button
                   key={item.id}
                   onClick={() => navigate(`/learn/${item.type}/${item.id}`)}
-                  className={cn(
-                    "room-card text-left",
-                    isCompleted && "active"
-                  )}
+                  className="relative glass-card p-5 rounded-2xl overflow-hidden group text-left"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25 + index * 0.03 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  <div className="room-card-icon">
-                    {isCompleted ? (
-                      <CheckCircle2 className="w-6 h-6" />
-                    ) : activeTab === 'surahs' ? (
-                      <BookOpen className="w-6 h-6" />
-                    ) : (
-                      <Heart className="w-6 h-6" />
+                  {/* Gradient glow */}
+                  <div
+                    className={cn(
+                      'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity',
+                      gradient
                     )}
-                  </div>
-                  <div className="text-center w-full">
-                    <span className="text-sm font-semibold block truncate">
-                      {t(item.nameKey)}
-                    </span>
-                    <span className="font-arabic text-xs opacity-70 block">
-                      {item.nameArabic}
-                    </span>
-                    {item.versesCount && (
-                      <span className="text-xs opacity-60 mt-1 block">
-                        {item.versesCount} {t('learn.verses')}
-                      </span>
-                    )}
-                  </div>
-                  {isCompleted && (
-                    <div className="absolute top-2 right-2">
-                      <div className="w-2 h-2 rounded-full bg-gold" />
+                  />
+
+                  <div className="relative z-10 flex flex-col items-center gap-3">
+                    {/* Icon */}
+                    <div
+                      className={cn(
+                        'w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all',
+                        isCompleted
+                          ? 'bg-gradient-to-br from-emerald-600 to-teal-600'
+                          : `bg-gradient-to-br ${gradient}`
+                      )}
+                    >
+                      {isCompleted ? (
+                        <CheckCircle2 className="w-7 h-7 text-white" />
+                      ) : activeTab === 'surahs' ? (
+                        <BookOpen className="w-7 h-7 text-white" />
+                      ) : (
+                        <Heart className="w-7 h-7 text-white" />
+                      )}
                     </div>
-                  )}
+
+                    {/* Content */}
+                    <div className="text-center w-full">
+                      <span className="text-sm font-black block truncate text-foreground">
+                        {t(item.nameKey)}
+                      </span>
+                      <span className="font-arabic text-sm text-muted-foreground block mt-1">
+                        {item.nameArabic}
+                      </span>
+                      {item.versesCount && (
+                        <span className="text-xs text-muted-foreground mt-1 block font-semibold">
+                          {item.versesCount} {t('learn.verses')}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Completion badge */}
+                    {isCompleted && (
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <Star className="w-3 h-3 text-white" fill="white" />
+                      </div>
+                    )}
+                  </div>
                 </motion.button>
               );
             })}
