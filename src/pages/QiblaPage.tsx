@@ -69,7 +69,7 @@ const QiblaPage: React.FC = () => {
           
           {/* Compass Background */}
           <motion.div
-            className="relative w-64 h-64 rounded-full bg-gradient-to-br from-card to-muted/50 shadow-large flex items-center justify-center"
+            className="relative w-64 h-64 rounded-full bg-gradient-to-br from-card to-muted/50 flex items-center justify-center"
             style={{
               rotate: hasCompass && compassHeading !== null ? -compassHeading : 0
             }}
@@ -110,7 +110,7 @@ const QiblaPage: React.FC = () => {
             >
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1">
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-primary shadow-prayer flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
                     <span className="text-xs text-primary-foreground font-arabic">🕋</span>
                   </div>
                   <div className="w-1 h-24 bg-gradient-to-b from-primary to-transparent rounded-full" />
@@ -119,7 +119,7 @@ const QiblaPage: React.FC = () => {
             </motion.div>
 
             {/* Center Circle */}
-            <div className="w-20 h-20 rounded-full bg-card shadow-medium flex flex-col items-center justify-center z-10">
+            <div className="w-20 h-20 rounded-full bg-card flex flex-col items-center justify-center z-10">
               <Compass className="w-6 h-6 text-primary mb-1" />
               <span className="text-xs text-muted-foreground">Kıble</span>
             </div>

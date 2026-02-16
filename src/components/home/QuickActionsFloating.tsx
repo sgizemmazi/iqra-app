@@ -26,7 +26,7 @@ const actions = [
     label: 'Dualar', 
     sublabel: 'Günlük Dualar',
     path: '/learn',
-    gradient: 'from-accent to-orange-600',
+    gradient: 'bg-accent',
     shadowColor: 'hsla(15, 85%, 55%, 0.3)'
   },
   { 
@@ -34,7 +34,7 @@ const actions = [
     label: 'Kıble', 
     sublabel: 'Yön Bul',
     path: '/qibla',
-    gradient: 'from-xp to-blue-600',
+    gradient: 'bg-secondary',
     shadowColor: 'hsla(200, 80%, 50%, 0.3)'
   },
 ];
@@ -109,7 +109,7 @@ const QuickActionsFloating: React.FC = () => {
               {/* Icon with gradient background */}
               <motion.div 
                 className={cn(
-                  "w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center",
+                  "w-14 h-14 rounded-2xl flex items-center justify-center",
                   action.gradient
                 )}
                 whileHover={{ rotate: [0, -5, 5, 0] }}

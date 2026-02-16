@@ -86,8 +86,8 @@ const PrayerPage: React.FC = () => {
           <>
             {/* Current Prayer Highlight */}
             <div className="px-6 mb-6">
-              <div className="bg-gradient-to-br from-primary to-accent rounded-3xl p-6 text-primary-foreground relative overflow-hidden">
-                <div className="absolute inset-0 pattern-islamic opacity-10" />
+              <div className="bg-primary rounded-3xl p-6 text-primary-foreground relative overflow-hidden">
+                <div className="absolute inset-0 pattern-dots opacity-10" />
                 <div className="relative z-10">
                   <p className="opacity-60 text-sm mb-2">{t('prayer.nextPrayer')}</p>
                   <div className="flex items-end justify-between">

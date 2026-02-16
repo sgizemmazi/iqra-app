@@ -126,50 +126,55 @@ const SurahDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
-      {/* Dark Header - Like reference Bedroom screen */}
-      <motion.div 
-        className="detail-header"
+      {/* Header */}
+      <motion.div
+        className="p-5 pb-8 bg-primary rounded-b-3xl"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className="flex items-center justify-between mb-4">
-          <button 
+          <button
             onClick={() => navigate('/learn')}
-            className="p-2 -ml-2 rounded-xl hover:bg-cream/10 transition-colors"
+            className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
           >
-            <ArrowLeft className="w-6 h-6 text-cream" />
+            <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <div className="text-center">
             <div className="flex items-center justify-center gap-2">
-              <h1 className="font-semibold text-cream">{language === 'tr' ? surah.nameTr : surah.nameEn}</h1>
-              {isLearned && <CheckCircle2 className="w-5 h-5 text-gold" />}
+              <h1 className="text-xl font-black text-white">{language === 'tr' ? surah.nameTr : surah.nameEn}</h1>
+              {isLearned && <CheckCircle2 className="w-5 h-5 text-accent" />}
             </div>
-            <p className="text-sm text-cream/70 font-arabic">{surah.nameArabic}</p>
+            <p className="text-sm text-white/90 font-arabic">{surah.nameArabic}</p>
           </div>
-          <div className="w-10" />
+          <div className="w-11" />
         </div>
 
-        {/* Control buttons - Like reference mode buttons */}
-        <div className="flex items-center justify-center gap-4 mt-4">
-          <button 
+        {/* Control buttons */}
+        <div className="flex items-center justify-center gap-3 mt-4">
+          <button
             onClick={() => setShowTransliteration(!showTransliteration)}
-            className={cn("control-btn", showTransliteration && "active")}
+            className={cn(
+              "px-4 py-2.5 rounded-xl flex flex-col items-center gap-1 transition-all",
+              showTransliteration
+                ? "bg-white text-primary"
+                : "bg-white/20 text-white hover:bg-white/30"
+            )}
           >
-            <span className="text-lg">Aa</span>
-            <span className="text-[10px]">
-              {language === 'tr' ? 'Okunuş' : 'Transliteration'}
+            <span className="text-lg font-bold">Aa</span>
+            <span className="text-[10px] font-semibold">
+              {language === 'tr' ? 'Okunuş' : 'Trans'}
             </span>
           </button>
-          
-          <button className="control-btn">
+
+          <button className="px-4 py-2.5 rounded-xl flex flex-col items-center gap-1 bg-white/20 text-white hover:bg-white/30 transition-all">
             <Timer className="w-5 h-5" />
-            <span className="text-[10px]">
-              {language === 'tr' ? 'Zamanlayıcı' : 'Timer'}
+            <span className="text-[10px] font-semibold">
+              {language === 'tr' ? 'Zaman' : 'Timer'}
             </span>
           </button>
-          
-          <button 
+
+          <button
             onClick={() => {
               if (audioRef.current) {
                 audioRef.current.currentTime = 0;
@@ -177,10 +182,10 @@ const SurahDetailPage: React.FC = () => {
                 setIsPlaying(true);
               }
             }}
-            className="control-btn"
+            className="px-4 py-2.5 rounded-xl flex flex-col items-center gap-1 bg-white/20 text-white hover:bg-white/30 transition-all"
           >
             <RotateCcw className="w-5 h-5" />
-            <span className="text-[10px]">
+            <span className="text-[10px] font-semibold">
               {language === 'tr' ? 'Tekrar' : 'Repeat'}
             </span>
           </button>
@@ -190,15 +195,15 @@ const SurahDetailPage: React.FC = () => {
       {/* Progress indicator */}
       <div className="px-6 py-4">
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-          <span>{t('learn.ayah')} {currentAyah + 1} / {ayahs.length}</span>
-          <span className="flex items-center gap-1">
-            <Zap className="w-4 h-4 text-gold" />
+          <span className="font-bold">{t('learn.ayah')} {currentAyah + 1} / {ayahs.length}</span>
+          <span className="flex items-center gap-1 font-bold">
+            <Zap className="w-4 h-4 text-accent" />
             +50 XP
           </span>
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-sage rounded-full"
+          <motion.div
+            className="h-full bg-primary rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
@@ -217,22 +222,22 @@ const SurahDetailPage: React.FC = () => {
         >
           {/* Ayah Number Badge */}
           <div className="flex justify-center">
-            <div className="w-12 h-12 rounded-full bg-gold-light border-2 border-gold/30 flex items-center justify-center">
-              <span className="font-arabic text-lg text-gold">{ayah.number}</span>
+            <div className="w-14 h-14 rounded-2xl bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
+              <span className="font-arabic text-xl font-bold text-accent">{ayah.number}</span>
             </div>
           </div>
 
           {/* Arabic Text */}
           <div className="py-6">
-            <p className="font-arabic text-arabic-2xl leading-loose text-foreground">
+            <p className="font-arabic text-4xl leading-loose text-foreground">
               {ayah.arabic}
             </p>
           </div>
 
           {/* Transliteration */}
           {showTransliteration && (
-            <motion.p 
-              className="text-lg text-sage italic"
+            <motion.p
+              className="text-lg text-primary italic font-medium"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -249,8 +254,8 @@ const SurahDetailPage: React.FC = () => {
 
       {/* Audio Controls Card */}
       <div className="px-6 py-4">
-        <motion.div 
-          className="clean-card p-5"
+        <motion.div
+          className="glass-card p-5 rounded-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -262,10 +267,10 @@ const SurahDetailPage: React.FC = () => {
                 key={speed}
                 onClick={() => setPlaybackSpeed(speed)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-sm font-medium transition-all",
-                  playbackSpeed === speed 
-                    ? "bg-sage text-cream shadow-sm" 
-                    : "bg-sage-light text-sage hover:bg-sage/20"
+                  "px-5 py-2.5 rounded-xl text-sm font-bold transition-all",
+                  playbackSpeed === speed
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-primary/10"
                 )}
               >
                 {speed}x
@@ -275,7 +280,7 @@ const SurahDetailPage: React.FC = () => {
 
           {/* Playback Controls */}
           <div className="flex items-center justify-center gap-8">
-            <motion.button 
+            <motion.button
               onClick={goToPrev}
               disabled={currentAyah === 0}
               className="p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors disabled:opacity-30"
@@ -283,10 +288,10 @@ const SurahDetailPage: React.FC = () => {
             >
               <ChevronLeft className="w-6 h-6" />
             </motion.button>
-            
-            <motion.button 
+
+            <motion.button
               onClick={handlePlayPause}
-              className="w-16 h-16 rounded-full bg-sage text-cream flex items-center justify-center shadow-prayer"
+              className="w-16 h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -297,7 +302,7 @@ const SurahDetailPage: React.FC = () => {
               )}
             </motion.button>
 
-            <motion.button 
+            <motion.button
               onClick={goToNext}
               disabled={currentAyah === ayahs.length - 1}
               className="p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors disabled:opacity-30"
@@ -312,30 +317,30 @@ const SurahDetailPage: React.FC = () => {
       {/* Mark as Learned */}
       <div className="px-6 py-4 pb-8">
         {isLearned ? (
-          <motion.div 
-            className="w-full py-4 rounded-2xl bg-sage/10 border border-sage/30 flex items-center justify-center gap-2 text-sage"
+          <motion.div
+            className="w-full py-4 rounded-2xl bg-primary/10 border-2 border-primary/30 flex items-center justify-center gap-2 text-primary"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
             <CheckCircle2 className="w-5 h-5" />
-            <span className="font-medium">
+            <span className="font-bold">
               {language === 'tr' ? 'Öğrenildi!' : 'Learned!'}
             </span>
           </motion.div>
         ) : (
-          <Button 
+          <Button
             onClick={handleMarkLearned}
-            className="w-full bg-sage hover:bg-sage-dark text-cream rounded-2xl py-6" 
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl py-6 font-bold"
             size="lg"
           >
             <Check className="w-5 h-5 mr-2" />
             {t('learn.markLearned')}
           </Button>
         )}
-        
+
         {showSuccess && (
-          <motion.div 
-            className="mt-3 text-center text-sm text-sage"
+          <motion.div
+            className="mt-3 text-center text-sm font-bold text-primary"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >

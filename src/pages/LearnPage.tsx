@@ -62,22 +62,22 @@ const LearnPage: React.FC = () => {
   const totalSurahs = surahs.length;
   const totalDuas = duas.length;
 
-  const gradients = [
-    'from-emerald-600 to-teal-600',
-    'from-teal-600 to-cyan-600',
-    'from-blue-700 to-blue-500',
-    'from-amber-500 to-orange-500',
+  const colors = [
+    'bg-primary',
+    'bg-brand-cyan',
+    'bg-secondary',
+    'bg-accent',
   ];
 
   return (
     <MobileLayoutWarm hideNav>
       <div className="min-h-screen bg-background">
-        {/* Gradient Header */}
-        <div className="p-5 pb-8 bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-600 rounded-b-3xl">
+        {/* Header */}
+        <div className="p-5 pb-8 bg-primary rounded-b-3xl">
           <div className="flex items-center justify-between mb-6">
             <button
               onClick={() => navigate('/')}
-              className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg"
+              className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
             >
               <ArrowLeft className="w-5 h-5 text-white" />
             </button>
@@ -111,13 +111,13 @@ const LearnPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="inline-flex items-center gap-2 p-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-950/30 dark:to-teal-950/30 rounded-2xl shadow-sm">
+            <div className="inline-flex items-center gap-2 p-1.5 bg-muted rounded-2xl">
               <button
                 onClick={() => setActiveTab('surahs')}
                 className={cn(
                   'px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
                   activeTab === 'surahs'
-                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
+                    ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -129,7 +129,7 @@ const LearnPage: React.FC = () => {
                 className={cn(
                   'px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
                   activeTab === 'duas'
-                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
+                    ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -147,10 +147,10 @@ const LearnPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-teal-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
                 <p className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
+                  <Sparkles className="w-4 h-4 text-primary" />
                   {t('learn.continueWhere')}
                 </p>
                 <div className="flex items-center justify-between">
@@ -167,7 +167,7 @@ const LearnPage: React.FC = () => {
                       const item = items.find(i => !getItemProgress(i).isCompleted);
                       if (item) navigate(`/learn/${item.type}/${item.id}`);
                     }}
-                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                    className="px-5 py-2.5 bg-primary text-primary-foreground font-bold rounded-2xl hover:shadow-xl transition-all flex items-center gap-2"
                   >
                     <span className="text-sm">{t('learn.continue')}</span>
                     <ChevronRight className="w-4 h-4" />
@@ -186,7 +186,7 @@ const LearnPage: React.FC = () => {
           >
             {items.map((item, index) => {
               const { isCompleted } = getItemProgress(item);
-              const gradient = gradients[index % gradients.length];
+              const color = colors[index % colors.length];
 
               return (
                 <motion.button
@@ -199,11 +199,11 @@ const LearnPage: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  {/* Gradient glow */}
+                  {/* Hover bg */}
                   <div
                     className={cn(
-                      'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity',
-                      gradient
+                      'absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity',
+                      color
                     )}
                   />
 
@@ -211,18 +211,16 @@ const LearnPage: React.FC = () => {
                     {/* Icon */}
                     <div
                       className={cn(
-                        'w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all',
-                        isCompleted
-                          ? 'bg-gradient-to-br from-emerald-600 to-teal-600'
-                          : `bg-gradient-to-br ${gradient}`
+                        'w-14 h-14 rounded-2xl flex items-center justify-center group-hover:shadow-xl transition-all',
+                        isCompleted ? 'bg-primary' : color
                       )}
                     >
                       {isCompleted ? (
-                        <CheckCircle2 className="w-7 h-7 text-white" />
+                        <CheckCircle2 className="w-7 h-7 text-primary-foreground" />
                       ) : activeTab === 'surahs' ? (
-                        <BookOpen className="w-7 h-7 text-white" />
+                        <BookOpen className="w-7 h-7 text-primary-foreground" />
                       ) : (
-                        <Heart className="w-7 h-7 text-white" />
+                        <Heart className="w-7 h-7 text-primary-foreground" />
                       )}
                     </div>
 
@@ -243,8 +241,8 @@ const LearnPage: React.FC = () => {
 
                     {/* Completion badge */}
                     {isCompleted && (
-                      <div className="absolute top-2 right-2 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                        <Star className="w-3 h-3 text-white" fill="white" />
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-accent rounded-full flex items-center justify-center">
+                        <Star className="w-3 h-3 text-accent-foreground" fill="currentColor" />
                       </div>
                     )}
                   </div>

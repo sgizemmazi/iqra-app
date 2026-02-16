@@ -43,7 +43,7 @@ const HistoryPage: React.FC = () => {
       case 'goal_completed':
         return <Target className="w-5 h-5 text-sage" />;
       case 'level_up':
-        return <Star className="w-5 h-5 text-amber-500" />;
+        return <Star className="w-5 h-5 text-accent" />;
       case 'badge_earned':
         return <Award className="w-5 h-5 text-purple-500" />;
       default:
@@ -58,7 +58,7 @@ const HistoryPage: React.FC = () => {
       case 'goal_completed':
         return 'bg-sage-light';
       case 'level_up':
-        return 'bg-amber-100 dark:bg-amber-900/30';
+        return 'bg-accent/10 dark:bg-accent/20/30';
       case 'badge_earned':
         return 'bg-purple-100 dark:bg-purple-900/30';
       default:

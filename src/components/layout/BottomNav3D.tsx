@@ -1,19 +1,21 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Clock, User } from 'lucide-react';
+import { Home, BookOpen, Clock, Hand } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-
-const navItems = [
-  { icon: Home, label: 'Ana Sayfa', path: '/' },
-  { icon: BookOpen, label: 'Öğren', path: '/learn' },
-  { icon: Clock, label: 'Namaz', path: '/prayer' },
-  { icon: User, label: 'Profil', path: '/profile' },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const BottomNav3D: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { language } = useLanguage();
+
+  const navItems = [
+    { icon: Home, label: language === 'tr' ? 'Ana Sayfa' : 'Home', path: '/' },
+    { icon: BookOpen, label: language === 'tr' ? 'Öğren' : 'Learn', path: '/learn' },
+    { icon: Clock, label: language === 'tr' ? 'Namaz' : 'Prayer', path: '/prayer' },
+    { icon: Hand, label: language === 'tr' ? 'Zikirmatik' : 'Dhikr', path: '/zikirmatik' },
+  ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 pb-safe-bottom">

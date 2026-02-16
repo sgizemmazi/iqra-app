@@ -58,7 +58,7 @@ const QuickActions: React.FC = () => {
               transition={{ delay: index * 0.05 }}
             >
               <div className={cn(
-                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm",
+                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center",
                 action.gradient
               )}>
                 <Icon className="w-6 h-6 text-white" />

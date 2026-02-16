@@ -49,10 +49,10 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
   };
 
   const goalGradients = [
-    "from-emerald-600 to-teal-600",
-    "from-teal-600 to-cyan-600",
-    "from-blue-700 to-blue-500",
-    "from-amber-500 to-orange-500",
+    "bg-primary",
+    "bg-brand-cyan",
+    "bg-secondary",
+    "bg-accent",
   ];
 
   return (
@@ -64,18 +64,19 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
         {/* Header with celebration effect */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="text-xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-2">
-              <Target className="w-6 h-6 text-emerald-600" /> {t("goals.title")}
+            <h3 className="text-xl font-black bg-primary bg-clip-text text-transparent flex items-center gap-2">
+              <Target className="w-6 h-6 text-primary" /> {t("goals.title")}
             </h3>
             <p className="text-sm font-semibold text-muted-foreground mt-1">
               {completedCount}/{goals.length} {t("goals.completed")} •{" "}
-              <span className="text-emerald-600 font-bold">+{totalXP} XP</span> {t("goals.earned")}
+              <span className="text-primary font-bold">+{totalXP} XP</span>{" "}
+              {t("goals.earned")}
             </p>
           </div>
           {allCompleted && (
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl blur-lg opacity-50 animate-pulse-soft"></div>
-              <div className="relative flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl shadow-xl">
+              <div className="absolute inset-0 from-accent to-brand-copper rounded-2xl blur-lg opacity-50 animate-pulse-soft"></div>
+              <div className="relative flex items-center gap-2 px-4 py-2 from-accent to-brand-copper rounded-2xl">
                 <Gift className="w-5 h-5 text-white" />
                 <span className="text-sm font-black text-white">
                   {t("goals.great")}
@@ -86,14 +87,14 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
         </div>
 
         {/* Vibrant Progress Bar */}
-        <div className="relative h-4 bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-950/30 dark:to-teal-950/30 rounded-full overflow-hidden mb-6 shadow-inner">
+        <div className="relative h-4 from-primary/10 to-brand-cyan/10 dark:from-primary/20/30 dark:to-brand-cyan/20/30 rounded-full overflow-hidden mb-6">
           <div
             className="h-full progress-gradient rounded-full transition-all duration-700"
             style={{ width: `${(completedCount / goals.length) * 100}%` }}
           />
           {/* Percentage badge on progress bar */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs font-bold text-white drop-shadow-lg mix-blend-difference">
+            <span className="text-xs font-bold text-black mix-blend-difference">
               {Math.round((completedCount / goals.length) * 100)}%
             </span>
           </div>
@@ -111,7 +112,7 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
                 className={cn(
                   "relative w-full flex items-center gap-4 p-4 rounded-2xl transition-all cursor-pointer group overflow-hidden",
                   goal.isCompleted
-                    ? "bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900"
+                    ? "from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900"
                     : "glass-card hover:shadow-xl hover:scale-[1.02]",
                   "animate-fade-in",
                 )}
@@ -119,23 +120,27 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
               >
                 {/* Decorative glow for incomplete goals */}
                 {!goal.isCompleted && (
-                  <div className={cn(
-                    "absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl",
-                    gradient
-                  )}></div>
+                  <div
+                    className={cn(
+                      "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl",
+                      gradient,
+                    )}
+                  ></div>
                 )}
 
                 {/* Icon with gradient background */}
                 <div className="relative z-10">
                   {goal.isCompleted ? (
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg">
+                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center">
                       <Check className="w-7 h-7 text-white" strokeWidth={3} />
                     </div>
                   ) : (
-                    <div className={cn(
-                      "w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform",
-                      gradient
-                    )}>
+                    <div
+                      className={cn(
+                        "w-14 h-14 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform",
+                        gradient,
+                      )}
+                    >
                       {goal.icon}
                     </div>
                   )}
@@ -160,22 +165,32 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
 
                 {/* XP Reward with gradient */}
                 <div className="relative z-10">
-                  <div className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-xl shadow-lg transition-all",
-                    goal.isCompleted
-                      ? "bg-gradient-to-r from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800"
-                      : `bg-gradient-to-r ${gradient} group-hover:shadow-xl`
-                  )}>
-                    <span className={cn(
-                      "text-base font-black",
-                      goal.isCompleted ? "text-muted-foreground" : "text-white"
-                    )}>
+                  <div
+                    className={cn(
+                      "flex items-center gap-2 px-4 py-2 rounded-xl transition-all",
+                      goal.isCompleted
+                        ? "from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800"
+                        : `${gradient} group-hover:shadow-xl`,
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "text-base font-black",
+                        goal.isCompleted
+                          ? "text-muted-foreground"
+                          : "text-white",
+                      )}
+                    >
                       +{goal.xpReward}
                     </span>
-                    <span className={cn(
-                      "text-xs font-bold",
-                      goal.isCompleted ? "text-muted-foreground" : "text-white/90"
-                    )}>
+                    <span
+                      className={cn(
+                        "text-xs font-bold",
+                        goal.isCompleted
+                          ? "text-muted-foreground"
+                          : "text-white/90",
+                      )}
+                    >
                       XP
                     </span>
                   </div>
@@ -193,15 +208,15 @@ const DailyGoals: React.FC<DailyGoalsProps> = ({ goals, onGoalClick }) => {
         {allCompleted && (
           <div className="mt-6 relative overflow-hidden">
             {/* Animated gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-600 rounded-2xl opacity-10 animate-pulse-soft"></div>
+            <div className="absolute inset-0 bg-primary rounded-2xl opacity-10 animate-pulse-soft"></div>
 
-            <div className="relative p-5 border-2 border-emerald-300 dark:border-emerald-700 rounded-2xl text-center">
+            <div className="relative p-5 border-2 border-primary/30 dark:border-primary/30 rounded-2xl text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Sparkles className="w-6 h-6 text-emerald-600 animate-pulse-soft" />
-                <Sparkles className="w-5 h-5 text-teal-600 animate-bounce-subtle" />
-                <Sparkles className="w-6 h-6 text-amber-600 animate-pulse-soft" />
+                <Sparkles className="w-6 h-6 text-primary animate-pulse-soft" />
+                <Sparkles className="w-5 h-5 text-brand-cyan animate-bounce-subtle" />
+                <Sparkles className="w-6 h-6 text-accent animate-pulse-soft" />
               </div>
-              <p className="text-lg font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-600 bg-clip-text text-transparent">
+              <p className="text-lg font-black bg-primary bg-clip-text text-transparent">
                 {t("goals.allCompleted")}
               </p>
               <p className="text-sm text-muted-foreground mt-1 font-semibold">

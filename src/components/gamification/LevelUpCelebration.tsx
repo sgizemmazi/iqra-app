@@ -72,7 +72,7 @@ export function LevelUpCelebration({ newLevel, isVisible, onClose }: LevelUpCele
       onClick={onClose}
     >
       <div 
-        className={`relative bg-gradient-to-br from-primary/20 via-background to-gold/20 rounded-3xl p-8 mx-6 max-w-sm w-full border border-primary/30 shadow-2xl transition-all duration-500 ${
+        className={`relative bg-gradient-to-br from-primary/20 via-background to-gold/20 rounded-3xl p-8 mx-6 max-w-sm w-full border border-primary/30 transition-all duration-500 ${
           showContent ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
         }`}
         onClick={(e) => e.stopPropagation()}

@@ -77,7 +77,7 @@ const BadgeCelebration: React.FC<BadgeCelebrationProps> = ({ badge, onClose }) =
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.5, opacity: 0, y: 50 }}
             transition={{ type: 'spring', damping: 15, stiffness: 100 }}
-            className="relative bg-gradient-to-br from-card via-card to-gold-light/30 rounded-3xl p-8 mx-6 shadow-2xl border border-gold/30 max-w-sm"
+            className="relative bg-gradient-to-br from-card via-card to-gold-light/30 rounded-3xl p-8 mx-6 border border-gold/30 max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Decorative top border */}
@@ -85,7 +85,7 @@ const BadgeCelebration: React.FC<BadgeCelebrationProps> = ({ badge, onClose }) =
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold-light flex items-center justify-center shadow-lg"
+                className="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold-light flex items-center justify-center"
               >
                 <motion.span 
                   className="text-4xl"

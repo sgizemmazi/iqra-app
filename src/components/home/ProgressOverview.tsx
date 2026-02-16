@@ -18,7 +18,7 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ quizStats }) => {
       </h3>
       <div className="grid grid-cols-2 gap-3">
         {/* Quiz Count */}
-        <div className="bg-card rounded-2xl p-4 border border-border/50 shadow-soft">
+        <div className="bg-card rounded-2xl p-4 border border-border/50">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
               <Brain className="w-5 h-5 text-primary" />
@@ -29,10 +29,10 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ quizStats }) => {
         </div>
 
         {/* Correct Answers */}
-        <div className="bg-card rounded-2xl p-4 border border-border/50 shadow-soft">
+        <div className="bg-card rounded-2xl p-4 border border-border/50">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-              <Target className="w-5 h-5 text-emerald-500" />
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Target className="w-5 h-5 text-primary" />
             </div>
           </div>
           <p className="text-2xl font-bold text-foreground">{quizStats.correctAnswers}</p>
@@ -40,7 +40,7 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ quizStats }) => {
         </div>
 
         {/* Accuracy */}
-        <div className="bg-card rounded-2xl p-4 border border-border/50 shadow-soft">
+        <div className="bg-card rounded-2xl p-4 border border-border/50">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gold-light flex items-center justify-center">
               <Zap className="w-5 h-5 text-gold" />
@@ -57,7 +57,7 @@ const ProgressOverview: React.FC<ProgressOverviewProps> = ({ quizStats }) => {
         </div>
 
         {/* Best Streak */}
-        <div className="bg-card rounded-2xl p-4 border border-border/50 shadow-soft">
+        <div className="bg-card rounded-2xl p-4 border border-border/50">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-sage-light flex items-center justify-center">
               <BookOpen className="w-5 h-5 text-sage" />

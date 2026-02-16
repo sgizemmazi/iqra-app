@@ -135,11 +135,11 @@ const QuizPage: React.FC = () => {
       <MobileLayoutWarm hideNav>
         <div className="min-h-screen bg-background">
           {/* Header */}
-          <div className="p-5 pb-8 bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-600 rounded-b-3xl">
+          <div className="p-5 pb-8 bg-primary rounded-b-3xl">
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={() => navigate('/')}
-                className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg"
+                className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
               >
                 <Home className="w-5 h-5 text-white" />
               </button>
@@ -192,10 +192,10 @@ const QuizPage: React.FC = () => {
                 const previousCompleted = index === 0 || isQuizSetCompleted(quizSets[index - 1].id);
                 const isLocked = !previousCompleted && !isCompleted;
                 const gradients = [
-                  'from-emerald-600 to-teal-600',
-                  'from-teal-600 to-cyan-600',
-                  'from-blue-700 to-blue-500',
-                  'from-amber-500 to-orange-500',
+                  'bg-primary',
+                  'bg-brand-cyan',
+                  'bg-secondary',
+                  'bg-accent',
                 ];
                 const gradient = gradients[index % gradients.length];
 
@@ -217,23 +217,23 @@ const QuizPage: React.FC = () => {
                     {/* Gradient glow on hover */}
                     {!isLocked && (
                       <div className={cn(
-                        'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity',
+                        'absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity',
                         gradient
                       )} />
                     )}
 
                     {isCompleted && (
-                      <div className="absolute top-2 right-2 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <div className="absolute top-2 right-2 w-6 h-6 from-accent to-brand-copper rounded-full flex items-center justify-center">
                         <CheckCircle2 className="w-4 h-4 text-white" />
                       </div>
                     )}
 
                     <div className="relative z-10 flex flex-col items-center gap-3">
                       <div className={cn(
-                        "w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all",
-                        isLocked ? "bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800" :
-                        isCompleted ? "bg-gradient-to-br from-emerald-600 to-teal-600" :
-                        `bg-gradient-to-br ${gradient}`
+                        "w-14 h-14 rounded-2xl flex items-center justify-center group-hover:shadow-xl transition-all",
+                        isLocked ? "from-gray-300 to-gray-400 dark:from-gray-700 dark:to-gray-800" :
+                        isCompleted ? "bg-primary" :
+                        `${gradient}`
                       )}>
                         <span className="text-2xl">
                           {isLocked ? '🔒' : categoryIcons[set.category] || '📚'}

@@ -128,41 +128,41 @@ const DuaDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-lg mx-auto">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-4 border-b border-border/50">
-        <button 
-          onClick={() => navigate('/learn')}
-          className="p-2 -ml-2 rounded-xl hover:bg-muted transition-colors"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-2">
-            <h1 className="font-semibold">{language === 'tr' ? dua.nameTr : dua.nameEn}</h1>
-            {isLearned && <CheckCircle2 className="w-5 h-5 text-sage" />}
+      <header className="p-5 pb-8 bg-primary rounded-b-3xl">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => navigate('/learn')}
+            className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-xl font-black text-white">{language === 'tr' ? dua.nameTr : dua.nameEn}</h1>
+              {isLearned && <CheckCircle2 className="w-5 h-5 text-accent" />}
+            </div>
+            <p className="text-sm text-white/90 font-arabic">{dua.nameArabic}</p>
           </div>
-          <p className="text-xs text-muted-foreground">{dua.nameArabic}</p>
+          <div className="w-11" />
         </div>
-        <div className="w-10" />
-      </header>
 
-      {/* Occasion Badge */}
-      <div className="px-6 py-4">
-        <div className="bg-sage-light rounded-2xl p-4 border border-sage/20">
-          <div className="flex items-center gap-2 text-sage">
+        {/* Occasion Badge */}
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+          <div className="flex items-center justify-center gap-2 text-white">
             <Volume2 className="w-5 h-5" />
-            <span className="text-sm font-medium">
+            <span className="text-sm font-bold">
               {language === 'tr' ? dua.occasion : dua.occasionEn}
             </span>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Dua Display */}
       <div className="flex-1 flex flex-col justify-center px-6 py-8">
         <div className="text-center space-y-8 animate-fade-in">
           {/* Arabic Text */}
-          <div className="py-8 px-4 bg-gradient-to-br from-card to-muted/30 rounded-3xl border border-border/50">
-            <p className="font-arabic text-arabic-2xl leading-loose text-foreground">
+          <div className="py-8 px-4 glass-card rounded-3xl">
+            <p className="font-arabic text-4xl leading-loose text-foreground">
               {dua.arabic}
             </p>
           </div>
@@ -170,33 +170,33 @@ const DuaDetailPage: React.FC = () => {
           {/* Transliteration */}
           {showTransliteration && (
             <div className="space-y-2">
-              <button 
+              <button
                 onClick={() => setShowTransliteration(!showTransliteration)}
-                className="text-xs text-muted-foreground underline"
+                className="text-xs text-muted-foreground underline font-medium"
               >
                 {language === 'tr' ? 'Okunuşu gizle' : 'Hide transliteration'}
               </button>
-              <p className="text-lg text-sage italic font-medium">
+              <p className="text-lg text-primary italic font-medium">
                 {dua.transliteration}
               </p>
             </div>
           )}
 
           {!showTransliteration && (
-            <button 
+            <button
               onClick={() => setShowTransliteration(true)}
-              className="text-sm text-sage underline"
+              className="text-sm text-primary underline font-medium"
             >
               {language === 'tr' ? 'Okunuşu göster' : 'Show transliteration'}
             </button>
           )}
 
           {/* Translation */}
-          <div className="bg-muted/30 rounded-2xl p-6">
-            <p className="text-sm text-muted-foreground mb-2">
+          <div className="bg-muted rounded-2xl p-6">
+            <p className="text-sm font-bold text-muted-foreground mb-2">
               {language === 'tr' ? 'Anlam' : 'Meaning'}
             </p>
-            <p className="text-foreground text-body-lg leading-relaxed">
+            <p className="text-foreground text-lg leading-relaxed">
               {language === 'tr' ? dua.translationTr : dua.translationEn}
             </p>
           </div>
@@ -205,32 +205,32 @@ const DuaDetailPage: React.FC = () => {
 
       {/* Audio Controls */}
       <div className="px-6 py-4">
-        <div className="bg-card rounded-3xl p-4 border border-border/50 shadow-soft">
+        <div className="glass-card rounded-2xl p-5">
           {/* Progress Bar */}
           <div className="mb-4">
-            <div className="h-1 bg-muted rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-sage rounded-full transition-all"
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all"
                 style={{ width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' }}
               />
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+            <div className="flex justify-between text-xs font-bold text-muted-foreground mt-2">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
             </div>
           </div>
 
           {/* Speed Selector */}
-          <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="flex items-center justify-center gap-3 mb-5">
             {[0.5, 1, 1.5].map((speed) => (
               <button
                 key={speed}
                 onClick={() => setPlaybackSpeed(speed)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-sm font-medium transition-colors",
-                  playbackSpeed === speed 
-                    ? "bg-sage-light text-sage" 
-                    : "text-muted-foreground hover:bg-muted"
+                  "px-5 py-2.5 rounded-xl text-sm font-bold transition-all",
+                  playbackSpeed === speed
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-primary/10"
                 )}
               >
                 {speed}x
@@ -239,17 +239,17 @@ const DuaDetailPage: React.FC = () => {
           </div>
 
           {/* Playback Controls */}
-          <div className="flex items-center justify-center gap-6">
-            <button 
+          <div className="flex items-center justify-center gap-8">
+            <button
               onClick={handleRestart}
-              className="p-3 rounded-xl hover:bg-muted transition-colors"
+              className="p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors"
             >
               <RotateCcw className="w-5 h-5 text-muted-foreground" />
             </button>
-            
-            <button 
+
+            <button
               onClick={handlePlayPause}
-              className="w-16 h-16 rounded-full bg-sage text-cream flex items-center justify-center shadow-prayer hover:bg-sage-dark transition-colors"
+              className="w-16 h-16 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
             >
               {isPlaying ? (
                 <Pause className="w-7 h-7" />
@@ -266,26 +266,25 @@ const DuaDetailPage: React.FC = () => {
       {/* Mark as Learned */}
       <div className="px-6 py-4 pb-8">
         {isLearned ? (
-          <div className="w-full py-4 rounded-2xl bg-sage/10 border border-sage/30 flex items-center justify-center gap-2 text-sage">
+          <div className="w-full py-4 rounded-2xl bg-primary/10 border-2 border-primary/30 flex items-center justify-center gap-2 text-primary">
             <CheckCircle2 className="w-5 h-5" />
-            <span className="font-medium">
+            <span className="font-bold">
               {language === 'tr' ? 'Öğrenildi!' : 'Learned!'}
             </span>
           </div>
         ) : (
-          <Button 
+          <Button
             onClick={handleMarkLearned}
-            variant="sage" 
-            className="w-full" 
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl py-6 font-bold"
             size="lg"
           >
-            <Check className="w-5 h-5" />
+            <Check className="w-5 h-5 mr-2" />
             {t('learn.markLearned')}
           </Button>
         )}
-        
+
         {showSuccess && (
-          <div className="mt-3 text-center text-sm text-sage animate-fade-in">
+          <div className="mt-3 text-center text-sm font-bold text-primary animate-fade-in">
             +30 XP {language === 'tr' ? 'kazandın!' : 'earned!'}
           </div>
         )}

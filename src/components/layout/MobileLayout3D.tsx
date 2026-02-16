@@ -31,7 +31,7 @@ const MobileLayout3D: React.FC<MobileLayout3DProps> = ({
           }}
         />
         <motion.div
-          className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-gradient-to-tr from-orange-500/10 to-pink-600/5 blur-3xl"
+          className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-gradient-to-tr bg-accent/10 blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, -10, 0],

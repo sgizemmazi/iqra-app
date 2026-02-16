@@ -1,143 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Minimal Mono/Neutral Design */
 
-@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
-
 @layer base {
   :root {
-    /* Islamic soft background */
-    --background: 150 30% 98%;
-    --foreground: 150 15% 15%;
+    /* Cultured background - Açık gri/beyaz arka plan */
+    --background: 0 0% 97%;
+    --foreground: 0 0% 19%;
 
-    /* Cream cards */
-    --card: 45 40% 98%;
-    --card-foreground: 150 15% 15%;
+    /* Açık kart rengi */
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 19%;
 
     /* Popover */
-    --popover: 45 40% 98%;
-    --popover-foreground: 150 15% 15%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 19%;
 
-    /* Islamic green primary */
-    --primary: 150 60% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* Kombu Green primary - Koyu yeşil */
+    --primary: 84deg 12.89% 43.74%;
+    --primary-foreground: 0 0% 97%;
 
-    /* Navy blue secondary */
-    --secondary: 220 45% 40%;
-    --secondary-foreground: 0 0% 100%;
+    /* Pastel Brown secondary - Pastel kahverengi */
+    --secondary: 9 22% 45%;
+    --secondary-foreground: 0 0% 97%;
 
-    /* Soft muted */
-    --muted: 150 20% 94%;
-    --muted-foreground: 150 10% 45%;
+    /* Desaturated Cyan muted - Tonlu camgöbeği */
+    --muted: 174 22% 92%;
+    --muted-foreground: 174 22% 40%;
 
-    /* Gold accent */
-    --accent: 45 85% 55%;
-    --accent-foreground: 150 15% 15%;
+    /* Copper accent - Bakır/turuncu */
+    --accent: 25 53% 50%;
+    --accent-foreground: 0 0% 97%;
 
     /* Red for errors */
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
     /* Soft borders */
-    --border: 150 15% 88%;
-    --input: 150 15% 92%;
-    --ring: 150 60% 45%;
+    --border: 174 15% 88%;
+    --input: 174 15% 92%;
+    --ring: 84 33% 19%;
 
     --radius: 1.25rem;
 
-    /* Islamic gamification colors */
-    --islamic-green: 150 60% 45%;
-    --islamic-teal: 170 55% 48%;
-    --islamic-gold: 45 85% 55%;
-    --islamic-amber: 35 90% 60%;
-    --islamic-navy: 220 45% 40%;
-    --islamic-blue: 210 60% 55%;
+    /* Brand color palette */
+    --brand-kombu-green: 84 33% 19%;
+    --brand-copper: 25 53% 50%;
+    --brand-pastel-brown: 9 22% 45%;
+    --brand-cyan: 174 22% 49%;
+    --brand-charcoal: 0 0% 19%;
+    --brand-cultured: 0 0% 97%;
 
-    /* Islamic Gradient combinations */
-    --gradient-green-teal: linear-gradient(135deg, hsl(150 60% 45%) 0%, hsl(170 55% 48%) 100%);
-    --gradient-navy-blue: linear-gradient(135deg, hsl(220 45% 40%) 0%, hsl(210 60% 55%) 100%);
-    --gradient-gold-amber: linear-gradient(135deg, hsl(45 85% 55%) 0%, hsl(35 90% 60%) 100%);
-    --gradient-teal-blue: linear-gradient(135deg, hsl(170 55% 48%) 0%, hsl(210 60% 55%) 100%);
+    /* Islamic gamification colors - Updated with new palette */
+    --islamic-green: 84 33% 19%;
+    --islamic-teal: 174 22% 49%;
+    --islamic-gold: 25 53% 50%;
+    --islamic-amber: 25 53% 50%;
+    --islamic-navy: 9 22% 45%;
+    --islamic-blue: 174 22% 49%;
 
-    /* Soft shadows with green tint */
-    --shadow-xs: 0 1px 2px 0 rgb(34 139 34 / 0.05);
-    --shadow-sm: 0 2px 8px -1px rgb(34 139 34 / 0.08);
-    --shadow-md: 0 4px 16px -2px rgb(34 139 34 / 0.12);
-    --shadow-lg: 0 8px 24px -4px rgb(34 139 34 / 0.15);
-    --shadow-xl: 0 12px 32px -8px rgb(34 139 34 / 0.18);
-    --shadow-card: 0 4px 20px -2px rgb(34 139 34 / 0.1);
-    --shadow-hover: 0 8px 30px -4px rgb(34 139 34 / 0.2);
-    --shadow-glow: 0 0 40px rgb(34 139 34 / 0.25);
+    /* Updated Gradient combinations */
+    --gradient-green-teal: linear-gradient(
+      135deg,
+      hsl(84 33% 19%) 0%,
+      hsl(174 22% 49%) 100%
+    );
+    --gradient-navy-blue: linear-gradient(
+      135deg,
+      hsl(9 22% 45%) 0%,
+      hsl(174 22% 49%) 100%
+    );
+    --gradient-gold-amber: linear-gradient(
+      135deg,
+      hsl(25 53% 50%) 0%,
+      hsl(25 53% 55%) 100%
+    );
+    --gradient-teal-blue: linear-gradient(
+      135deg,
+      hsl(174 22% 49%) 0%,
+      hsl(174 30% 55%) 100%
+    );
 
     /* Sidebar */
-    --sidebar-background: 45 40% 98%;
-    --sidebar-foreground: 150 15% 15%;
-    --sidebar-primary: 150 60% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 20% 94%;
-    --sidebar-accent-foreground: 150 60% 45%;
-    --sidebar-border: 150 15% 88%;
-    --sidebar-ring: 150 60% 45%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 0 0% 19%;
+    --sidebar-primary: 84 33% 19%;
+    --sidebar-primary-foreground: 0 0% 97%;
+    --sidebar-accent: 174 22% 92%;
+    --sidebar-accent-foreground: 84 33% 19%;
+    --sidebar-border: 174 15% 88%;
+    --sidebar-ring: 84 33% 19%;
   }
 
   .dark {
-    /* Deep Islamic green-navy background */
-    --background: 150 30% 8%;
-    --foreground: 150 10% 95%;
+    /* Dark Charcoal background - Koyu gri arka plan */
+    --background: 0 0% 12%;
+    --foreground: 0 0% 95%;
 
-    --card: 150 25% 12%;
-    --card-foreground: 150 10% 95%;
+    --card: 0 0% 16%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 150 25% 12%;
-    --popover-foreground: 150 10% 95%;
+    --popover: 0 0% 16%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 150 55% 55%;
-    --primary-foreground: 150 30% 8%;
+    /* Kombu Green primary - Daha açık ton */
+    --primary: 84 40% 35%;
+    --primary-foreground: 0 0% 95%;
 
-    --secondary: 220 40% 50%;
-    --secondary-foreground: 150 30% 8%;
+    /* Pastel Brown secondary - Daha açık ton */
+    --secondary: 9 30% 55%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 150 20% 18%;
-    --muted-foreground: 150 10% 60%;
+    /* Desaturated Cyan muted - Daha açık ton */
+    --muted: 174 22% 20%;
+    --muted-foreground: 174 22% 65%;
 
-    --accent: 45 80% 60%;
-    --accent-foreground: 150 30% 8%;
+    /* Copper accent - Daha parlak ton */
+    --accent: 25 60% 60%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 70% 55%;
-    --destructive-foreground: 150 10% 95%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 150 20% 22%;
-    --input: 150 20% 18%;
-    --ring: 150 55% 55%;
+    --border: 174 15% 25%;
+    --input: 174 15% 20%;
+    --ring: 84 40% 35%;
 
-    /* Islamic gamification colors (brighter for dark mode) */
-    --islamic-green: 150 55% 55%;
-    --islamic-teal: 170 50% 55%;
-    --islamic-gold: 45 80% 60%;
-    --islamic-amber: 35 85% 65%;
-    --islamic-navy: 220 40% 50%;
-    --islamic-blue: 210 55% 60%;
+    /* Brand color palette - Brighter for dark mode */
+    --brand-kombu-green: 84 40% 35%;
+    --brand-copper: 25 60% 60%;
+    --brand-pastel-brown: 9 30% 55%;
+    --brand-cyan: 174 30% 55%;
+    --brand-charcoal: 0 0% 19%;
+    --brand-cultured: 0 0% 95%;
 
-    /* Enhanced shadows with green glow */
-    --shadow-xs: 0 1px 2px 0 rgb(34 139 34 / 0.2);
-    --shadow-sm: 0 2px 8px -1px rgb(34 139 34 / 0.25);
-    --shadow-md: 0 4px 16px -2px rgb(34 139 34 / 0.3);
-    --shadow-lg: 0 8px 24px -4px rgb(34 139 34 / 0.35);
-    --shadow-xl: 0 12px 32px -8px rgb(34 139 34 / 0.4);
-    --shadow-card: 0 4px 20px -2px rgb(34 139 34 / 0.28);
-    --shadow-hover: 0 8px 30px -4px rgb(34 139 34 / 0.4);
-    --shadow-glow: 0 0 60px rgb(34 139 34 / 0.4);
+    /* Islamic gamification colors - Updated with new palette */
+    --islamic-green: 84 40% 35%;
+    --islamic-teal: 174 30% 55%;
+    --islamic-gold: 25 60% 60%;
+    --islamic-amber: 25 60% 60%;
+    --islamic-navy: 9 30% 55%;
+    --islamic-blue: 174 30% 55%;
 
-    --sidebar-background: 150 30% 8%;
-    --sidebar-foreground: 150 10% 95%;
-    --sidebar-primary: 150 55% 55%;
-    --sidebar-primary-foreground: 150 30% 8%;
-    --sidebar-accent: 150 20% 18%;
-    --sidebar-accent-foreground: 150 55% 55%;
-    --sidebar-border: 150 20% 22%;
-    --sidebar-ring: 150 55% 55%;
+    --sidebar-background: 0 0% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 84 40% 35%;
+    --sidebar-primary-foreground: 0 0% 95%;
+    --sidebar-accent: 174 22% 20%;
+    --sidebar-accent-foreground: 84 40% 35%;
+    --sidebar-border: 174 15% 25%;
+    --sidebar-ring: 84 40% 35%;
   }
 }
 
@@ -148,7 +164,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: "Plus Jakarta Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
     min-height: 100vh;
   }
 
@@ -166,25 +183,33 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Islamic Gradient Cards */
+  /* Updated Gradient Cards with new color palette */
   .gradient-card-green {
-    background: linear-gradient(135deg, hsl(150 60% 45%) 0%, hsl(170 55% 48%) 100%);
-    box-shadow: var(--shadow-card), var(--shadow-glow);
+    background: linear-gradient(
+      135deg,
+      hsl(84 33% 19%) 0%,
+      hsl(84 40% 35%) 100%
+    );
   }
 
-  .gradient-card-navy {
-    background: linear-gradient(135deg, hsl(220 45% 40%) 0%, hsl(210 60% 55%) 100%);
-    box-shadow: var(--shadow-card), 0 0 40px rgb(52 109 146 / 0.25);
+  .gradient-card-brown {
+    background: linear-gradient(135deg, hsl(9 22% 45%) 0%, hsl(9 30% 55%) 100%);
   }
 
-  .gradient-card-gold {
-    background: linear-gradient(135deg, hsl(45 85% 55%) 0%, hsl(35 90% 60%) 100%);
-    box-shadow: var(--shadow-card), 0 0 40px rgb(218 165 32 / 0.25);
+  .gradient-card-copper {
+    background: linear-gradient(
+      135deg,
+      hsl(25 53% 50%) 0%,
+      hsl(25 60% 60%) 100%
+    );
   }
 
-  .gradient-card-teal {
-    background: linear-gradient(135deg, hsl(170 55% 48%) 0%, hsl(210 60% 55%) 100%);
-    box-shadow: var(--shadow-card), 0 0 40px rgb(64 224 208 / 0.25);
+  .gradient-card-cyan {
+    background: linear-gradient(
+      135deg,
+      hsl(174 22% 49%) 0%,
+      hsl(174 30% 55%) 100%
+    );
   }
 
   /* Glass-morphic Card with blur */
@@ -193,7 +218,6 @@
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: var(--shadow-card);
   }
 
   .dark .glass-card {
@@ -201,27 +225,27 @@
     border: 1px solid rgba(124, 58, 237, 0.2);
   }
 
-  /* Vibrant Badge */
+  /* Updated Vibrant Badge with new color palette */
   .vibrant-badge {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold;
-    background: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(340 82% 67%) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(84 33% 19%) 0%,
+      hsl(25 53% 50%) 100%
+    );
     color: white;
-    box-shadow: var(--shadow-md);
+
     transition: all 0.3s ease;
   }
 
   .vibrant-badge:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
   }
 
   /* 3D Icon Box */
   .icon-box-3d {
     @apply flex items-center justify-center rounded-2xl;
     background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
-    box-shadow:
-      6px 6px 12px rgba(0, 0, 0, 0.1),
-      -6px -6px 12px rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
   }
 
@@ -231,35 +255,17 @@
 
   .dark .icon-box-3d {
     background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
-    box-shadow:
-      6px 6px 12px rgba(0, 0, 0, 0.5),
-      -6px -6px 12px rgba(124, 58, 237, 0.1);
   }
 
-  /* Islamic Gradient Progress Bar */
+  /* Updated Gradient Progress Bar with new palette */
   .progress-gradient {
-    background: linear-gradient(90deg,
-      hsl(150 60% 45%) 0%,
-      hsl(170 55% 48%) 50%,
-      hsl(45 85% 55%) 100%
+    background: linear-gradient(
+      90deg,
+      hsl(84, 7%, 41%) 0%,
+      hsl(109, 5%, 57%) 50%,
+      hsl(81, 7%, 62%) 100%
     );
     background-size: 200% 100%;
-  }
-
-  /* Islamic Glow effects */
-  .glow-green {
-    box-shadow: 0 0 20px hsl(150 60% 45% / 0.4),
-                0 0 40px hsl(150 60% 45% / 0.25);
-  }
-
-  .glow-teal {
-    box-shadow: 0 0 20px hsl(170 55% 48% / 0.4),
-                0 0 40px hsl(170 55% 48% / 0.25);
-  }
-
-  .glow-gold {
-    box-shadow: 0 0 20px hsl(45 85% 55% / 0.4),
-                0 0 40px hsl(45 85% 55% / 0.25);
   }
 
   /* Decorative patterns */
@@ -302,7 +308,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -313,7 +320,8 @@
 }
 
 @keyframes bounce-subtle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -327,15 +335,6 @@
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(150 60% 45% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(150 60% 45% / 0.5);
   }
 }
 

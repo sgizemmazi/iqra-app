@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Compass, Heart, HelpCircle, Grid3X3, List } from 'lucide-react';
+import { BookOpen, Compass, Heart, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -8,7 +8,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const QuickActionsWarm: React.FC = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const [activeTab, setActiveTab] = useState<'categories' | 'recent'>('categories');
 
   const categories = [
     {
@@ -16,69 +15,34 @@ const QuickActionsWarm: React.FC = () => {
       label: language === 'tr' ? 'Sureler' : 'Surahs',
       subtitle: language === 'tr' ? '114 Sure' : '114 Surahs',
       path: '/learn',
-      gradient: 'from-emerald-600 to-teal-600',
+      color: 'bg-primary',
     },
     {
       icon: Heart,
       label: language === 'tr' ? 'Dualar' : 'Duas',
       subtitle: language === 'tr' ? '25 Dua' : '25 Duas',
       path: '/learn',
-      gradient: 'from-teal-600 to-cyan-600',
+      color: 'bg-brand-cyan',
     },
     {
       icon: HelpCircle,
       label: 'Quiz',
       subtitle: language === 'tr' ? 'Bilgi Yarış' : 'Knowledge Test',
       path: '/quiz',
-      gradient: 'from-blue-700 to-blue-500',
+      color: 'bg-secondary',
     },
     {
       icon: Compass,
       label: language === 'tr' ? 'Kıble' : 'Qibla',
       subtitle: language === 'tr' ? 'Yön Bul' : 'Find Direction',
       path: '/qibla',
-      gradient: 'from-amber-500 to-orange-500',
+      color: 'bg-accent',
     },
   ];
 
   return (
     <div className="px-5 py-4">
-      {/* Tab Switcher with Islamic colors */}
-      <motion.div
-        className="flex items-center justify-center mb-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
-      >
-        <div className="inline-flex items-center gap-2 p-1.5 bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-950/30 dark:to-teal-950/30 rounded-2xl shadow-sm">
-          <button
-            onClick={() => setActiveTab('categories')}
-            className={cn(
-              'px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
-              activeTab === 'categories'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            <Grid3X3 className="w-4 h-4" />
-            {language === 'tr' ? 'Kategoriler' : 'Categories'}
-          </button>
-          <button
-            onClick={() => setActiveTab('recent')}
-            className={cn(
-              'px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2',
-              activeTab === 'recent'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            <List className="w-4 h-4" />
-            {language === 'tr' ? 'Son Görülen' : 'Recent'}
-          </button>
-        </div>
-      </motion.div>
-
-      {/* Categories Grid with Islamic gradients */}
+      {/* Categories Grid */}
       <motion.div
         className="grid grid-cols-2 gap-4"
         initial={{ opacity: 0 }}
@@ -98,22 +62,22 @@ const QuickActionsWarm: React.FC = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
-              {/* Gradient glow on hover */}
+              {/* Subtle bg on hover */}
               <div
                 className={cn(
-                  'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity',
-                  category.gradient
+                  'absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity',
+                  category.color
                 )}
               />
 
               <div className="relative z-10 flex flex-col items-center gap-3">
                 <div
                   className={cn(
-                    'w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all group-hover:scale-110',
-                    category.gradient
+                    'w-14 h-14 rounded-2xl flex items-center justify-center group-hover:shadow-xl transition-all group-hover:scale-110',
+                    category.color
                   )}
                 >
-                  <Icon className="w-7 h-7 text-white" />
+                  <Icon className="w-7 h-7 text-primary-foreground" />
                 </div>
                 <div className="text-center">
                   <span className="text-base font-black text-foreground block">

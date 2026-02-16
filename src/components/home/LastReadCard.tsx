@@ -39,7 +39,7 @@ const LastReadCard: React.FC = () => {
 
             {/* Play button */}
             <motion.button 
-              className="w-14 h-14 rounded-full bg-cream flex items-center justify-center shadow-lg"
+              className="w-14 h-14 rounded-full bg-cream flex items-center justify-center"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={(e) => {

@@ -25,7 +25,7 @@ const CurrentPrayerCard: React.FC = () => {
   return (
     <div className="px-6">
       <motion.div 
-        className="relative rounded-3xl overflow-hidden shadow-large"
+        className="relative rounded-3xl overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}

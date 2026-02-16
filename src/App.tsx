@@ -10,7 +10,8 @@ import PrayerPage from "./pages/PrayerPage";
 import LearnPage from "./pages/LearnPage";
 import SurahDetailPage from "./pages/SurahDetailPage";
 import DuaDetailPage from "./pages/DuaDetailPage";
-import ProfilePage from "./pages/ProfilePage";
+import ZikirmatikPage from "./pages/ZikirmatikPage";
+import ZikirListPage from "./pages/ZikirListPage";
 import QuizPage from "./pages/QuizPage";
 import QiblaPage from "./pages/QiblaPage";
 import HistoryPage from "./pages/HistoryPage";
@@ -34,7 +35,8 @@ const App = () => (
               <Route path="/learn/dua/:id" element={<DuaDetailPage />} />
               <Route path="/quiz" element={<QuizPage />} />
               <Route path="/qibla" element={<QiblaPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/zikirmatik" element={<ZikirmatikPage />} />
+              <Route path="/zikirmatik/list" element={<ZikirListPage />} />
               <Route path="/history" element={<HistoryPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

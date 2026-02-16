@@ -63,6 +63,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        brand: {
+          kombu: "hsl(var(--brand-kombu-green))",
+          copper: "hsl(var(--brand-copper))",
+          brown: "hsl(var(--brand-pastel-brown))",
+          cyan: "hsl(var(--brand-cyan))",
+          charcoal: "hsl(var(--brand-charcoal))",
+          cultured: "hsl(var(--brand-cultured))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -73,8 +81,16 @@ export default {
         "3xl": "calc(var(--radius) + 16px)",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Poppins", "system-ui", "sans-serif"],
         arabic: ["Amiri", "serif"],
+      },
+      fontWeight: {
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "600",
+        extrabold: "700",
+        black: "700",
       },
       fontSize: {
         display: ["3.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],

@@ -47,7 +47,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             className="fixed inset-x-4 top-1/2 -translate-y-1/2 max-w-md mx-auto glass-card rounded-3xl z-50 overflow-hidden max-h-[80vh] overflow-y-auto"
           >
             {/* Header with gradient */}
-            <div className="p-6 pb-8 bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-600">
+            <div className="p-6 pb-8 bg-primary">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -79,7 +79,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 <div className="glass-card p-4 rounded-2xl mb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-700 to-blue-500 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                         {resolvedTheme === 'dark' ? (
                           <Moon className="w-6 h-6 text-white" />
                         ) : (
@@ -109,7 +109,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 <div className="glass-card p-4 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 rounded-xl bg-brand-cyan flex items-center justify-center">
                         <Globe className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -123,7 +123,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                     </div>
                     <button
                       onClick={toggleLanguage}
-                      className="px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                      className="px-4 py-2 bg-brand-cyan text-white font-bold rounded-xl hover:shadow-xl transition-all"
                     >
                       {language === 'tr' ? 'TR' : 'EN'}
                     </button>
@@ -142,7 +142,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 <div className="glass-card p-4 rounded-2xl mb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                         <Bell className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -165,7 +165,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 <div className="glass-card p-4 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                         <Volume2 className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -190,7 +190,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             <div className="p-6 border-t border-border/50">
               <button
                 onClick={onClose}
-                className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full py-3 bg-primary text-white font-bold rounded-2xl hover:shadow-xl transition-all"
               >
                 {language === 'tr' ? 'Kapat' : 'Close'}
               </button>
