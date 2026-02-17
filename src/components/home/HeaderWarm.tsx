@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { Menu, User, Sparkles, Flame } from "lucide-react";
 import { usePersistedGameProgress } from "@/hooks/usePersistedGameProgress";
-import Sidebar from "@/components/layout/Sidebar";
-import ProfileOffcanvas from "@/components/layout/ProfileOffcanvas";
+import { useUI } from "@/contexts/UIContext";
 
 const HeaderWarm: React.FC = () => {
   const { language } = useLanguage();
   const { progress } = usePersistedGameProgress();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const { setSidebarOpen, setProfileOpen } = useUI();
 
   return (
     <>
@@ -46,14 +44,6 @@ const HeaderWarm: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-      {/* Profile Offcanvas */}
-      <ProfileOffcanvas
-        isOpen={profileOpen}
-        onClose={() => setProfileOpen(false)}
-      />
     </>
   );
 };

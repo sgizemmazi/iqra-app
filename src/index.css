@@ -8,134 +8,133 @@
 
 @layer base {
   :root {
-    /* Electric Purple - Light Mode */
-    --background: 250 30% 97%;
-    --foreground: 250 30% 12%;
+    /* Islamic Manuscript Palette - Light Mode */
+    /* Ivory | Sand | Steel Blue | Deep Navy */
+    --background: 42 22% 94%;
+    --foreground: 212 36% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 250 30% 12%;
+    --card: 40 20% 98%;
+    --card-foreground: 212 36% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 250 30% 12%;
+    --popover: 40 20% 98%;
+    --popover-foreground: 212 36% 15%;
 
-    /* Electric Purple primary */
-    --primary: 262 83% 58%;
+    /* Deep Navy - lacivert */
+    --primary: 212 36% 27%;
     --primary-foreground: 0 0% 100%;
 
-    /* Indigo secondary */
-    --secondary: 240 60% 55%;
+    /* Steel Blue - çelik mavi */
+    --secondary: 205 16% 56%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Soft purple muted */
-    --muted: 262 30% 93%;
-    --muted-foreground: 262 15% 50%;
+    /* Soft ivory muted */
+    --muted: 40 18% 88%;
+    --muted-foreground: 212 15% 45%;
 
-    /* Gold accent */
-    --accent: 45 90% 52%;
-    --accent-foreground: 0 0% 10%;
+    /* Warm Sand/Tan - kum rengi */
+    --accent: 35deg 76.64% 57.96%;
+    --accent-foreground: 212 36% 15%;
 
-    /* Red for errors */
-    --destructive: 0 70% 50%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Soft borders */
-    --border: 262 20% 88%;
-    --input: 262 20% 92%;
-    --ring: 262 83% 58%;
+    --border: 38 15% 82%;
+    --input: 38 15% 86%;
+    --ring: 212 36% 27%;
 
     --radius: 1.25rem;
 
     /* Brand color palette */
-    --brand-kombu-green: 262 83% 58%;
-    --brand-copper: 45 90% 52%;
-    --brand-pastel-brown: 240 60% 55%;
-    --brand-cyan: 200 80% 55%;
-    --brand-charcoal: 250 30% 12%;
-    --brand-cultured: 250 30% 97%;
+    --brand-kombu-green: 212 36% 27%;
+    --brand-copper: 35 38% 62%;
+    --brand-pastel-brown: 205 16% 56%;
+    --brand-cyan: 200 25% 52%;
+    --brand-charcoal: 212 36% 15%;
+    --brand-cultured: 42 22% 94%;
 
     /* Islamic gamification colors */
-    --islamic-green: 262 83% 58%;
-    --islamic-teal: 200 80% 55%;
-    --islamic-gold: 45 90% 52%;
-    --islamic-amber: 45 90% 52%;
-    --islamic-navy: 240 60% 55%;
-    --islamic-blue: 200 80% 55%;
+    --islamic-green: 212 36% 27%;
+    --islamic-teal: 205 16% 56%;
+    --islamic-gold: 35 38% 62%;
+    --islamic-amber: 30 42% 55%;
+    --islamic-navy: 212 36% 27%;
+    --islamic-blue: 200 25% 52%;
 
     /* Gradient combinations */
-    --gradient-green-teal: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(200 80% 55%) 100%);
-    --gradient-navy-blue: linear-gradient(135deg, hsl(240 60% 55%) 0%, hsl(200 80% 55%) 100%);
-    --gradient-gold-amber: linear-gradient(135deg, hsl(45 90% 52%) 0%, hsl(35 90% 55%) 100%);
-    --gradient-teal-blue: linear-gradient(135deg, hsl(200 80% 55%) 0%, hsl(220 80% 60%) 100%);
+    --gradient-green-teal: linear-gradient(135deg, hsl(212 36% 27%) 0%, hsl(205 16% 42%) 100%);
+    --gradient-navy-blue: linear-gradient(135deg, hsl(212 36% 27%) 0%, hsl(200 25% 52%) 100%);
+    --gradient-gold-amber: linear-gradient(135deg, hsl(35 38% 55%) 0%, hsl(30 42% 62%) 100%);
+    --gradient-teal-blue: linear-gradient(135deg, hsl(205 16% 42%) 0%, hsl(200 25% 52%) 100%);
 
     /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 250 30% 12%;
-    --sidebar-primary: 262 83% 58%;
+    --sidebar-background: 40 20% 98%;
+    --sidebar-foreground: 212 36% 15%;
+    --sidebar-primary: 212 36% 27%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 262 30% 93%;
-    --sidebar-accent-foreground: 262 83% 58%;
-    --sidebar-border: 262 20% 88%;
-    --sidebar-ring: 262 83% 58%;
+    --sidebar-accent: 40 18% 88%;
+    --sidebar-accent-foreground: 212 36% 27%;
+    --sidebar-border: 38 15% 82%;
+    --sidebar-ring: 212 36% 27%;
   }
 
   .dark {
-    /* Electric Purple - Dark Mode */
-    --background: 240 45% 10%;
-    --foreground: 0 0% 95%;
+    /* Islamic Manuscript Palette - Dark Mode */
+    --background: 212 40% 12%;
+    --foreground: 42 22% 90%;
 
-    --card: 240 40% 16%;
-    --card-foreground: 0 0% 95%;
+    --card: 212 35% 18%;
+    --card-foreground: 42 22% 90%;
 
-    --popover: 240 40% 16%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 212 35% 18%;
+    --popover-foreground: 42 22% 90%;
 
-    /* Electric Purple primary - brighter for dark */
-    --primary: 262 83% 65%;
+    /* Lighter navy for dark */
+    --primary: 212 30% 48%;
     --primary-foreground: 0 0% 100%;
 
-    /* Indigo secondary */
-    --secondary: 240 60% 65%;
+    /* Steel blue */
+    --secondary: 205 20% 52%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Dark purple muted */
-    --muted: 240 35% 22%;
-    --muted-foreground: 262 20% 65%;
+    /* Dark navy muted */
+    --muted: 212 28% 22%;
+    --muted-foreground: 205 15% 58%;
 
-    /* Gold accent */
-    --accent: 45 90% 55%;
-    --accent-foreground: 0 0% 10%;
+    /* Sand/tan accent */
+    --accent: 35 40% 60%;
+    --accent-foreground: 212 36% 12%;
 
-    --destructive: 0 70% 55%;
+    --destructive: 0 65% 52%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 240 30% 25%;
-    --input: 240 30% 20%;
-    --ring: 262 83% 65%;
+    --border: 212 25% 24%;
+    --input: 212 25% 20%;
+    --ring: 212 30% 48%;
 
     /* Brand color palette - Dark mode */
-    --brand-kombu-green: 262 83% 65%;
-    --brand-copper: 45 90% 55%;
-    --brand-pastel-brown: 240 60% 65%;
-    --brand-cyan: 200 80% 60%;
-    --brand-charcoal: 240 45% 10%;
-    --brand-cultured: 0 0% 95%;
+    --brand-kombu-green: 212 30% 48%;
+    --brand-copper: 35 40% 60%;
+    --brand-pastel-brown: 205 20% 52%;
+    --brand-cyan: 200 22% 56%;
+    --brand-charcoal: 212 40% 12%;
+    --brand-cultured: 42 22% 90%;
 
     /* Islamic gamification colors */
-    --islamic-green: 262 83% 65%;
-    --islamic-teal: 200 80% 60%;
-    --islamic-gold: 45 90% 55%;
-    --islamic-amber: 45 90% 55%;
-    --islamic-navy: 240 60% 65%;
-    --islamic-blue: 200 80% 60%;
+    --islamic-green: 212 30% 48%;
+    --islamic-teal: 205 20% 52%;
+    --islamic-gold: 35 40% 60%;
+    --islamic-amber: 30 42% 58%;
+    --islamic-navy: 212 30% 48%;
+    --islamic-blue: 200 22% 56%;
 
-    --sidebar-background: 240 45% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 262 83% 65%;
+    --sidebar-background: 212 40% 12%;
+    --sidebar-foreground: 42 22% 90%;
+    --sidebar-primary: 212 30% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 35% 22%;
-    --sidebar-accent-foreground: 262 83% 65%;
-    --sidebar-border: 240 30% 25%;
-    --sidebar-ring: 262 83% 65%;
+    --sidebar-accent: 212 28% 22%;
+    --sidebar-accent-foreground: 212 30% 48%;
+    --sidebar-border: 212 25% 24%;
+    --sidebar-ring: 212 30% 48%;
   }
 }
 
@@ -165,21 +164,21 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Electric Purple Gradient Cards */
+  /* Islamic Manuscript Gradient Cards */
   .gradient-card-green {
-    background: linear-gradient(135deg, hsl(262 83% 50%) 0%, hsl(262 83% 65%) 100%);
+    background: linear-gradient(135deg, hsl(212 36% 22%) 0%, hsl(212 36% 35%) 100%);
   }
 
   .gradient-card-brown {
-    background: linear-gradient(135deg, hsl(240 60% 45%) 0%, hsl(240 60% 60%) 100%);
+    background: linear-gradient(135deg, hsl(205 16% 38%) 0%, hsl(205 16% 52%) 100%);
   }
 
   .gradient-card-copper {
-    background: linear-gradient(135deg, hsl(45 90% 45%) 0%, hsl(45 90% 60%) 100%);
+    background: linear-gradient(135deg, hsl(35 38% 48%) 0%, hsl(35 38% 62%) 100%);
   }
 
   .gradient-card-cyan {
-    background: linear-gradient(135deg, hsl(200 80% 45%) 0%, hsl(200 80% 60%) 100%);
+    background: linear-gradient(135deg, hsl(200 25% 38%) 0%, hsl(200 25% 52%) 100%);
   }
 
   /* Glass-morphic Card with blur */
@@ -191,14 +190,14 @@
   }
 
   .dark .glass-card {
-    background: rgba(17, 15, 30, 0.7);
-    border: 1px solid rgba(124, 58, 237, 0.2);
+    background: rgba(14, 22, 38, 0.78);
+    border: 1px solid rgba(100, 130, 170, 0.15);
   }
 
-  /* Electric Purple Vibrant Badge */
+  /* Islamic Vibrant Badge */
   .vibrant-badge {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold;
-    background: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(45 90% 52%) 100%);
+    background: linear-gradient(135deg, hsl(212 36% 27%) 0%, hsl(35 38% 62%) 100%);
     color: white;
     transition: all 0.3s ease;
   }
@@ -222,13 +221,13 @@
     background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
   }
 
-  /* Updated Gradient Progress Bar with new palette */
+  /* Islamic Manuscript Gradient Progress Bar */
   .progress-gradient {
     background: linear-gradient(
       90deg,
-      hsl(262, 83%, 58%) 0%,
-      hsl(240, 60%, 65%) 50%,
-      hsl(45, 90%, 52%) 100%
+      hsl(212, 36%, 27%) 0%,
+      hsl(205, 16%, 52%) 50%,
+      hsl(35, 38%, 62%) 100%
     );
     background-size: 200% 100%;
   }

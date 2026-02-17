@@ -16,9 +16,10 @@ import { cn } from "@/lib/utils";
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  inline?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, inline }) => {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
@@ -59,6 +60,65 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     navigate(path);
     onClose();
   };
+
+  // Inline mode: rendered inside MobileLayoutWarm's flex row (no overlay, no fixed)
+  if (inline) {
+    return (
+      <div className="h-full min-h-screen bg-card overflow-y-auto">
+        <div className="p-6 pb-8 bg-primary rounded-br-3xl">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-black text-white">Menü</h2>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
+            <div className="w-12 h-12 rounded-2xl bg-white/30 flex items-center justify-center">
+              <Hand className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">
+                {language === "tr" ? "Hoş geldiniz" : "Welcome"}
+              </p>
+              <p className="text-xs text-white/80">Iqra App</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-6 space-y-2">
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-3">
+            {language === "tr" ? "Gezinme" : "Navigation"}
+          </p>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.path}
+                onClick={() => handleNavigate(item.path)}
+                className="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-muted transition-colors"
+              >
+                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", item.color)}>
+                  <Icon className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <span className="font-bold text-foreground">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="p-6 border-t border-border/50">
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">Version 1.0.0</p>
+            <p className="text-xs text-muted-foreground mt-1 flex items-center justify-center gap-1">
+              {language === "tr" ? "Sevgiyle yapıldı" : "Made with"}{" "}
+              <Heart className="w-3 h-3 text-accent" fill="currentColor" />
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AnimatePresence>
