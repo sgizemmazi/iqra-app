@@ -1,9 +1,17 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, BookOpen, Clock, Hand, HelpCircle, Heart } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  X,
+  Home,
+  BookOpen,
+  Clock,
+  Hand,
+  HelpCircle,
+  Heart,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,33 +25,33 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const menuItems = [
     {
       icon: Home,
-      label: language === 'tr' ? 'Ana Sayfa' : 'Home',
-      path: '/',
-      color: 'bg-primary',
+      label: language === "tr" ? "Ana Sayfa" : "Home",
+      path: "/",
+      color: "bg-primary",
     },
     {
       icon: BookOpen,
-      label: language === 'tr' ? 'Öğren' : 'Learn',
-      path: '/learn',
-      color: 'bg-brand-cyan',
+      label: language === "tr" ? "Öğren" : "Learn",
+      path: "/learn",
+      color: "bg-brand-cyan",
     },
     {
       icon: Clock,
-      label: language === 'tr' ? 'Namaz Vakitleri' : 'Prayer Times',
-      path: '/prayer',
-      color: 'bg-secondary',
+      label: language === "tr" ? "Namaz Vakitleri" : "Prayer Times",
+      path: "/prayer",
+      color: "bg-secondary",
     },
     {
       icon: Hand,
-      label: language === 'tr' ? 'Zikirmatik' : 'Dhikr Counter',
-      path: '/zikirmatik',
-      color: 'bg-accent',
+      label: language === "tr" ? "Zikirmatik" : "Dhikr Counter",
+      path: "/zikirmatik",
+      color: "bg-accent",
     },
     {
       icon: HelpCircle,
-      label: 'Quiz',
-      path: '/quiz',
-      color: 'bg-primary',
+      label: "Quiz",
+      path: "/quiz",
+      color: "bg-primary",
     },
   ];
 
@@ -62,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
           />
 
           {/* Sidebar */}
@@ -70,8 +78,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             initial={{ x: -320 }}
             animate={{ x: 0 }}
             exit={{ x: -320 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 bottom-0 w-80 glass-card z-50 overflow-y-auto"
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed left-0 top-0 bottom-0 w-80 glass-card z-[60] overflow-y-auto"
           >
             {/* Header */}
             <div className="p-6 pb-8 bg-primary rounded-br-3xl">
@@ -92,10 +100,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">
-                    {language === 'tr' ? 'Hoş geldiniz' : 'Welcome'}
+                    {language === "tr" ? "Hoş geldiniz" : "Welcome"}
                   </p>
                   <p className="text-xs text-white/80">
-                    {language === 'tr' ? 'Kuran Rehberi' : 'Quran Guide'}
+                    {language === "tr" ? "Iqra App" : "Iqra App"}
                   </p>
                 </div>
               </div>
@@ -104,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             {/* Menu Items */}
             <div className="p-6 space-y-2">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-3">
-                {language === 'tr' ? 'Gezinme' : 'Navigation'}
+                {language === "tr" ? "Gezinme" : "Navigation"}
               </p>
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
@@ -122,21 +130,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     {/* Background on hover */}
                     <div
                       className={cn(
-                        'absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity',
-                        item.color
+                        "absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity",
+                        item.color,
                       )}
                     />
 
                     <div className="relative flex items-center gap-3 p-3">
                       <div
                         className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center',
-                          item.color
+                          "w-10 h-10 rounded-xl flex items-center justify-center",
+                          item.color,
                         )}
                       >
                         <Icon className="w-5 h-5 text-primary-foreground" />
                       </div>
-                      <span className="font-bold text-foreground">{item.label}</span>
+                      <span className="font-bold text-foreground">
+                        {item.label}
+                      </span>
                     </div>
                   </motion.button>
                 );
@@ -148,7 +158,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <div className="text-center">
                 <p className="text-xs text-muted-foreground">Version 1.0.0</p>
                 <p className="text-xs text-muted-foreground mt-1 flex items-center justify-center gap-1">
-                  {language === 'tr' ? 'Sevgiyle yapıldı' : 'Made with'} <Heart className="w-3 h-3 text-accent" fill="currentColor" />
+                  {language === "tr" ? "Sevgiyle yapıldı" : "Made with"}{" "}
+                  <Heart className="w-3 h-3 text-accent" fill="currentColor" />
                 </p>
               </div>
             </div>

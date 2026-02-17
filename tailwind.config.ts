@@ -70,6 +70,9 @@ export default {
           cyan: "hsl(var(--brand-cyan))",
           charcoal: "hsl(var(--brand-charcoal))",
           cultured: "hsl(var(--brand-cultured))",
+          purple: "hsl(262 83% 58%)",
+          gold: "hsl(45 90% 52%)",
+          indigo: "hsl(240 60% 55%)",
         },
       },
       borderRadius: {

@@ -32,7 +32,7 @@ const HeaderWarm: React.FC = () => {
           </motion.button>
 
           <h1 className="text-xl font-black text-primary">
-            {language === "tr" ? "Kuran Rehberi" : "Quran Guide"}
+            {language === "tr" ? "Iqra App" : "Iqra App"}
           </h1>
 
           <motion.button

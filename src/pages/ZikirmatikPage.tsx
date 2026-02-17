@@ -12,6 +12,7 @@ const ZikirmatikPage: React.FC = () => {
   const [count, setCount] = useState(0);
   const [target, setTarget] = useState(33);
   const [vibrate, setVibrate] = useState(false);
+  const [flash, setFlash] = useState(false);
   const [turCount, setTurCount] = useState(0);
   const [selectedDhikr, setSelectedDhikr] = useState<{
     ar?: string;
@@ -94,6 +95,10 @@ const ZikirmatikPage: React.FC = () => {
     setCount(newCount);
     saveDhikrCount(currentDhikrKey, newCount);
 
+    // Flash animasyonu
+    setFlash(true);
+    setTimeout(() => setFlash(false), 250);
+
     // Hedefe tam ulaşıldığında titreşim (tur tamamlanacak)
     if (newCount === currentTarget) {
       setVibrate(true);
@@ -111,7 +116,8 @@ const ZikirmatikPage: React.FC = () => {
     saveTurCount(currentDhikrKey, 0);
   };
 
-  const progress = Math.min((count / target) * 100, 100);
+  const currentTarget = selectedDhikr.ar ? target : 99;
+  const progress = Math.min((count / currentTarget) * 100, 100);
 
   return (
     <MobileLayoutWarm>
@@ -190,32 +196,35 @@ const ZikirmatikPage: React.FC = () => {
               </div>
             </button>
 
-            {/* Progress ring - Sadece seçili zikirlerde göster */}
-            {selectedDhikr.ar && (
-              <svg className="absolute inset-0 w-64 h-64 -rotate-90 pointer-events-none">
-                <circle
-                  cx="128"
-                  cy="128"
-                  r="124"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                  className="text-muted opacity-20"
-                />
-                <circle
-                  cx="128"
-                  cy="128"
-                  r="124"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 124}`}
-                  strokeDashoffset={`${2 * Math.PI * 124 * (1 - progress / 100)}`}
-                  className="text-accent transition-all duration-300"
-                  strokeLinecap="round"
-                />
-              </svg>
-            )}
+            {/* Progress ring - Her zaman göster */}
+            <svg className="absolute inset-0 w-64 h-64 -rotate-90 pointer-events-none">
+              <circle
+                cx="128"
+                cy="128"
+                r="124"
+                stroke="currentColor"
+                strokeWidth="5"
+                fill="none"
+                className="text-muted opacity-20"
+              />
+              <circle
+                cx="128"
+                cy="128"
+                r="124"
+                stroke="currentColor"
+                strokeWidth="5"
+                fill="none"
+                strokeDasharray={`${2 * Math.PI * 124}`}
+                strokeDashoffset={`${2 * Math.PI * 124 * (1 - progress / 100)}`}
+                className="text-accent transition-all duration-300"
+                strokeLinecap="round"
+                style={{
+                  filter: flash ? "drop-shadow(0 0 8px hsl(45 90% 52%))" : "none",
+                  opacity: flash ? 1 : 0.9,
+                  transition: flash ? "filter 0.1s ease, opacity 0.1s ease, stroke-dashoffset 0.3s ease" : "filter 0.2s ease, opacity 0.2s ease, stroke-dashoffset 0.3s ease",
+                }}
+              />
+            </svg>
           </motion.div>
         </div>
 

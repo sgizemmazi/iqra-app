@@ -8,152 +8,134 @@
 
 @layer base {
   :root {
-    /* Cultured background - Açık gri/beyaz arka plan */
-    --background: 0 0% 97%;
-    --foreground: 0 0% 19%;
+    /* Electric Purple - Light Mode */
+    --background: 250 30% 97%;
+    --foreground: 250 30% 12%;
 
-    /* Açık kart rengi */
-    --card: 0 0% 99%;
-    --card-foreground: 0 0% 19%;
+    --card: 0 0% 100%;
+    --card-foreground: 250 30% 12%;
 
-    /* Popover */
-    --popover: 0 0% 99%;
-    --popover-foreground: 0 0% 19%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 250 30% 12%;
 
-    /* Kombu Green primary - Koyu yeşil */
-    --primary: 84deg 12.89% 43.74%;
-    --primary-foreground: 0 0% 97%;
+    /* Electric Purple primary */
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Pastel Brown secondary - Pastel kahverengi */
-    --secondary: 9 22% 45%;
-    --secondary-foreground: 0 0% 97%;
+    /* Indigo secondary */
+    --secondary: 240 60% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Desaturated Cyan muted - Tonlu camgöbeği */
-    --muted: 174 22% 92%;
-    --muted-foreground: 0deg 0% 61.64%;
+    /* Soft purple muted */
+    --muted: 262 30% 93%;
+    --muted-foreground: 262 15% 50%;
 
-    /* Copper accent - Bakır/turuncu */
-    --accent: 25 53% 50%;
-    --accent-foreground: 0 0% 97%;
+    /* Gold accent */
+    --accent: 45 90% 52%;
+    --accent-foreground: 0 0% 10%;
 
     /* Red for errors */
-    --destructive: 0deg 20.39% 55.83%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
     /* Soft borders */
-    --border: 174 15% 88%;
-    --input: 174 15% 92%;
-    --ring: 84 33% 19%;
+    --border: 262 20% 88%;
+    --input: 262 20% 92%;
+    --ring: 262 83% 58%;
 
     --radius: 1.25rem;
 
     /* Brand color palette */
-    --brand-kombu-green: 84 33% 19%;
-    --brand-copper: 25 53% 50%;
-    --brand-pastel-brown: 9 22% 45%;
-    --brand-cyan: 174 22% 49%;
-    --brand-charcoal: 0 0% 19%;
-    --brand-cultured: 0 0% 97%;
+    --brand-kombu-green: 262 83% 58%;
+    --brand-copper: 45 90% 52%;
+    --brand-pastel-brown: 240 60% 55%;
+    --brand-cyan: 200 80% 55%;
+    --brand-charcoal: 250 30% 12%;
+    --brand-cultured: 250 30% 97%;
 
-    /* Islamic gamification colors - Updated with new palette */
-    --islamic-green: 84 33% 19%;
-    --islamic-teal: 174 22% 49%;
-    --islamic-gold: 25 53% 50%;
-    --islamic-amber: 25 53% 50%;
-    --islamic-navy: 9 22% 45%;
-    --islamic-blue: 174 22% 49%;
+    /* Islamic gamification colors */
+    --islamic-green: 262 83% 58%;
+    --islamic-teal: 200 80% 55%;
+    --islamic-gold: 45 90% 52%;
+    --islamic-amber: 45 90% 52%;
+    --islamic-navy: 240 60% 55%;
+    --islamic-blue: 200 80% 55%;
 
-    /* Updated Gradient combinations */
-    --gradient-green-teal: linear-gradient(
-      135deg,
-      hsl(84 33% 19%) 0%,
-      hsl(174 22% 49%) 100%
-    );
-    --gradient-navy-blue: linear-gradient(
-      135deg,
-      hsl(9 22% 45%) 0%,
-      hsl(174 22% 49%) 100%
-    );
-    --gradient-gold-amber: linear-gradient(
-      135deg,
-      hsl(25 53% 50%) 0%,
-      hsl(25 53% 55%) 100%
-    );
-    --gradient-teal-blue: linear-gradient(
-      135deg,
-      hsl(174 22% 49%) 0%,
-      hsl(174 30% 55%) 100%
-    );
+    /* Gradient combinations */
+    --gradient-green-teal: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(200 80% 55%) 100%);
+    --gradient-navy-blue: linear-gradient(135deg, hsl(240 60% 55%) 0%, hsl(200 80% 55%) 100%);
+    --gradient-gold-amber: linear-gradient(135deg, hsl(45 90% 52%) 0%, hsl(35 90% 55%) 100%);
+    --gradient-teal-blue: linear-gradient(135deg, hsl(200 80% 55%) 0%, hsl(220 80% 60%) 100%);
 
     /* Sidebar */
-    --sidebar-background: 0 0% 99%;
-    --sidebar-foreground: 0 0% 19%;
-    --sidebar-primary: 84 33% 19%;
-    --sidebar-primary-foreground: 0 0% 97%;
-    --sidebar-accent: 174 22% 92%;
-    --sidebar-accent-foreground: 84 33% 19%;
-    --sidebar-border: 174 15% 88%;
-    --sidebar-ring: 84 33% 19%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 250 30% 12%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 262 30% 93%;
+    --sidebar-accent-foreground: 262 83% 58%;
+    --sidebar-border: 262 20% 88%;
+    --sidebar-ring: 262 83% 58%;
   }
 
   .dark {
-    /* Dark Charcoal background - Koyu gri arka plan */
-    --background: 0 0% 12%;
+    /* Electric Purple - Dark Mode */
+    --background: 240 45% 10%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 16%;
+    --card: 240 40% 16%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 16%;
+    --popover: 240 40% 16%;
     --popover-foreground: 0 0% 95%;
 
-    /* Kombu Green primary - Daha açık ton */
-    --primary: 84 40% 35%;
-    --primary-foreground: 0 0% 95%;
+    /* Electric Purple primary - brighter for dark */
+    --primary: 262 83% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Pastel Brown secondary - Daha açık ton */
-    --secondary: 9 30% 55%;
-    --secondary-foreground: 0 0% 95%;
+    /* Indigo secondary */
+    --secondary: 240 60% 65%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Desaturated Cyan muted - Daha açık ton */
-    --muted: 174 22% 20%;
-    --muted-foreground: 174 22% 65%;
+    /* Dark purple muted */
+    --muted: 240 35% 22%;
+    --muted-foreground: 262 20% 65%;
 
-    /* Copper accent - Daha parlak ton */
-    --accent: 25 60% 60%;
+    /* Gold accent */
+    --accent: 45 90% 55%;
     --accent-foreground: 0 0% 10%;
 
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 174 15% 25%;
-    --input: 174 15% 20%;
-    --ring: 84 40% 35%;
+    --border: 240 30% 25%;
+    --input: 240 30% 20%;
+    --ring: 262 83% 65%;
 
-    /* Brand color palette - Brighter for dark mode */
-    --brand-kombu-green: 84 40% 35%;
-    --brand-copper: 25 60% 60%;
-    --brand-pastel-brown: 9 30% 55%;
-    --brand-cyan: 174 30% 55%;
-    --brand-charcoal: 0 0% 19%;
+    /* Brand color palette - Dark mode */
+    --brand-kombu-green: 262 83% 65%;
+    --brand-copper: 45 90% 55%;
+    --brand-pastel-brown: 240 60% 65%;
+    --brand-cyan: 200 80% 60%;
+    --brand-charcoal: 240 45% 10%;
     --brand-cultured: 0 0% 95%;
 
-    /* Islamic gamification colors - Updated with new palette */
-    --islamic-green: 84 40% 35%;
-    --islamic-teal: 174 30% 55%;
-    --islamic-gold: 25 60% 60%;
-    --islamic-amber: 25 60% 60%;
-    --islamic-navy: 9 30% 55%;
-    --islamic-blue: 174 30% 55%;
+    /* Islamic gamification colors */
+    --islamic-green: 262 83% 65%;
+    --islamic-teal: 200 80% 60%;
+    --islamic-gold: 45 90% 55%;
+    --islamic-amber: 45 90% 55%;
+    --islamic-navy: 240 60% 65%;
+    --islamic-blue: 200 80% 60%;
 
-    --sidebar-background: 0 0% 12%;
+    --sidebar-background: 240 45% 10%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 84 40% 35%;
-    --sidebar-primary-foreground: 0 0% 95%;
-    --sidebar-accent: 174 22% 20%;
-    --sidebar-accent-foreground: 84 40% 35%;
-    --sidebar-border: 174 15% 25%;
-    --sidebar-ring: 84 40% 35%;
+    --sidebar-primary: 262 83% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 35% 22%;
+    --sidebar-accent-foreground: 262 83% 65%;
+    --sidebar-border: 240 30% 25%;
+    --sidebar-ring: 262 83% 65%;
   }
 }
 
@@ -183,33 +165,21 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Updated Gradient Cards with new color palette */
+  /* Electric Purple Gradient Cards */
   .gradient-card-green {
-    background: linear-gradient(
-      135deg,
-      hsl(84 33% 19%) 0%,
-      hsl(84 40% 35%) 100%
-    );
+    background: linear-gradient(135deg, hsl(262 83% 50%) 0%, hsl(262 83% 65%) 100%);
   }
 
   .gradient-card-brown {
-    background: linear-gradient(135deg, hsl(9 22% 45%) 0%, hsl(9 30% 55%) 100%);
+    background: linear-gradient(135deg, hsl(240 60% 45%) 0%, hsl(240 60% 60%) 100%);
   }
 
   .gradient-card-copper {
-    background: linear-gradient(
-      135deg,
-      hsl(25 53% 50%) 0%,
-      hsl(25 60% 60%) 100%
-    );
+    background: linear-gradient(135deg, hsl(45 90% 45%) 0%, hsl(45 90% 60%) 100%);
   }
 
   .gradient-card-cyan {
-    background: linear-gradient(
-      135deg,
-      hsl(174 22% 49%) 0%,
-      hsl(174 30% 55%) 100%
-    );
+    background: linear-gradient(135deg, hsl(200 80% 45%) 0%, hsl(200 80% 60%) 100%);
   }
 
   /* Glass-morphic Card with blur */
@@ -225,16 +195,11 @@
     border: 1px solid rgba(124, 58, 237, 0.2);
   }
 
-  /* Updated Vibrant Badge with new color palette */
+  /* Electric Purple Vibrant Badge */
   .vibrant-badge {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold;
-    background: linear-gradient(
-      135deg,
-      hsl(84 33% 19%) 0%,
-      hsl(25 53% 50%) 100%
-    );
+    background: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(45 90% 52%) 100%);
     color: white;
-
     transition: all 0.3s ease;
   }
 
@@ -261,9 +226,9 @@
   .progress-gradient {
     background: linear-gradient(
       90deg,
-      hsl(84, 7%, 41%) 0%,
-      hsl(109, 5%, 57%) 50%,
-      hsl(81, 7%, 62%) 100%
+      hsl(262, 83%, 58%) 0%,
+      hsl(240, 60%, 65%) 50%,
+      hsl(45, 90%, 52%) 100%
     );
     background-size: 200% 100%;
   }
