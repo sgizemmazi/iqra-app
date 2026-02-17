@@ -16,7 +16,7 @@ const DialControlWarm: React.FC<DialControlWarmProps> = ({ progress }) => {
   );
 
   return (
-    <div className="px-5 py-6">
+    <div className="px-5 pt-1 pb-6">
       <motion.div
         className="glass-card p-8 rounded-3xl overflow-hidden relative"
         initial={{ opacity: 0, scale: 0.95 }}

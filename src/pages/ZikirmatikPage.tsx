@@ -69,13 +69,11 @@ const ZikirmatikPage: React.FC = () => {
   }, [location.state]);
 
   const handleIncrement = () => {
-    // Eğer liste dışında kullanılıyorsa (seçili zikir yoksa), sınır yok
-    const hasLimit = selectedDhikr.ar !== undefined;
-
     const newCount = count + 1;
+    const currentTarget = selectedDhikr.ar ? target : 99; // Ana zikirmatik için 99
 
     // Hedef sayıya ulaşıldı mı?
-    if (hasLimit && newCount > target) {
+    if (newCount > currentTarget) {
       // Tur tamamlandı, yeni tura geç
       const newTur = turCount + 1;
       setTurCount(newTur);
@@ -97,7 +95,7 @@ const ZikirmatikPage: React.FC = () => {
     saveDhikrCount(currentDhikrKey, newCount);
 
     // Hedefe tam ulaşıldığında titreşim (tur tamamlanacak)
-    if (hasLimit && newCount === target) {
+    if (newCount === currentTarget) {
       setVibrate(true);
       if (navigator.vibrate) {
         navigator.vibrate([100, 50, 100]);
@@ -176,33 +174,20 @@ const ZikirmatikPage: React.FC = () => {
               onClick={handleIncrement}
               className="relative w-64 h-64 rounded-full bg-primary flex flex-col items-center justify-center active:scale-95 transition-transform cursor-pointer"
             >
-              <span className="flex flex-row items-center gap-2">
+              <span className="flex flex-row items-end">
                 <span className="text-7xl font-black text-primary-foreground">
                   {count}
                 </span>
-                {selectedDhikr.ar && (
-                  <>
-                    <span className="text-5xl font-black text-primary-foreground opacity-90">
-                      /
-                    </span>
-                    <span className="text-5xl font-black text-primary-foreground opacity-90">
-                      {target}
-                    </span>
-                  </>
-                )}
+                <span className="text-base font-bold text-primary-foreground mt-2 opacity-90">
+                  / {selectedDhikr.ar ? target : 99}
+                </span>
               </span>
-
-              {/* Tur Counter - Dairenin içinde */}
-              {selectedDhikr.ar && (
-                <div className="flex flex-col items-center mt-3">
-                  <span className="text-xs font-bold text-primary-foreground/70 uppercase tracking-wide mb-1">
-                    {language === "tr" ? "Tesbih Tekrarı" : "Dhikr Repeat"}
-                  </span>
-                  <span className="text-2xl font-black text-primary-foreground">
-                    {turCount}
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center gap-1.5 mt-4">
+                <RotateCcw className="w-4 h-4 text-primary-foreground opacity-80" />
+                <span className="text-lg font-bold text-primary-foreground opacity-90">
+                  {turCount}
+                </span>
+              </div>
             </button>
 
             {/* Progress ring - Sadece seçili zikirlerde göster */}
@@ -257,13 +242,14 @@ const ZikirmatikPage: React.FC = () => {
           {/* Decrease Button */}
           <button
             onClick={() => {
-              if (count === 0 && turCount > 0 && selectedDhikr.ar) {
+              const currentTarget = selectedDhikr.ar ? target : 99;
+              if (count === 0 && turCount > 0) {
                 // Önceki tura dön
                 const newTur = turCount - 1;
                 setTurCount(newTur);
-                setCount(target);
+                setCount(currentTarget);
                 saveTurCount(currentDhikrKey, newTur);
-                saveDhikrCount(currentDhikrKey, target);
+                saveDhikrCount(currentDhikrKey, currentTarget);
               } else if (count > 0) {
                 // Normal azaltma
                 const newCount = count - 1;

@@ -30,14 +30,14 @@
 
     /* Desaturated Cyan muted - Tonlu camgöbeği */
     --muted: 174 22% 92%;
-    --muted-foreground: 174 22% 40%;
+    --muted-foreground: 0deg 0% 61.64%;
 
     /* Copper accent - Bakır/turuncu */
     --accent: 25 53% 50%;
     --accent-foreground: 0 0% 97%;
 
     /* Red for errors */
-    --destructive: 0 70% 50%;
+    --destructive: 0deg 20.39% 55.83%;
     --destructive-foreground: 0 0% 100%;
 
     /* Soft borders */

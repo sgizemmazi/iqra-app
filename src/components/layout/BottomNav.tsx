@@ -61,23 +61,11 @@ const BottomNav: React.FC = () => {
                   whileTap={{ scale: 0.92 }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  {/* Active background */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="navActive"
-                      className={cn(
-                        "absolute inset-0 rounded-2xl",
-                        item.color
-                      )}
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-
                   {/* Icon */}
                   <div className="relative z-10">
                     <Icon className={cn(
-                      "w-6 h-6 transition-colors",
-                      isActive ? "text-primary-foreground" : "text-muted-foreground"
+                      "w-6 h-6 transition-colors text-primary",
+                      !isActive && "opacity-50"
                     )} />
 
                     {/* Sparkle decoration for active */}
@@ -94,8 +82,8 @@ const BottomNav: React.FC = () => {
 
                   {/* Label */}
                   <span className={cn(
-                    "text-[10px] font-bold relative z-10 transition-colors",
-                    isActive ? "text-primary-foreground" : "text-muted-foreground"
+                    "text-[10px] font-bold relative z-10 transition-colors text-primary",
+                    !isActive && "opacity-50"
                   )}>
                     {item.label}
                   </span>
