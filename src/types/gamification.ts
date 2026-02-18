@@ -31,7 +31,7 @@ export interface Badge {
   icon: string;
   isEarned: boolean;
   earnedDate?: string;
-  category: 'learning' | 'streak' | 'prayer' | 'special';
+  category: "learning" | "streak" | "prayer" | "special";
   requirement: string;
   progress?: number;
   maxProgress?: number;
@@ -49,7 +49,7 @@ export interface DailyGoal {
   isCompleted: boolean;
   progress: number;
   maxProgress: number;
-  type: 'surah' | 'dua' | 'prayer' | 'quiz';
+  type: "surah" | "dua" | "prayer" | "quiz";
 }
 
 // ---------------------------------------------------------------------------
@@ -57,7 +57,7 @@ export interface DailyGoal {
 // ---------------------------------------------------------------------------
 export interface QuizQuestion {
   id: string;
-  type: 'multiple_choice' | 'true_false' | 'fill_blank';
+  type: "multiple_choice" | "true_false" | "fill_blank";
 
   /** Sorunun her dildeki versiyonu */
   questionTr: string;
@@ -81,7 +81,7 @@ export interface QuizQuestion {
   explanationAr?: string;
 
   xpReward: number;
-  category: 'surah' | 'dua' | 'islamic_knowledge' | 'friday' | 'ramadan';
+  category: "surah" | "dua" | "islamic_knowledge" | "friday" | "ramadan";
 }
 
 // ---------------------------------------------------------------------------
@@ -110,10 +110,10 @@ export interface LeaderboardEntry {
 // Ders tipi  —  Duolingo-stili günlük kısa ders
 // ---------------------------------------------------------------------------
 export type LessonStepType =
-  | 'intro'           // Oku & oku — Arapça + çeviri + açıklama gösterilir
-  | 'read_translate'  // Arapça gösterilir, kullanıcı doğru çeviriyi seçer
-  | 'fill_blank'      // Arapça metinde boşluk var, kullanıcı eksik kelimeyi seçer
-  | 'review';         // Önceki ayetin tekrar sorusu (mekanik olarak read_translate gibi)
+  | "intro" // Oku & oku — Arapça + çeviri + açıklama gösterilir
+  | "read_translate" // Arapça gösterilir, kullanıcı doğru çeviriyi seçer
+  | "fill_blank" // Arapça metinde boşluk var, kullanıcı eksik kelimeyi seçer
+  | "review"; // Önceki ayetin tekrar sorusu (mekanik olarak read_translate gibi)
 
 export interface LessonStep {
   id: string;
@@ -143,13 +143,14 @@ export interface Lesson {
   id: string;
   title: I18nText;
   description: I18nText;
-  contentType: 'surah' | 'dua' | 'knowledge';
-  contentId: string;           // surah/dua id
+  contentType: "surah" | "dua" | "knowledge" | "checkpoint";
+  contentId: string; // surah/dua id
   steps: LessonStep[];
   estimatedMinutes: number;
-  totalXP: number;             // step xpReward toplamı
-  order: number;               // öğrenme yolunda sıra
-  difficulty: 'easy' | 'medium' | 'hard';
+  totalXP: number; // step xpReward toplamı
+  order: number; // öğrenme yolunda sıra
+  difficulty: "easy" | "medium" | "hard";
+  passThreshold?: number; // checkpoint quizler için minimum başarı yüzdesi
 }
 
 /** Tek bir ders için kullanıcı ilerlemesi */

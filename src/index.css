@@ -284,6 +284,16 @@
       linear-gradient(90deg, hsl(262 83% 58% / 0.05) 1px, transparent 1px);
     background-size: 30px 30px;
   }
+
+  /* Scrollbar hide utility */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Enhanced Animations */
