@@ -157,7 +157,8 @@ export interface Lesson {
 export interface LessonProgress {
   lessonId: string;
   completedSteps: string[];
-  isCompleted: boolean;
+  completed: boolean;
   completedAt?: string;
   xpEarned: number;
+  completionPercentage?: number;
 }

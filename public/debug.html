@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Debug Progress</title>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>IqrApp Progress Debug</h1>
+
+    <button onclick="showProgress()">Tüm Progress'i Göster</button>
+    <button onclick="clearProgress()">Progress'i Temizle</button>
+
+    <h2>Lesson Progress:</h2>
+    <pre id="output"></pre>
+
+    <script>
+      function showProgress() {
+        const lessonProgress = localStorage.getItem("lesson_progress");
+        const output = document.getElementById("output");
+
+        if (lessonProgress) {
+          const parsed = JSON.parse(lessonProgress);
+          output.textContent = JSON.stringify(parsed, null, 2);
+        } else {
+          output.textContent = "Henüz lesson progress kaydı yok";
+        }
+      }
+
+      function clearProgress() {
+        if (confirm("Tüm progress silinecek, emin misiniz?")) {
+          localStorage.removeItem("lesson_progress");
+          localStorage.removeItem("game_progress");
+          localStorage.removeItem("game_badges");
+          localStorage.removeItem("game_daily_goals");
+          localStorage.removeItem("game_quiz_stats");
+          localStorage.removeItem("completed_quiz_sets");
+          localStorage.removeItem("activity_history");
+          localStorage.removeItem("learned_content");
+          alert("Tüm progress temizlendi! Sayfayı yenileyin.");
+          showProgress();
+        }
+      }
+
+      // Sayfa yüklendiğinde otomatik göster
+      showProgress();
+    </script>
+  </body>
+</html>

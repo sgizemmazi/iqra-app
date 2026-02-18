@@ -80,18 +80,30 @@ const LessonViewPage: React.FC = () => {
         ? completionPercentage >= (lesson.passThreshold || 45)
         : true;
 
+      console.log('🎯 DERS TAMAMLANDI!', {
+        lessonId: lesson.id,
+        completionPercentage,
+        totalCorrect,
+        totalSteps
+      });
+
       // Progress kaydet
       completeLesson(lesson.id, completedSteps.length + 1, completionPercentage);
 
-      // Sonuç sayfasına yönlendir
-      navigate('/', {
-        state: {
-          lessonCompleted: true,
-          stars: completionPercentage >= 90 ? 3 : completionPercentage >= 70 ? 2 : 1,
-          passed,
-          isCheckpoint
-        }
-      });
+      console.log('✅ completeLesson çağrıldı');
+
+      // 500ms bekle - state update için
+      setTimeout(() => {
+        // Sonuç sayfasına yönlendir
+        navigate('/', {
+          state: {
+            lessonCompleted: true,
+            stars: completionPercentage >= 90 ? 3 : completionPercentage >= 70 ? 2 : 1,
+            passed,
+            isCheckpoint
+          }
+        });
+      }, 500);
     } else {
       setCurrentStepIndex(currentStepIndex + 1);
     }
@@ -135,7 +147,11 @@ const LessonViewPage: React.FC = () => {
         {/* Content */}
         <div className="flex-1 p-5 overflow-y-auto">
           {currentStep && (
-            <StepRenderer step={currentStep} onComplete={handleStepComplete} />
+            <StepRenderer
+              key={currentStep.id}
+              step={currentStep}
+              onComplete={handleStepComplete}
+            />
           )}
         </div>
       </div>

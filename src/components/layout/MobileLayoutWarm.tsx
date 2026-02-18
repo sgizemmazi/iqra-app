@@ -1,10 +1,10 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import BottomNav from './BottomNav';
-import Sidebar from './Sidebar';
-import ProfileOffcanvas from './ProfileOffcanvas';
-import { useUI } from '@/contexts/UIContext';
-import { motion } from 'framer-motion';
+import React from "react";
+import { cn } from "@/lib/utils";
+import BottomNav from "./BottomNav";
+import Sidebar from "./Sidebar";
+import ProfileOffcanvas from "./ProfileOffcanvas";
+import { useUI } from "@/contexts/UIContext";
+import { motion } from "framer-motion";
 
 interface MobileLayoutWarmProps {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ const VELOCITY_THRESHOLD = 300;
 const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
   children,
   className,
-  hideNav = false
+  hideNav = false,
 }) => {
   const { profileOpen, setProfileOpen, sidebarOpen, setSidebarOpen } = useUI();
 
@@ -29,7 +29,10 @@ const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
       ? -DRAWER_WIDTH * 2
       : -DRAWER_WIDTH;
 
-  const handlePanEnd = (_e: never, info: { offset: { x: number }; velocity: { x: number } }) => {
+  const handlePanEnd = (
+    _e: never,
+    info: { offset: { x: number }; velocity: { x: number } },
+  ) => {
     const { offset, velocity } = info;
     if (sidebarOpen) {
       if (offset.x < -SWIPE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
@@ -42,7 +45,10 @@ const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
     } else {
       if (offset.x > SWIPE_THRESHOLD || velocity.x > VELOCITY_THRESHOLD) {
         setSidebarOpen(true);
-      } else if (offset.x < -SWIPE_THRESHOLD || velocity.x < -VELOCITY_THRESHOLD) {
+      } else if (
+        offset.x < -SWIPE_THRESHOLD ||
+        velocity.x < -VELOCITY_THRESHOLD
+      ) {
         setProfileOpen(true);
       }
     }
@@ -61,20 +67,27 @@ const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
       >
         {/* Left Sidebar — always rendered, slides in from left */}
         <div style={{ width: DRAWER_WIDTH, flexShrink: 0 }}>
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} inline />
+          <Sidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+            inline
+          />
         </div>
 
         {/* Main Content */}
         <div
           className="flex flex-col flex-1 min-h-screen bg-background"
-          style={{ width: '100%', flexShrink: 0 }}
+          style={{ width: "100%", flexShrink: 0 }}
         >
           <main
-            className={cn(
-              "flex-1 overflow-y-auto relative",
-              !hideNav && "pb-28",
-              className
-            )}
+            className={cn("flex-1 overflow-y-auto relative", className)}
+            style={
+              !hideNav
+                ? {
+                    paddingBottom: "calc(8rem + env(safe-area-inset-bottom))",
+                  }
+                : undefined
+            }
           >
             {children}
           </main>
@@ -82,7 +95,11 @@ const MobileLayoutWarm: React.FC<MobileLayoutWarmProps> = ({
 
         {/* Right Profile Panel — always rendered, slides in from right */}
         <div style={{ width: DRAWER_WIDTH, flexShrink: 0 }}>
-          <ProfileOffcanvas isOpen={profileOpen} onClose={() => setProfileOpen(false)} inline />
+          <ProfileOffcanvas
+            isOpen={profileOpen}
+            onClose={() => setProfileOpen(false)}
+            inline
+          />
         </div>
       </motion.div>
 

@@ -19,7 +19,7 @@ export const GameMap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Progress hook'tan veri al
-  const { progress } = usePersistedGameProgress();
+  const { lessonProgress } = usePersistedGameProgress();
 
   // Container width için state
   const [containerWidth, setContainerWidth] = React.useState(375);
@@ -55,16 +55,16 @@ export const GameMap: React.FC = () => {
     return allLessons.map((lesson, index) => {
       const position = nodePositions[index];
 
-      // Progress kontrolü
-      const lessonProgress = progress?.lessonProgress?.[lesson.id];
-      const isCompleted = lessonProgress?.completed || false;
+      // Progress kontrolü - lessonProgress bir array olduğu için find kullanıyoruz
+      const progress = lessonProgress?.find(p => p.lessonId === lesson.id);
+      const isCompleted = progress?.completed || false;
 
       // İlk node her zaman unlocked
       // Diğerleri: önceki dersten 3 yıldız alınması gerekli (%90+)
       let isUnlocked = index === 0;
       if (index > 0) {
         const previousLesson = allLessons[index - 1];
-        const previousProgress = progress?.lessonProgress?.[previousLesson?.id];
+        const previousProgress = lessonProgress?.find(p => p.lessonId === previousLesson?.id);
         const isPreviousCompleted = previousProgress?.completed || false;
         const previousScore = previousProgress?.completionPercentage || 0;
 
@@ -79,8 +79,8 @@ export const GameMap: React.FC = () => {
 
       // Stars: completion percentage'a göre
       let stars: 0 | 1 | 2 | 3 = 0;
-      if (isCompleted && lessonProgress) {
-        const completionPercent = lessonProgress.completionPercentage || 0;
+      if (isCompleted && progress) {
+        const completionPercent = progress.completionPercentage || 0;
         if (completionPercent >= 90) stars = 3;
         else if (completionPercent >= 70) stars = 2;
         else if (completionPercent >= 50) stars = 1;
@@ -97,7 +97,7 @@ export const GameMap: React.FC = () => {
         stars,
       };
     });
-  }, [allLessons, nodePositions, progress]);
+  }, [allLessons, nodePositions, lessonProgress]);
 
   // Tamamlanmış node index'leri
   const completedNodeIndices = useMemo(() => {

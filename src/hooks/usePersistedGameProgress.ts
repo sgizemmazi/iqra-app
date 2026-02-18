@@ -1,5 +1,10 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { UserProgress, Badge, DailyGoal, LessonProgress } from '@/types/gamification';
+import { useState, useCallback, useRef, useEffect } from "react";
+import {
+  UserProgress,
+  Badge,
+  DailyGoal,
+  LessonProgress,
+} from "@/types/gamification";
 
 export interface QuizStats {
   totalQuizzes: number;
@@ -10,7 +15,7 @@ export interface QuizStats {
 
 export interface ActivityItem {
   id: string;
-  type: 'quiz_completed' | 'goal_completed' | 'level_up' | 'badge_earned';
+  type: "quiz_completed" | "goal_completed" | "level_up" | "badge_earned";
   title: string;
   description: string;
   xpEarned?: number;
@@ -24,14 +29,14 @@ export interface ActivityItem {
 }
 
 const STORAGE_KEYS = {
-  PROGRESS: 'game_progress',
-  BADGES: 'game_badges',
-  DAILY_GOALS: 'game_daily_goals',
-  QUIZ_STATS: 'game_quiz_stats',
-  COMPLETED_QUIZ_SETS: 'completed_quiz_sets',
-  ACTIVITY_HISTORY: 'activity_history',
-  LEARNED_CONTENT: 'learned_content',
-  LESSON_PROGRESS: 'lesson_progress',
+  PROGRESS: "game_progress",
+  BADGES: "game_badges",
+  DAILY_GOALS: "game_daily_goals",
+  QUIZ_STATS: "game_quiz_stats",
+  COMPLETED_QUIZ_SETS: "completed_quiz_sets",
+  ACTIVITY_HISTORY: "activity_history",
+  LEARNED_CONTENT: "learned_content",
+  LESSON_PROGRESS: "lesson_progress",
 };
 
 const defaultProgress: UserProgress = {
@@ -53,70 +58,70 @@ const defaultQuizStats: QuizStats = {
 
 const defaultBadges: Badge[] = [
   {
-    id: 'first_surah',
-    name: 'İlk Adım',
-    nameArabic: 'الخطوة الأولى',
-    description: 'İlk sureni tamamladın!',
-    icon: '🌟',
+    id: "first_surah",
+    name: "İlk Adım",
+    nameArabic: "الخطوة الأولى",
+    description: "İlk sureni tamamladın!",
+    icon: "🌟",
     isEarned: false,
-    category: 'learning',
-    requirement: '1 sure tamamla',
+    category: "learning",
+    requirement: "1 sure tamamla",
   },
   {
-    id: 'week_streak',
-    name: '7 Gün Serisi',
-    nameArabic: 'سلسلة ٧ أيام',
-    description: 'Bir hafta boyunca her gün çalıştın!',
-    icon: '🔥',
+    id: "week_streak",
+    name: "7 Gün Serisi",
+    nameArabic: "سلسلة ٧ أيام",
+    description: "Bir hafta boyunca her gün çalıştın!",
+    icon: "🔥",
     isEarned: false,
-    category: 'streak',
-    requirement: '7 günlük seri yap',
+    category: "streak",
+    requirement: "7 günlük seri yap",
     progress: 0,
     maxProgress: 7,
   },
   {
-    id: 'fatiha_master',
-    name: 'Fatiha Ustası',
-    nameArabic: 'ماهر الفاتحة',
-    description: 'Fatiha suresini tamamen ezberledin!',
-    icon: '📖',
+    id: "fatiha_master",
+    name: "Fatiha Ustası",
+    nameArabic: "ماهر الفاتحة",
+    description: "Fatiha suresini tamamen ezberledin!",
+    icon: "📖",
     isEarned: false,
-    category: 'learning',
-    requirement: 'Fatiha suresini tamamla',
+    category: "learning",
+    requirement: "Fatiha suresini tamamla",
   },
   {
-    id: 'quiz_master',
-    name: 'Quiz Şampiyonu',
-    nameArabic: 'بطل الاختبار',
-    description: '10 quiz\'i art arda doğru bitir',
-    icon: '🏆',
+    id: "quiz_master",
+    name: "Quiz Şampiyonu",
+    nameArabic: "بطل الاختبار",
+    description: "10 quiz'i art arda doğru bitir",
+    icon: "🏆",
     isEarned: false,
-    category: 'learning',
-    requirement: '10 quiz başarıyla tamamla',
+    category: "learning",
+    requirement: "10 quiz başarıyla tamamla",
     progress: 0,
     maxProgress: 10,
   },
   {
-    id: 'month_streak',
-    name: '30 Gün Serisi',
-    nameArabic: 'سلسلة ٣٠ يوماً',
-    description: 'Bir ay boyunca her gün çalış!',
-    icon: '💎',
+    id: "month_streak",
+    name: "30 Gün Serisi",
+    nameArabic: "سلسلة ٣٠ يوماً",
+    description: "Bir ay boyunca her gün çalış!",
+    icon: "💎",
     isEarned: false,
-    category: 'streak',
-    requirement: '30 günlük seri yap',
+    category: "streak",
+    requirement: "30 günlük seri yap",
     progress: 0,
     maxProgress: 30,
   },
   {
-    id: 'five_surahs',
-    name: '5 Sure Hafızı',
-    nameArabic: 'حافظ ٥ سور',
-    description: '5 sureyi ezberle',
-    icon: '✨',
+    id: "five_surahs",
+    name: "5 Sure Hafızı",
+    nameArabic: "حافظ ٥ سور",
+    description: "5 sureyi ezberle",
+    icon: "✨",
     isEarned: false,
-    category: 'learning',
-    requirement: '5 sure ezberle',
+    category: "learning",
+    requirement: "5 sure ezberle",
     progress: 0,
     maxProgress: 5,
   },
@@ -124,48 +129,48 @@ const defaultBadges: Badge[] = [
 
 const getDefaultDailyGoals = (): DailyGoal[] => [
   {
-    id: 'learn_ayah',
-    title: 'Bugünkü Ayeti Öğren',
-    description: '1 ayet ezberle',
-    icon: '📖',
+    id: "learn_ayah",
+    title: "Bugünkü Ayeti Öğren",
+    description: "1 ayet ezberle",
+    icon: "📖",
     xpReward: 25,
     isCompleted: false,
     progress: 0,
     maxProgress: 1,
-    type: 'surah',
+    type: "surah",
   },
   {
-    id: 'daily_dua',
-    title: 'Günün Duası',
-    description: 'Bir dua oku ve dinle',
-    icon: '🤲',
+    id: "daily_dua",
+    title: "Günün Duası",
+    description: "Bir dua oku ve dinle",
+    icon: "🤲",
     xpReward: 15,
     isCompleted: false,
     progress: 0,
     maxProgress: 1,
-    type: 'dua',
+    type: "dua",
   },
   {
-    id: 'quiz_complete',
-    title: 'Quiz Tamamla',
-    description: '1 quiz çöz',
-    icon: '❓',
+    id: "quiz_complete",
+    title: "Quiz Tamamla",
+    description: "1 quiz çöz",
+    icon: "❓",
     xpReward: 30,
     isCompleted: false,
     progress: 0,
     maxProgress: 1,
-    type: 'quiz',
+    type: "quiz",
   },
   {
-    id: 'review_surah',
-    title: 'Tekrar Yap',
-    description: 'Öğrendiğin bir sureyi tekrar et',
-    icon: '🔄',
+    id: "review_surah",
+    title: "Tekrar Yap",
+    description: "Öğrendiğin bir sureyi tekrar et",
+    icon: "🔄",
     xpReward: 20,
     isCompleted: false,
     progress: 0,
     maxProgress: 1,
-    type: 'surah',
+    type: "surah",
   },
 ];
 
@@ -184,37 +189,46 @@ function loadFromStorage<T>(key: string, defaultValue: T): T {
 function saveToStorage<T>(key: string, value: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
+    if (key === 'lesson_progress') {
+      console.log('💾 localStorage YAZILDI:', key, value);
+    }
   } catch (error) {
     console.error(`Error saving ${key} to localStorage:`, error);
   }
 }
 
 export function usePersistedGameProgress() {
-  const [progress, setProgress] = useState<UserProgress>(() => 
-    loadFromStorage(STORAGE_KEYS.PROGRESS, defaultProgress)
+  const [progress, setProgress] = useState<UserProgress>(() =>
+    loadFromStorage(STORAGE_KEYS.PROGRESS, defaultProgress),
   );
-  const [badges, setBadges] = useState<Badge[]>(() => 
-    loadFromStorage(STORAGE_KEYS.BADGES, defaultBadges)
+  const [badges, setBadges] = useState<Badge[]>(() =>
+    loadFromStorage(STORAGE_KEYS.BADGES, defaultBadges),
   );
-  const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>(() => 
-    loadFromStorage(STORAGE_KEYS.DAILY_GOALS, getDefaultDailyGoals())
+  const [dailyGoals, setDailyGoals] = useState<DailyGoal[]>(() =>
+    loadFromStorage(STORAGE_KEYS.DAILY_GOALS, getDefaultDailyGoals()),
   );
-  const [quizStats, setQuizStats] = useState<QuizStats>(() => 
-    loadFromStorage(STORAGE_KEYS.QUIZ_STATS, defaultQuizStats)
+  const [quizStats, setQuizStats] = useState<QuizStats>(() =>
+    loadFromStorage(STORAGE_KEYS.QUIZ_STATS, defaultQuizStats),
   );
-  const [completedQuizSets, setCompletedQuizSets] = useState<string[]>(() => 
-    loadFromStorage(STORAGE_KEYS.COMPLETED_QUIZ_SETS, [])
+  const [completedQuizSets, setCompletedQuizSets] = useState<string[]>(() =>
+    loadFromStorage(STORAGE_KEYS.COMPLETED_QUIZ_SETS, []),
   );
-  const [activityHistory, setActivityHistory] = useState<ActivityItem[]>(() => 
-    loadFromStorage(STORAGE_KEYS.ACTIVITY_HISTORY, [])
+  const [activityHistory, setActivityHistory] = useState<ActivityItem[]>(() =>
+    loadFromStorage(STORAGE_KEYS.ACTIVITY_HISTORY, []),
   );
-  const [learnedContent, setLearnedContent] = useState<{ surahs: string[]; duas: string[] }>(() =>
-    loadFromStorage(STORAGE_KEYS.LEARNED_CONTENT, { surahs: [], duas: [] })
+  const [learnedContent, setLearnedContent] = useState<{
+    surahs: string[];
+    duas: string[];
+  }>(() =>
+    loadFromStorage(STORAGE_KEYS.LEARNED_CONTENT, { surahs: [], duas: [] }),
   );
   const [lessonProgress, setLessonProgress] = useState<LessonProgress[]>(() =>
-    loadFromStorage(STORAGE_KEYS.LESSON_PROGRESS, [])
+    loadFromStorage(STORAGE_KEYS.LESSON_PROGRESS, []),
   );
-  const [levelUpData, setLevelUpData] = useState<{ show: boolean; newLevel: number }>({
+  const [levelUpData, setLevelUpData] = useState<{
+    show: boolean;
+    newLevel: number;
+  }>({
     show: false,
     newLevel: 0,
   });
@@ -253,131 +267,179 @@ export function usePersistedGameProgress() {
     saveToStorage(STORAGE_KEYS.LESSON_PROGRESS, lessonProgress);
   }, [lessonProgress]);
 
-  const addActivity = useCallback((
-    type: ActivityItem['type'],
-    title: string,
-    description: string,
-    xpEarned?: number,
-    metadata?: ActivityItem['metadata']
-  ) => {
-    const newItem: ActivityItem = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type,
-      title,
-      description,
-      xpEarned,
-      timestamp: new Date().toISOString(),
-      metadata,
-    };
+  const addActivity = useCallback(
+    (
+      type: ActivityItem["type"],
+      title: string,
+      description: string,
+      xpEarned?: number,
+      metadata?: ActivityItem["metadata"],
+    ) => {
+      const newItem: ActivityItem = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        type,
+        title,
+        description,
+        xpEarned,
+        timestamp: new Date().toISOString(),
+        metadata,
+      };
 
-    setActivityHistory(prev => [newItem, ...prev].slice(0, 100));
-  }, []);
+      setActivityHistory((prev) => [newItem, ...prev].slice(0, 100));
+    },
+    [],
+  );
 
   const closeLevelUpCelebration = useCallback(() => {
     setLevelUpData({ show: false, newLevel: 0 });
   }, []);
 
-  const addXP = useCallback((amount: number) => {
-    setProgress((prev) => {
-      let newXP = prev.currentXP + amount;
-      let newLevel = prev.level;
-      let xpNeeded = prev.xpForNextLevel;
+  const addXP = useCallback(
+    (amount: number) => {
+      setProgress((prev) => {
+        let newXP = prev.currentXP + amount;
+        let newLevel = prev.level;
+        let xpNeeded = prev.xpForNextLevel;
 
-      while (newXP >= xpNeeded) {
-        newXP -= xpNeeded;
-        newLevel += 1;
-        xpNeeded = Math.floor(xpNeeded * 1.3);
-      }
+        while (newXP >= xpNeeded) {
+          newXP -= xpNeeded;
+          newLevel += 1;
+          xpNeeded = Math.floor(xpNeeded * 1.3);
+        }
 
-      // Trigger level up celebration
-      if (newLevel > previousLevelRef.current) {
-        previousLevelRef.current = newLevel;
-        addActivity('level_up', `Seviye ${newLevel}`, 'Yeni seviyeye ulaştın!', undefined, { level: newLevel });
-        setTimeout(() => {
-          setLevelUpData({ show: true, newLevel });
-        }, 300);
-      }
+        // Trigger level up celebration
+        if (newLevel > previousLevelRef.current) {
+          previousLevelRef.current = newLevel;
+          addActivity(
+            "level_up",
+            `Seviye ${newLevel}`,
+            "Yeni seviyeye ulaştın!",
+            undefined,
+            { level: newLevel },
+          );
+          setTimeout(() => {
+            setLevelUpData({ show: true, newLevel });
+          }, 300);
+        }
 
-      return {
+        return {
+          ...prev,
+          currentXP: newXP,
+          level: newLevel,
+          xpForNextLevel: xpNeeded,
+          totalXP: prev.totalXP + amount,
+        };
+      });
+    },
+    [addActivity],
+  );
+
+  const completeGoal = useCallback(
+    (goalId: string) => {
+      setDailyGoals((prev) =>
+        prev.map((goal) => {
+          if (goal.id === goalId && !goal.isCompleted) {
+            addXP(goal.xpReward);
+            addActivity(
+              "goal_completed",
+              goal.title,
+              "Günlük görev tamamlandı",
+              goal.xpReward,
+              { goalId },
+            );
+            return { ...goal, isCompleted: true, progress: goal.maxProgress };
+          }
+          return goal;
+        }),
+      );
+      setProgress((prev) => ({
         ...prev,
-        currentXP: newXP,
-        level: newLevel,
-        xpForNextLevel: xpNeeded,
-        totalXP: prev.totalXP + amount,
-      };
-    });
-  }, [addActivity]);
+        dailyGoalsCompleted: prev.dailyGoalsCompleted + 1,
+      }));
+    },
+    [addXP, addActivity],
+  );
 
-  const completeGoal = useCallback((goalId: string) => {
-    setDailyGoals((prev) =>
-      prev.map((goal) => {
-        if (goal.id === goalId && !goal.isCompleted) {
-          addXP(goal.xpReward);
-          addActivity('goal_completed', goal.title, 'Günlük görev tamamlandı', goal.xpReward, { goalId });
-          return { ...goal, isCompleted: true, progress: goal.maxProgress };
+  const earnBadge = useCallback(
+    (badgeId: string) => {
+      setBadges((prev) =>
+        prev.map((badge) => {
+          if (badge.id === badgeId && !badge.isEarned) {
+            addActivity("badge_earned", badge.name, "Rozet kazanıldı!", 100, {
+              badgeId,
+            });
+            return {
+              ...badge,
+              isEarned: true,
+              earnedDate: new Date().toISOString().split("T")[0],
+            };
+          }
+          return badge;
+        }),
+      );
+      addXP(100); // Bonus XP for badges
+    },
+    [addXP, addActivity],
+  );
+
+  const recordQuizResult = useCallback(
+    (
+      correctAnswers: number,
+      totalQuestions: number,
+      streak: number,
+      quizTitle?: string,
+    ) => {
+      setQuizStats((prev) => {
+        const newStats = {
+          totalQuizzes: prev.totalQuizzes + 1,
+          correctAnswers: prev.correctAnswers + correctAnswers,
+          totalQuestions: prev.totalQuestions + totalQuestions,
+          bestStreak: Math.max(prev.bestStreak, streak),
+        };
+
+        // Check for quiz master badge
+        if (newStats.totalQuizzes >= 10) {
+          setBadges((badges) =>
+            badges.map((badge) =>
+              badge.id === "quiz_master" && !badge.isEarned
+                ? {
+                    ...badge,
+                    isEarned: true,
+                    earnedDate: new Date().toISOString().split("T")[0],
+                  }
+                : badge,
+            ),
+          );
         }
-        return goal;
-      })
-    );
-    setProgress((prev) => ({
-      ...prev,
-      dailyGoalsCompleted: prev.dailyGoalsCompleted + 1,
-    }));
-  }, [addXP, addActivity]);
 
-  const earnBadge = useCallback((badgeId: string) => {
-    setBadges((prev) =>
-      prev.map((badge) => {
-        if (badge.id === badgeId && !badge.isEarned) {
-          addActivity('badge_earned', badge.name, 'Rozet kazanıldı!', 100, { badgeId });
-          return { ...badge, isEarned: true, earnedDate: new Date().toISOString().split('T')[0] };
-        }
-        return badge;
-      })
-    );
-    addXP(100); // Bonus XP for badges
-  }, [addXP, addActivity]);
+        return newStats;
+      });
 
-  const recordQuizResult = useCallback((correctAnswers: number, totalQuestions: number, streak: number, quizTitle?: string) => {
-    setQuizStats((prev) => {
-      const newStats = {
-        totalQuizzes: prev.totalQuizzes + 1,
-        correctAnswers: prev.correctAnswers + correctAnswers,
-        totalQuestions: prev.totalQuestions + totalQuestions,
-        bestStreak: Math.max(prev.bestStreak, streak),
-      };
+      // Add activity
+      addActivity(
+        "quiz_completed",
+        quizTitle || "Quiz tamamlandı",
+        `${correctAnswers}/${totalQuestions} doğru cevap`,
+        undefined,
+      );
 
-      // Check for quiz master badge
-      if (newStats.totalQuizzes >= 10) {
-        setBadges((badges) =>
-          badges.map((badge) =>
-            badge.id === 'quiz_master' && !badge.isEarned
-              ? { ...badge, isEarned: true, earnedDate: new Date().toISOString().split('T')[0] }
-              : badge
-          )
-        );
-      }
-
-      return newStats;
-    });
-
-    // Add activity
-    addActivity(
-      'quiz_completed', 
-      quizTitle || 'Quiz tamamlandı', 
-      `${correctAnswers}/${totalQuestions} doğru cevap`,
-      undefined
-    );
-
-    // Update badge progress
-    setBadges((prev) =>
-      prev.map((badge) =>
-        badge.id === 'quiz_master' && !badge.isEarned
-          ? { ...badge, progress: Math.min((badge.progress || 0) + 1, badge.maxProgress || 10) }
-          : badge
-      )
-    );
-  }, [addActivity]);
+      // Update badge progress
+      setBadges((prev) =>
+        prev.map((badge) =>
+          badge.id === "quiz_master" && !badge.isEarned
+            ? {
+                ...badge,
+                progress: Math.min(
+                  (badge.progress || 0) + 1,
+                  badge.maxProgress || 10,
+                ),
+              }
+            : badge,
+        ),
+      );
+    },
+    [addActivity],
+  );
 
   const markQuizSetCompleted = useCallback((quizSetId: string) => {
     setCompletedQuizSets((prev) => {
@@ -388,113 +450,215 @@ export function usePersistedGameProgress() {
     });
   }, []);
 
-  const isQuizSetCompleted = useCallback((quizSetId: string) => {
-    return completedQuizSets.includes(quizSetId);
-  }, [completedQuizSets]);
+  const isQuizSetCompleted = useCallback(
+    (quizSetId: string) => {
+      return completedQuizSets.includes(quizSetId);
+    },
+    [completedQuizSets],
+  );
 
-  const markSurahLearned = useCallback((surahId: string, surahName: string) => {
-    setLearnedContent((prev) => {
-      if (!prev.surahs.includes(surahId)) {
-        addActivity('goal_completed', `${surahName} öğrenildi`, 'Sure başarıyla tamamlandı', 50);
-        addXP(50);
-        completeGoal('learn_ayah');
-        
-        // Check for badges
-        const newSurahs = [...prev.surahs, surahId];
-        if (surahId === '1') {
-          earnBadge('fatiha_master');
+  const markSurahLearned = useCallback(
+    (surahId: string, surahName: string) => {
+      setLearnedContent((prev) => {
+        if (!prev.surahs.includes(surahId)) {
+          addActivity(
+            "goal_completed",
+            `${surahName} öğrenildi`,
+            "Sure başarıyla tamamlandı",
+            50,
+          );
+          addXP(50);
+          completeGoal("learn_ayah");
+
+          // Check for badges
+          const newSurahs = [...prev.surahs, surahId];
+          if (surahId === "1") {
+            earnBadge("fatiha_master");
+          }
+          if (newSurahs.length >= 5) {
+            earnBadge("five_surahs");
+          }
+          if (newSurahs.length === 1) {
+            earnBadge("first_surah");
+          }
+
+          // Update badge progress
+          setBadges((badges) =>
+            badges.map((badge) =>
+              badge.id === "five_surahs" && !badge.isEarned
+                ? {
+                    ...badge,
+                    progress: Math.min(
+                      newSurahs.length,
+                      badge.maxProgress || 5,
+                    ),
+                  }
+                : badge,
+            ),
+          );
+
+          return { ...prev, surahs: newSurahs };
         }
-        if (newSurahs.length >= 5) {
-          earnBadge('five_surahs');
+        return prev;
+      });
+    },
+    [addActivity, addXP, completeGoal, earnBadge],
+  );
+
+  const markDuaLearned = useCallback(
+    (duaId: string, duaName: string) => {
+      setLearnedContent((prev) => {
+        if (!prev.duas.includes(duaId)) {
+          addActivity(
+            "goal_completed",
+            `${duaName} öğrenildi`,
+            "Dua başarıyla tamamlandı",
+            30,
+          );
+          addXP(30);
+          completeGoal("daily_dua");
+          return { ...prev, duas: [...prev.duas, duaId] };
         }
-        if (newSurahs.length === 1) {
-          earnBadge('first_surah');
+        return prev;
+      });
+    },
+    [addActivity, addXP, completeGoal],
+  );
+
+  const isSurahLearned = useCallback(
+    (surahId: string) => {
+      return learnedContent.surahs.includes(surahId);
+    },
+    [learnedContent.surahs],
+  );
+
+  const isDuaLearned = useCallback(
+    (duaId: string) => {
+      return learnedContent.duas.includes(duaId);
+    },
+    [learnedContent.duas],
+  );
+
+  const getLessonProgress = useCallback(
+    (lessonId: string): LessonProgress | null => {
+      return lessonProgress.find((p) => p.lessonId === lessonId) || null;
+    },
+    [lessonProgress],
+  );
+
+  const isLessonCompleted = useCallback(
+    (lessonId: string): boolean => {
+      return lessonProgress.some((p) => p.lessonId === lessonId && p.completed);
+    },
+    [lessonProgress],
+  );
+
+  const markLessonStepCompleted = useCallback(
+    (lessonId: string, stepId: string, xpReward: number) => {
+      setLessonProgress((prev) => {
+        const existing = prev.find((p) => p.lessonId === lessonId);
+        if (existing) {
+          if (existing.completedSteps.includes(stepId)) return prev;
+          return prev.map((p) =>
+            p.lessonId === lessonId
+              ? {
+                  ...p,
+                  completedSteps: [...p.completedSteps, stepId],
+                  xpEarned: p.xpEarned + xpReward,
+                }
+              : p,
+          );
         }
-        
-        // Update badge progress
-        setBadges((badges) =>
-          badges.map((badge) =>
-            badge.id === 'five_surahs' && !badge.isEarned
-              ? { ...badge, progress: Math.min(newSurahs.length, badge.maxProgress || 5) }
-              : badge
-          )
-        );
-        
-        return { ...prev, surahs: newSurahs };
-      }
-      return prev;
-    });
-  }, [addActivity, addXP, completeGoal, earnBadge]);
+        return [
+          ...prev,
+          {
+            lessonId,
+            completedSteps: [stepId],
+            completed: false,
+            xpEarned: xpReward,
+          },
+        ];
+      });
+      addXP(xpReward);
+    },
+    [addXP],
+  );
 
-  const markDuaLearned = useCallback((duaId: string, duaName: string) => {
-    setLearnedContent((prev) => {
-      if (!prev.duas.includes(duaId)) {
-        addActivity('goal_completed', `${duaName} öğrenildi`, 'Dua başarıyla tamamlandı', 30);
-        addXP(30);
-        completeGoal('daily_dua');
-        return { ...prev, duas: [...prev.duas, duaId] };
-      }
-      return prev;
-    });
-  }, [addActivity, addXP, completeGoal]);
+  const markLessonCompleted = useCallback(
+    (lessonId: string, lessonTitle: string) => {
+      setLessonProgress((prev) => {
+        const existing = prev.find((p) => p.lessonId === lessonId);
+        if (existing) {
+          return prev.map((p) =>
+            p.lessonId === lessonId
+              ? { ...p, completed: true, completedAt: new Date().toISOString() }
+              : p,
+          );
+        }
+        return [
+          ...prev,
+          {
+            lessonId,
+            completedSteps: [],
+            completed: true,
+            completedAt: new Date().toISOString(),
+            xpEarned: 0,
+          },
+        ];
+      });
+      addActivity(
+        "goal_completed",
+        `${lessonTitle} tamamlandı`,
+        "Ders başarıyla tamamlandı",
+      );
+    },
+    [addActivity],
+  );
 
-  const isSurahLearned = useCallback((surahId: string) => {
-    return learnedContent.surahs.includes(surahId);
-  }, [learnedContent.surahs]);
+  const completeLesson = useCallback(
+    (
+      lessonId: string,
+      stepsCompleted: number,
+      completionPercentage: number,
+    ) => {
+      console.log('💾 completeLesson BAŞLADI:', { lessonId, stepsCompleted, completionPercentage });
 
-  const isDuaLearned = useCallback((duaId: string) => {
-    return learnedContent.duas.includes(duaId);
-  }, [learnedContent.duas]);
+      setLessonProgress((prev) => {
+        console.log('📋 Önceki lessonProgress:', prev);
+        const existing = prev.find((p) => p.lessonId === lessonId);
 
-  const getLessonProgress = useCallback((lessonId: string): LessonProgress | null => {
-    return lessonProgress.find(p => p.lessonId === lessonId) || null;
-  }, [lessonProgress]);
+        let newProgress;
+        if (existing) {
+          newProgress = prev.map((p) =>
+            p.lessonId === lessonId
+              ? {
+                  ...p,
+                  completed: true,
+                  completedAt: new Date().toISOString(),
+                  completionPercentage,
+                }
+              : p,
+          );
+        } else {
+          newProgress = [
+            ...prev,
+            {
+              lessonId,
+              completedSteps: [],
+              completed: true,
+              completedAt: new Date().toISOString(),
+              xpEarned: 0,
+              completionPercentage,
+            },
+          ];
+        }
 
-  const isLessonCompleted = useCallback((lessonId: string): boolean => {
-    return lessonProgress.some(p => p.lessonId === lessonId && p.isCompleted);
-  }, [lessonProgress]);
-
-  const markLessonStepCompleted = useCallback((lessonId: string, stepId: string, xpReward: number) => {
-    setLessonProgress(prev => {
-      const existing = prev.find(p => p.lessonId === lessonId);
-      if (existing) {
-        if (existing.completedSteps.includes(stepId)) return prev;
-        return prev.map(p =>
-          p.lessonId === lessonId
-            ? { ...p, completedSteps: [...p.completedSteps, stepId], xpEarned: p.xpEarned + xpReward }
-            : p
-        );
-      }
-      return [...prev, {
-        lessonId,
-        completedSteps: [stepId],
-        isCompleted: false,
-        xpEarned: xpReward,
-      }];
-    });
-    addXP(xpReward);
-  }, [addXP]);
-
-  const markLessonCompleted = useCallback((lessonId: string, lessonTitle: string) => {
-    setLessonProgress(prev => {
-      const existing = prev.find(p => p.lessonId === lessonId);
-      if (existing) {
-        return prev.map(p =>
-          p.lessonId === lessonId
-            ? { ...p, isCompleted: true, completedAt: new Date().toISOString() }
-            : p
-        );
-      }
-      return [...prev, {
-        lessonId,
-        completedSteps: [],
-        isCompleted: true,
-        completedAt: new Date().toISOString(),
-        xpEarned: 0,
-      }];
-    });
-    addActivity('goal_completed', `${lessonTitle} tamamlandı`, 'Ders başarıyla tamamlandı');
-  }, [addActivity]);
+        console.log('✅ Yeni lessonProgress:', newProgress);
+        return newProgress;
+      });
+    },
+    [],
+  );
 
   const resetProgress = useCallback(() => {
     setProgress(defaultProgress);
@@ -506,7 +670,7 @@ export function usePersistedGameProgress() {
     setLearnedContent({ surahs: [], duas: [] });
     setLessonProgress([]);
     previousLevelRef.current = defaultProgress.level;
-    Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+    Object.values(STORAGE_KEYS).forEach((key) => localStorage.removeItem(key));
   }, []);
 
   return {
@@ -536,5 +700,6 @@ export function usePersistedGameProgress() {
     isLessonCompleted,
     markLessonStepCompleted,
     markLessonCompleted,
+    completeLesson,
   };
 }
