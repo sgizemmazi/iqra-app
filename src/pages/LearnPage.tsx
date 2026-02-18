@@ -24,6 +24,7 @@ const surahs: LearnItem[] = [
   { id: '108', type: 'surah', nameKey: 'surah.kawthar', nameArabic: 'الكوثر', versesCount: 3 },
   { id: '109', type: 'surah', nameKey: 'surah.kafirun', nameArabic: 'الكافرون', versesCount: 6 },
   { id: '111', type: 'surah', nameKey: 'surah.masad', nameArabic: 'المسد', versesCount: 5 },
+  { id: '48', type: 'surah', nameKey: 'surah.fath', nameArabic: 'الفتح', versesCount: 29 },
 ];
 
 const duas: LearnItem[] = [

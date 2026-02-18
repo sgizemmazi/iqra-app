@@ -49,6 +49,7 @@ const translations: Translations = {
   'surah.masad': { tr: 'Tebbet', en: 'Al-Masad' },
   'surah.maun': { tr: 'Maun', en: 'Al-Ma\'un' },
   'surah.fil': { tr: 'Fil', en: 'Al-Fil' },
+  'surah.fath': { tr: 'Fetih', en: 'Al-Fath' },
   
   // Duas
   'dua.beforeEating': { tr: 'Yemekten Önce', en: 'Before Eating' },

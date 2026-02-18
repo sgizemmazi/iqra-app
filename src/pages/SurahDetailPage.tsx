@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 const getAudioUrl = (surahId: string, ayahNumber: number): string => {
   const audioMap: Record<string, number> = {
     '1': 1,
+    '48': 5074,
     '108': 6206,
     '109': 6209,
     '110': 6215,
